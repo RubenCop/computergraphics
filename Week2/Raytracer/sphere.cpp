@@ -45,7 +45,26 @@ Hit Sphere::intersect(const Ray &ray)
         return Hit::NO_HIT();
     }
     double t = 1000;
-
+	
+	
+	double a = ray.D.dot(ray.D);
+	double b = 2*((ray.O - position).dot(ray.D));
+	double c = (ray.O - position).dot(ray.O - position) - r*r;
+	
+	//cout << "a" << a << endl;
+	//cout << b << endl;
+	//cout << c << endl;
+	
+	//find x using the abc-formula
+	double x = (-b + sqrt(b * b - 4 * a * c)) / (2 * a); 
+	double x2 = (-b - sqrt(b * b - 4 * a * c)) / (2 * a); 
+	
+	//cout << x << " " << x2 << endl;
+	
+	if (x < x2)
+		t = x;
+	else 
+		t = x2;
     /****************************************************
     * RT1.2: NORMAL CALCULATION
     *
@@ -54,7 +73,6 @@ Hit Sphere::intersect(const Ray &ray)
     * 
     * Insert calculation of the sphere's normal at the intersection point.
     ****************************************************/
-
     Vector N /* = ... */;
 
     return Hit(t,N);
