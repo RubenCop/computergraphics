@@ -15,6 +15,7 @@
 #include "raytracer.h"
 #include "object.h"
 #include "sphere.h"
+#include "plane.h"
 #include "material.h"
 #include "light.h"
 #include "image.h"
@@ -44,6 +45,7 @@ Triple parseTriple(const YAML::Node& node)
     return t;
 }
 
+
 Material* Raytracer::parseMaterial(const YAML::Node& node)
 {
     Material *m = new Material();
@@ -69,6 +71,16 @@ Object* Raytracer::parseObject(const YAML::Node& node)
         Sphere *sphere = new Sphere(pos,r);		
         returnObject = sphere;
     }
+    
+    if (objectType == "plane") {
+		Triple normal;
+		double d;
+		node["normal"] >> normal;
+		node["d"] >> d;
+		Plane *plane = new Plane(normal,d);
+		returnObject = plane;
+		
+	}
 
     if (returnObject) {
         // read the material and attach to object
@@ -110,6 +122,7 @@ bool Raytracer::readScene(const std::string& inputFilename)
 
             // Read scene configuration options
             scene->setEye(parseTriple(doc["Eye"]));
+           
 
             // Read and parse the scene objects
             const YAML::Node& sceneObjects = doc["Objects"];

@@ -30,6 +30,8 @@ private:
     std::vector<Light*> lights;
     Triple eye;
 public:
+	enum RenderMode {
+		phong, normal, zbuffer};
     Color trace(const Ray &ray);
     void render(Image &img);
     void addObject(Object *o);

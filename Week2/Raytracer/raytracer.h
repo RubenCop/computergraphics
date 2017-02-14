@@ -36,6 +36,7 @@ public:
 
     bool readScene(const std::string& inputFilename);
     void renderToFile(const std::string& outputFilename);
+    
 };
 
 #endif /* end of include guard: RAYTRACER_H_6GQO67WK */
