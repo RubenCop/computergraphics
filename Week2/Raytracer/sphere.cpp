@@ -40,24 +40,23 @@ Hit Sphere::intersect(const Ray &ray)
 
     // place holder for actual intersection calculation
 
-    Vector OC = (position - ray.O).normalized();
-    if (OC.dot(ray.D) < 0.999) {
-        return Hit::NO_HIT();
-    }
-    double t = 1000;
-	
-	
 	double a = ray.D.dot(ray.D);
-	double b = 2*((ray.O - position).dot(ray.D));
+	double b = (2*(ray.O - position)).dot(ray.D);
 	double c = (ray.O - position).dot(ray.O - position) - r*r;
 	
-	//cout << "a" << a << endl;
+	double t = 0;
+// 	cout << "a" << a << endl;
 	//cout << b << endl;
 	//cout << c << endl;
 	
+	double d = sqrt(b * b - 4 * a * c);
+	
+	if (d < 0)
+		return Hit::NO_HIT();
+	
 	//find x using the abc-formula
-	double x = (-b + sqrt(b * b - 4 * a * c)) / (2 * a); 
-	double x2 = (-b - sqrt(b * b - 4 * a * c)) / (2 * a); 
+	double x = (-b + d) / (2 * a); 
+	double x2 = (-b - d) / (2 * a); 
 	
 	//cout << x << " " << x2 << endl;
 	
