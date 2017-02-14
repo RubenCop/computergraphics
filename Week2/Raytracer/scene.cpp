@@ -72,7 +72,7 @@ Color Scene::trace(const Ray &ray)
 		color += (std::max(0.0,N.dot(L)) * material->kd) * material->color * lights[idx]->color;
 		
 		R = (2*(N.dot(L))*N)-L;
-		color += (std::pow(std::max(0.0,R.dot(V)),material->n) * material->ks) * material->color * lights[idx]->color;
+		color += (std::pow(std::max(0.0,R.dot(V)),material->n) * material->ks);
 		
 	}
 	
