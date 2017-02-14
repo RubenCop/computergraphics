@@ -16,6 +16,8 @@
 
 #include "scene.h"
 #include "material.h"
+#include <algorithm>
+#include <cmath>
 
 Color Scene::trace(const Ray &ray)
 {
@@ -56,9 +58,25 @@ Color Scene::trace(const Ray &ray)
     *        Color*Color        dito
     *        pow(a,b)           a to the power of b
     ****************************************************/
-
-    Color color = material->color;                  // place holder
-
+	
+	Vector L;
+	Vector R;
+	
+	Color color;
+	
+	color += material->color * material->ka;
+	
+	for (unsigned int idx = 0; idx < lights.size(); idx++)
+	{
+		L = (lights[idx]->position - hit).normalized();
+		color += (std::max(0.0,N.dot(L)) * material->kd) * material->color * lights[idx]->color;
+		
+		R = (2*(N.dot(L))*N)-L;
+		color += (std::pow(std::max(0.0,R.dot(V)),material->n) * material->ks) * material->color * lights[idx]->color;
+		
+	}
+	
+    //Color color = material->color;                  // place holder
     return color;
 }
 
