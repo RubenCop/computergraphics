@@ -16,6 +16,7 @@
 #include "object.h"
 #include "sphere.h"
 #include "plane.h"
+#include "triangle.h"
 #include "material.h"
 #include "light.h"
 #include "image.h"
@@ -79,6 +80,19 @@ Object* Raytracer::parseObject(const YAML::Node& node)
 		node["d"] >> d;
 		Plane *plane = new Plane(normal,d);
 		returnObject = plane;
+	}
+	if (objectType == "triangle") {
+		double d; //distance from origin
+		Triple a; //corner of triangle
+		Triple b;
+		Triple c;
+		node["d"] >> d;
+		
+		node["a"] >> a;
+		node["b"] >> b;
+		node["c"] >> c;
+		Triangle *triangle = new Triangle(d,a,b,c);
+		returnObject = triangle;
 		
 	}
 

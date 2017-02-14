@@ -22,8 +22,8 @@ Lights:
 
 Objects:
 - type: plane
-  normal: [-0.1,0.4,0.7]
-  d: 100
+  normal: [0.9,0.9,0.9]
+  d: 50
   material:
     color: [0.0,1.0,0.0]
     ka: 0.2
