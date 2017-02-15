@@ -121,7 +121,6 @@ Color Scene::traceNormal(const Ray &ray)
   Vector V = -ray.D;                             //the view vector
 
   Color color = (Color(N.data[0], N.data[1], N.data[2])+1)/2;
-  cout << color << endl;
 
   return color;
 }
