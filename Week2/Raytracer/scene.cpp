@@ -95,22 +95,35 @@ Color Scene::traceZ(const Ray &ray)
 
   // No hit? Return background color.
   if (!obj) return Color(0.0, 0.0, 0.0);
+  Color color = Color(min_hit.t, min_hit.t, min_hit.t)/1000;
+  return color;
+}
+
+Color Scene::traceNormal(const Ray &ray)
+{
+  // Find hit object and distance
+  Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
+  Object *obj = NULL;
+  for (unsigned int i = 0; i < objects.size(); ++i) {
+      Hit hit(objects[i]->intersect(ray));
+      if (hit.t<min_hit.t) {
+          min_hit = hit;
+          obj = objects[i];
+      }
+  }
+
+  // No hit? Return background color.
+  if (!obj) return Color(0.0, 0.0, 0.0);
 
   Material *material = obj->material;            //the hit objects material
   Point hit = ray.at(min_hit.t);                 //the hit point
   Vector N = min_hit.N;                          //the normal at hit point
   Vector V = -ray.D;                             //the view vector
 
-  cout << min_hit.t;
-  //double normalizedDistance = min_hit.t.normalized();
-  //Color color = normalizedDistance * 255;
+  Color color = (Color(N.data[0], N.data[1], N.data[2])+1)/2;
+  cout << color << endl;
 
-  //return color;
-}
-
-Color Scene::traceNormal(const Ray &ray)
-{
-
+  return color;
 }
 
 void Scene::render(Image &img)
@@ -132,6 +145,28 @@ void Scene::render(Image &img)
             col.clamp();
             img(x,y) = col;
         }
+    }
+    if(this->renderMode == "zbuffer"){ //if zbuffer, scale from closest to furthest
+      double minCol = 1;
+      double maxCol = 0;
+      for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+          if (img(x,y).data[0] > maxCol )
+            maxCol = img(x,y).data[0];
+          if (img(x,y).data[0] < minCol && img(x,y).data[0] > 0.0001) //make sure that background is not used to calculate range
+            minCol = img(x,y).data[0];
+        }
+      }
+
+      double range = maxCol - minCol;
+      for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+          if (img(x,y).data[0] > 0.0001) //make sure background is not changed
+          {
+            img(x,y) = 1 - (img(x,y) - minCol) / range;
+          }
+        }
+      }
     }
 }
 
