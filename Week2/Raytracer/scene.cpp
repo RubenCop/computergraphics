@@ -9,9 +9,9 @@
 //    Maarten Everts
 //    Jasper van de Gronde
 //
-//  This framework is inspired by and uses code of the raytracer framework of 
+//  This framework is inspired by and uses code of the raytracer framework of
 //  Bert Freudenberg that can be found at
-//  http://isgwww.cs.uni-magdeburg.de/graphik/lehre/cg2/projekt/rtprojekt.html 
+//  http://isgwww.cs.uni-magdeburg.de/graphik/lehre/cg2/projekt/rtprojekt.html
 //
 
 #include "scene.h"
@@ -58,26 +58,59 @@ Color Scene::trace(const Ray &ray)
     *        Color*Color        dito
     *        pow(a,b)           a to the power of b
     ****************************************************/
-	
+
 	Vector L;
 	Vector R;
-	
+
 	Color color;
-	
+
 	color += material->color * material->ka;
-	
+
 	for (unsigned int idx = 0; idx < lights.size(); idx++)
 	{
 		L = (lights[idx]->position - hit).normalized();
 		color += (std::max(0.0,N.dot(L)) * material->kd) * material->color * lights[idx]->color;
-		
+
 		R = (2*(N.dot(L))*N)-L;
 		color += (std::pow(std::max(0.0,R.dot(V)),material->n) * material->ks);
-		
+
 	}
-	
+
     //Color color = material->color;                  // place holder
     return color;
+}
+
+Color Scene::traceZ(const Ray &ray)
+{
+  // Find hit object and distance
+  Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
+  Object *obj = NULL;
+  for (unsigned int i = 0; i < objects.size(); ++i) {
+      Hit hit(objects[i]->intersect(ray));
+      if (hit.t<min_hit.t) {
+          min_hit = hit;
+          obj = objects[i];
+      }
+  }
+
+  // No hit? Return background color.
+  if (!obj) return Color(0.0, 0.0, 0.0);
+
+  Material *material = obj->material;            //the hit objects material
+  Point hit = ray.at(min_hit.t);                 //the hit point
+  Vector N = min_hit.N;                          //the normal at hit point
+  Vector V = -ray.D;                             //the view vector
+
+  cout << min_hit.t;
+  //double normalizedDistance = min_hit.t.normalized();
+  //Color color = normalizedDistance * 255;
+
+  //return color;
+}
+
+Color Scene::traceNormal(const Ray &ray)
+{
+
 }
 
 void Scene::render(Image &img)
@@ -88,7 +121,14 @@ void Scene::render(Image &img)
         for (int x = 0; x < w; x++) {
             Point pixel(x+0.5, h-1-y+0.5, 0);
             Ray ray(eye, (pixel-eye).normalized());
-            Color col = trace(ray);
+            Color col;
+            if (this->renderMode == "phong")
+              col = trace(ray);
+            if (this->renderMode == "normal")
+              col = traceNormal(ray);
+            if (this->renderMode == "zbuffer")
+              col = traceZ(ray);
+
             col.clamp();
             img(x,y) = col;
         }
