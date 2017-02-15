@@ -8,50 +8,43 @@
 Hit Triangle::intersect(const Ray &ray)
 {
 	//GIVEN : ray.D, ray.O, normal, d, a,b,c
-	Triple U = b - a;
-	Triple V = c - a;
-	
-	double x = U.data[1]*V.data[2] - U.data[2] * V.data[1];
-	double y = U.data[2]*V.data[0] - U.data[0] * V.data[2];
-	double z = U.data[0]*V.data[1] - U.data[1] * V.data[0];
-	Triple normal(x,y,z);
-	
-	double t = (-((ray.O).dot(normal) + d)) / (ray.D.dot(normal));
-	
-	Triple intersect = ray.O + (ray.D * t);
-	
-	for (unsigned int i = 0; i < 3; i++) // loop through x y z coordinates
+	Vector e1, e2, P, Q, T;
+	double det, inv_det, u, v;
+	double t;
+
+	e1 = b - a;
+	e2 = c - a;
+
+	P = ray.D.cross(e2);
+
+	det = e1.dot(P);
+	if(det > -0.000001 && det < 0.000001)
+		return Hit::NO_HIT();
+
+	inv_det = 1/det;
+
+	T = ray.O - a;
+
+	u = T.dot(P) * inv_det;
+
+	if (u < 0 || u > 1)
+		return Hit::NO_HIT();
+
+	Q = T.cross(e1);
+
+	v = ray.D.dot(Q) * inv_det;
+
+	if(v < 0 || u + v > 1)
+		return Hit::NO_HIT();
+
+	t = e2.dot(Q) * inv_det;
+
+	if (t > 0.000001)
 	{
-		double minimum = 99999999;
-		double maximum = -99999999;
-		/*cout << "z coordinate a: " << a.data[i] << endl;
-		cout << "z coordinate b: " << b.data[i] << endl;
-		cout << "z coordinate c: " << c.data[i] << endl;
-		cout << "intersect z: " << intersect.data[i] << endl;*/
-		if (a.data[i] < minimum)
-			minimum = a.data[i];
-		if (b.data[i] < minimum)
-			minimum = b.data[i];
-		if (c.data[i] < minimum)
-			minimum = c.data[i];
-		if (a.data[i] > maximum)
-			maximum = a.data[i];
-		if (b.data[i] > maximum)
-			maximum = b.data[i];
-		if (c.data[i] > maximum)
-			maximum = c.data[i];
-		
-		if (!(intersect.data[i] >= minimum && intersect.data[i] <= maximum))
-		{
-			//cout << "intersect" << intersect.data[i] << endl;
-			//cout << "maximum" << maximum << endl;
-			//cout << "minimum" << minimum << endl;
-			return Hit::NO_HIT();
-		}
-			
+		Vector N;
+		return Hit(t,N);
 	}
-	cout << "hit" << endl;
-    return Hit(t,normal);
+
+	return Hit::NO_HIT();
+
 }
-
-
