@@ -7,7 +7,7 @@
 
 Hit Triangle::intersect(const Ray &ray)
 {
-	//GIVEN : ray.D, ray.O, normal, d, a,b,c
+	//GIVEN : ray.D, ray.O, normal, a,b,c
 	Vector e1, e2, P, Q, T;
 	double det, inv_det, u, v;
 	double t;

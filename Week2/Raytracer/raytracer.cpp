@@ -74,24 +74,22 @@ Object* Raytracer::parseObject(const YAML::Node& node)
     }
 
     if (objectType == "plane") {
-		Triple normal;
-		double d;
-		node["normal"] >> normal;
-		node["d"] >> d;
-		Plane *plane = new Plane(normal,d);
-		returnObject = plane;
+  		Triple normal;
+  		double d;
+  		node["normal"] >> normal;
+  		node["d"] >> d;
+  		Plane *plane = new Plane(normal,d);
+  		returnObject = plane;
   	}
   	if (objectType == "triangle") {
-  		double d; //distance from origin
   		Triple a; //corner of triangle
   		Triple b;
   		Triple c;
-  		node["d"] >> d;
 
   		node["a"] >> a;
   		node["b"] >> b;
   		node["c"] >> c;
-  		Triangle *triangle = new Triangle(d,a,b,c);
+  		Triangle *triangle = new Triangle(a,b,c);
   		returnObject = triangle;
 
   	}
