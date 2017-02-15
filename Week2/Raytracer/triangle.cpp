@@ -3,11 +3,15 @@
 #include <iostream>
 #include <math.h>
 
+#define EPSILON 0.0001
+
 /************************** Sphere **********************************/
 
 Hit Triangle::intersect(const Ray &ray)
 {
 	//GIVEN : ray.D, ray.O, normal, a,b,c
+	//Using the Möller-Trumbore intersection algorithm
+
 	Vector e1, e2, P, Q, T;
 	double det, inv_det, u, v;
 	double t;
@@ -18,7 +22,7 @@ Hit Triangle::intersect(const Ray &ray)
 	P = ray.D.cross(e2);
 
 	det = e1.dot(P);
-	if(det > -0.000001 && det < 0.000001)
+	if(det > -EPSILON && det < EPSILON)
 		return Hit::NO_HIT();
 
 	inv_det = 1/det;
@@ -39,7 +43,7 @@ Hit Triangle::intersect(const Ray &ray)
 
 	t = e2.dot(Q) * inv_det;
 
-	if (t > 0.000001)
+	if (t > EPSILON)
 	{
 		Vector N;
 		return Hit(t,N);
