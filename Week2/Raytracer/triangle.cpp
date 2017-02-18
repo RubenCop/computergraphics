@@ -45,7 +45,6 @@ Hit Triangle::intersect(const Ray &ray)
 		A = a-b;
 		B = b-c;
 		N = A.cross(B);
-		cout << N << endl;
 		return Hit(t,N);
 	}
 
