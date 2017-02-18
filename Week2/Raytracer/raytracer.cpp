@@ -17,6 +17,8 @@
 #include "sphere.h"
 #include "plane.h"
 #include "triangle.h"
+#include "cylinder.h"
+#include "torus.h"
 #include "material.h"
 #include "light.h"
 #include "image.h"
@@ -74,27 +76,44 @@ Object* Raytracer::parseObject(const YAML::Node& node)
     }
 
     if (objectType == "plane") {
-		Triple normal;
-		double d;
-		node["normal"] >> normal;
-		node["d"] >> d;
-		Plane *plane = new Plane(normal,d);
-		returnObject = plane;
+  		Triple normal;
+  		double d;
+  		node["normal"] >> normal;
+  		node["d"] >> d;
+  		Plane *plane = new Plane(normal,d);
+  		returnObject = plane;
   	}
   	if (objectType == "triangle") {
-  		double d; //distance from origin
   		Triple a; //corner of triangle
   		Triple b;
   		Triple c;
-  		node["d"] >> d;
 
   		node["a"] >> a;
   		node["b"] >> b;
   		node["c"] >> c;
-  		Triangle *triangle = new Triangle(d,a,b,c);
+  		Triangle *triangle = new Triangle(a,b,c);
   		returnObject = triangle;
-
   	}
+    if (objectType == "cylinder") {
+        Point p1;
+        Point p2;
+        node["p1"] >> p1;
+        node["p2"] >> p2;
+        double r;
+        node["radius"] >> r;
+        Cylinder *cylinder = new Cylinder(p1,p2,r);
+        returnObject = cylinder;
+    }
+    if (objectType == "torus")
+    {
+      Point pos;
+      node["position"] >> pos;
+      double r1, r2;
+      node["r1"] >> r1;
+      node["r2"] >> r2;
+      Torus *torus = new Torus(pos,r1,r2);
+      returnObject = torus;
+    }
 
     if (returnObject) {
         // read the material and attach to object
