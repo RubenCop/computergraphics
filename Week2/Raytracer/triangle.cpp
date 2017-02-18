@@ -11,7 +11,6 @@ Hit Triangle::intersect(const Ray &ray)
 	Vector e1, e2, P, Q, T;
 	double det, inv_det, u, v;
 	double t;
-
 	e1 = b - a;
 	e2 = c - a;
 
@@ -42,6 +41,11 @@ Hit Triangle::intersect(const Ray &ray)
 	if (t > 0.000001)
 	{
 		Vector N;
+		Triple A, B;
+		A = a-b;
+		B = b-c;
+		N = A.cross(B);
+		cout << N << endl;
 		return Hit(t,N);
 	}
 
