@@ -76,24 +76,25 @@ Object* Raytracer::parseObject(const YAML::Node& node)
     }
 
     if (objectType == "plane") {
-  		Triple normal;
-  		double d;
-  		node["normal"] >> normal;
-  		node["d"] >> d;
-  		Plane *plane = new Plane(normal,d);
-  		returnObject = plane;
-  	}
-  	if (objectType == "triangle") {
-  		Triple a; //corner of triangle
-  		Triple b;
-  		Triple c;
+        Triple normal;
+        double d;
+        node["normal"] >> normal;
+        node["d"] >> d;
+        Plane *plane = new Plane(normal,d);
+        returnObject = plane;
+    }
 
-  		node["a"] >> a;
-  		node["b"] >> b;
-  		node["c"] >> c;
-  		Triangle *triangle = new Triangle(a,b,c);
-  		returnObject = triangle;
-  	}
+    if (objectType == "triangle") {
+        Triple a; //corner of triangle
+        Triple b;
+        Triple c;
+        node["a"] >> a;
+        node["b"] >> b;
+        node["c"] >> c;
+        Triangle *triangle = new Triangle(a,b,c);
+        returnObject = triangle;
+    }
+    
     if (objectType == "cylinder") {
         Point p1;
         Point p2;
@@ -103,16 +104,6 @@ Object* Raytracer::parseObject(const YAML::Node& node)
         node["radius"] >> r;
         Cylinder *cylinder = new Cylinder(p1,p2,r);
         returnObject = cylinder;
-    }
-    if (objectType == "torus")
-    {
-      Point pos;
-      node["position"] >> pos;
-      double r1, r2;
-      node["r1"] >> r1;
-      node["r2"] >> r2;
-      Torus *torus = new Torus(pos,r1,r2);
-      returnObject = torus;
     }
 
     if (returnObject) {

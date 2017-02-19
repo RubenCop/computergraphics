@@ -30,10 +30,11 @@ private:
     std::vector<Light*> lights;
     Triple eye;
 public:
+    //string renderMode added to save render mode (phong, normal, z-buffer)
     std::string renderMode;
-    Color trace(const Ray &ray);
-    Color traceZ(const Ray &ray);
-    Color traceNormal(const Ray &ray);
+    Color trace(const Ray &ray); //phong
+    Color traceZ(const Ray &ray); //z-buffer
+    Color traceNormal(const Ray &ray); //normal
     void render(Image &img);
     void addObject(Object *o);
     void addLight(Light *l);

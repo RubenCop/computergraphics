@@ -40,32 +40,15 @@ Color Scene::trace(const Ray &ray)
     Vector N = min_hit.N;                          //the normal at hit point
     Vector V = -ray.D;                             //the view vector
 
-
-    /****************************************************
-    * This is where you should insert the color
-    * calculation (Phong model).
-    *
-    * Given: material, hit, N, V, lights[]
-    * Sought: color
-    *
-    * Hints: (see triple.h)
-    *        Triple.dot(Vector) dot product
-    *        Vector+Vector      vector sum
-    *        Vector-Vector      vector difference
-    *        Point-Point        yields vector
-    *        Vector.normalize() normalizes vector, returns length
-    *        double*Color        scales each color component (r,g,b)
-    *        Color*Color        dito
-    *        pow(a,b)           a to the power of b
-    ****************************************************/
-
     Vector L;
     Vector R;
 
     Color color;
 
+    //Add ambient intensity
     color += material->color * material->ka;
 
+    //For each light, add diffuse and specular intensity to "color"
     for (unsigned int idx = 0; idx < lights.size(); idx++)
     {
         L = (lights[idx]->position - hit).normalized();
@@ -73,10 +56,8 @@ Color Scene::trace(const Ray &ray)
 
         R = (2*(N.dot(L))*N)-L;
         color += (std::pow(std::max(0.0,R.dot(V)),material->n) * material->ks);
-
     }
 
-    //Color color = material->color;                  // place holder
     return color;
 }
 
@@ -95,7 +76,9 @@ Color Scene::traceZ(const Ray &ray)
 
     // No hit? Return background color.
     if (!obj) return Color(0.0, 0.0, 0.0);
-    // Divide by 1000 so that values can be stored in image and scaled later
+
+    // Initialise a new color with distance to the closest hit point
+    // Divide by 1000 so that values can be stored in an image and scaled later
     Color color = Color(min_hit.t, min_hit.t, min_hit.t)/1000;
     return color;
 }
@@ -121,8 +104,8 @@ Color Scene::traceNormal(const Ray &ray)
     Vector N = min_hit.N;                          //the normal at hit point
     Vector V = -ray.D;                             //the view vector
 
+    //Initialise a new color with the normal at the hitpoint: normalise between 0 and 1
     Color color = (Color(N.data[0], N.data[1], N.data[2])+1)/2;
-
     return color;
 }
 
@@ -136,29 +119,31 @@ void Scene::render(Image &img)
             Ray ray(eye, (pixel-eye).normalized());
             Color col;
 
+            //Use different trace functions based on render mode
             if (this->renderMode == "phong")
-            col = trace(ray);
+                col = trace(ray);
             if (this->renderMode == "normal")
-            col = traceNormal(ray);
+                col = traceNormal(ray);
             if (this->renderMode == "zbuffer")
-            col = traceZ(ray);
+                col = traceZ(ray);
 
             col.clamp();
             img(x,y) = col;
         }
     }
     if(this->renderMode == "zbuffer"){ //if zbuffer, scale from closest to furthest
+        //Determine minimum and maximum color values
         double minCol = 1;
         double maxCol = 0;
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 if (img(x,y).data[0] > maxCol )
-                maxCol = img(x,y).data[0];
+                    maxCol = img(x,y).data[0];
                 if (img(x,y).data[0] < minCol && img(x,y).data[0] > 0.0001) //make sure that background is not used to calculate range
-                minCol = img(x,y).data[0];
+                    minCol = img(x,y).data[0];
             }
         }
-
+        //Scale color based on minimum and maximum 
         double range = maxCol - minCol;
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
