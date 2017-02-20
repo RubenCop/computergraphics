@@ -50,10 +50,10 @@ Hit Triangle::intersect(const Ray &ray)
 	{
 		Vector N;
 		Triple A, B;
-		A = a-b;
-		B = b-c;
+		A = b-a;
+		B = c-a;
 		N = A.cross(B);
-		return Hit(t,N);
+		return Hit(t,N.normalized());
 	}
 
 	return Hit::NO_HIT();
