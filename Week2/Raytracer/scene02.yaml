@@ -1,5 +1,6 @@
 ---
 #  scene02
+RenderMode: "phong"
 
 Eye: [200,200,1000]  
 

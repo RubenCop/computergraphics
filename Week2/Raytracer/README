@@ -24,3 +24,17 @@ We have added three new objects to the raytracer: a plane and a triangle.
 	  calculated using the Möller-Trumbore algorithm.
 	- Cylinder: a cylinder is defined by two points, one for each end, and a
       radius. However, it is infinitely long.
+
+The code stored in the subdirectory ´Code´ can be compiled using the makefile and typing make in the terminal. 
+Afterwards, the code can be run typing ./ray <the scene file you want to run>
+
+We have constructed the following scenes:
+	- scene01-phong.yaml: showing scene01 in original "phong" render mode
+	- scene01-normal.yaml: showing scene01 in the render mode "normal"
+	- scene01-zbuffer.yaml: showing scene01 in the render mode "z-buffer"
+	- scene02.yaml: showing scene02 in original "phong" render mode. This scene can also be rendered in the normal and zbuffer modes. 
+	- scene-cylinder.yaml: showing a blue cylinder. The cylinder can be placed in another angle in the .yaml file by altering the plane origin points. 
+	- scene-patrick.yaml: shows patrick from spongebob. 
+	- scene-triangle.yaml: shows a green tetrahedron consisting of 3 triangles. 
+
+The scene render modes can be altered to either "phong", "z-buffer" or "normal" to get the phong, z-buffer or normal display of the scene respectively. 
