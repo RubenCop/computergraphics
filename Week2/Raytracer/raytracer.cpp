@@ -77,10 +77,8 @@ Object* Raytracer::parseObject(const YAML::Node& node)
 
     if (objectType == "plane") {
   		Triple normal;
-  		double d;
   		node["normal"] >> normal;
-  		node["d"] >> d;
-  		Plane *plane = new Plane(normal,d);
+  		Plane *plane = new Plane(normal);
   		returnObject = plane;
   	}
   	if (objectType == "triangle") {

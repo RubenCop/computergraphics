@@ -9,7 +9,7 @@ Hit Plane::intersect(const Ray &ray)
 {
 	//GIVEN : ray.D, ray.O, normal, d
 	
-	double t = (-((ray.O).dot(normal) + d)) / (ray.D.dot(normal));
+	double t = (-(ray.O).dot(normal)) / (ray.D.dot(normal));
 	
     return Hit(t,normal);
 }

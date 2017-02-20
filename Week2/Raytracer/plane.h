@@ -6,12 +6,11 @@
 class Plane : public Object
 {
 public:
-    Plane(Triple normal,double d) : normal(normal), d(d) { }
+    Plane(Triple normal) : normal(normal) { }
 
     virtual Hit intersect(const Ray &ray);
 
     const Triple normal;
-    const double d;
 };
 
 #endif /* end of include guard: PLANE_H */

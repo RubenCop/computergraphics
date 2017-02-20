@@ -72,11 +72,7 @@ Hit Cylinder::intersect(const Ray &ray)
 		t = x2;
 
     Point intersection = ray.O + ray.D * t;
-    /*
-    for (unsigned int i = 0; i < 3; i++){
-        if (intersection.data[i] < p1.data[i] || intersection.data[i] > p2.data[i])
-            return Hit::NO_HIT();
-    }*/
+    
     /****************************************************
     * RT1.2: NORMAL CALCULATION
     *
