@@ -1,7 +1,7 @@
 Raytracer 1 assignment for Computer Graphics
 
 By
-	Ruben Cop
+	Ruben Cop (s2703122)
 	Jan Willem de Wit (s2616602)
 
 
@@ -17,9 +17,10 @@ so that it scales the colours in case of the z-buffer image. In the traceZ
 function, we divide the calculated colours by 1000 so that they become a small
 number that can be scaled later.
 
-We have added two new objects to the raytracer: a plane and a triangle.
-	- Plane: a plane is defined by a normal (normal) and a distance (d) from the
-	  origin
+We have added three new objects to the raytracer: a plane and a triangle.
+	- Plane: a plane is defined by a normal (normal)
 	- Triangle: a triangle is defined by three triples (a,b,c) that define the
 	  points of the triangle. The intersection of the ray and triangle is
 	  calculated using the Möller-Trumbore algorithm.
+	- Cylinder: a cylinder is defined by two points, one for each end, and a
+      radius. However, it is infinitely long.
