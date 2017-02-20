@@ -53,6 +53,10 @@ Hit Triangle::intersect(const Ray &ray)
 		A = b-a;
 		B = c-a;
 		N = A.cross(B);
+		if (N.dot(ray.D)>0)
+		{
+			N = N * -1;
+		}
 		return Hit(t,N.normalized());
 	}
 
