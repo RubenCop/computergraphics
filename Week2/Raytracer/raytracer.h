@@ -7,9 +7,9 @@
 //
 //  Author: Maarten Everts
 //
-//  This framework is inspired by and uses code of the raytracer framework of 
+//  This framework is inspired by and uses code of the raytracer framework of
 //  Bert Freudenberg that can be found at
-//  http://isgwww.cs.uni-magdeburg.de/graphik/lehre/cg2/projekt/rtprojekt.html 
+//  http://isgwww.cs.uni-magdeburg.de/graphik/lehre/cg2/projekt/rtprojekt.html
 //
 
 #ifndef RAYTRACER_H_6GQO67WK
@@ -36,7 +36,7 @@ public:
 
     bool readScene(const std::string& inputFilename);
     void renderToFile(const std::string& outputFilename);
-    
+
 };
 
 #endif /* end of include guard: RAYTRACER_H_6GQO67WK */

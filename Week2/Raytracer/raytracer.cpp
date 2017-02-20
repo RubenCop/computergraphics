@@ -18,7 +18,6 @@
 #include "plane.h"
 #include "triangle.h"
 #include "cylinder.h"
-#include "torus.h"
 #include "material.h"
 #include "light.h"
 #include "image.h"
