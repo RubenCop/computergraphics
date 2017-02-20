@@ -102,16 +102,6 @@ Object* Raytracer::parseObject(const YAML::Node& node)
         Cylinder *cylinder = new Cylinder(p1,p2,r);
         returnObject = cylinder;
     }
-    if (objectType == "torus")
-    {
-      Point pos;
-      node["position"] >> pos;
-      double r1, r2;
-      node["r1"] >> r1;
-      node["r2"] >> r2;
-      Torus *torus = new Torus(pos,r1,r2);
-      returnObject = torus;
-    }
 
     if (returnObject) {
         // read the material and attach to object
