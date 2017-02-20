@@ -2,7 +2,7 @@
 #include "triangle.h"
 #include <iostream>
 #include <math.h>
-#define EPSILON EPSILON
+#define EPSILON 0.00001
 
 /************************** Sphere **********************************/
 
