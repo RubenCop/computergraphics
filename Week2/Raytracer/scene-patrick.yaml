@@ -19,6 +19,9 @@ Eye: [200,200,1000]
 Lights:
 - position: [-200,600,1500]
   color: [1.0,1.0,1.0]
+- position: [300,320,300]
+  color: [1.0,1.0,1.0]
+
 
 Objects:
 - type: triangle
@@ -190,3 +193,13 @@ Objects:
     kd: 0.3
     ks: 0.5
     n: 8
+#Sun
+- type: sphere
+  position: [300,320,300]
+  radius: 40
+  material: # Yellow
+    color: [1.0,1.0,0.0]
+    ka: 0.3
+    kd: 0.7
+    ks: 0.8
+    n: 64

@@ -36,5 +36,6 @@ We have constructed the following scenes:
 	- scene-cylinder.yaml: showing a blue cylinder. The cylinder can be placed in another angle in the .yaml file by altering the plane origin points. 
 	- scene-patrick.yaml: shows patrick from spongebob. 
 	- scene-triangle.yaml: shows a green tetrahedron consisting of 3 triangles. 
+	- testscene.yaml: shows different objects in a scene: sphere, plane, tetrahedron(consisting of triangles) and a cylinder
 
 The scene render modes can be altered to either "phong", "z-buffer" or "normal" to get the phong, z-buffer or normal display of the scene respectively. 
