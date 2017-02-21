@@ -76,6 +76,14 @@ private:
 
     unsigned numTris;
 
+    //T2
+    QMatrix4x4 model;
+    QMatrix4x4 view;
+    QMatrix4x4 projection;
+
+    GLint a, b, c;
+
+
     /* End of private members */
 
 private slots:

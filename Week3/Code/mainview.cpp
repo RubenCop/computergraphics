@@ -4,6 +4,7 @@
 
 #include <QDateTime>
 int numVertices = 0;
+QVector<QVector3D> vertices;
 
 /**
  * @brief MainView::MainView
@@ -57,6 +58,15 @@ void MainView::createShaderPrograms() {
     mainShaderProg->link();
 
     /* Add your other shaders below */
+    a = glGetUniformLocation(mainShaderProg->programId(), "model");
+
+    b = glGetUniformLocation(mainShaderProg->programId(), "view");
+
+    c = glGetUniformLocation(mainShaderProg->programId(), "projection");
+
+    glUniformMatrix4fv(a, 3, GL_FALSE, model.data());
+    glUniformMatrix4fv(b, 3, GL_FALSE, view.data());
+    glUniformMatrix4fv(c, 3, GL_FALSE, projection.data());
 
     /* End of custom shaders */
 
@@ -100,7 +110,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     Q_UNUSED(bufferObject);
 
     // TODO: implement loading of model into Buffer Objects
-    QVector<QVector3D> vertices = cubeModel->getVertices();
+    vertices = cubeModel->getVertices();
     numVertices = vertices.length();
     srand (time(NULL));
 
@@ -161,7 +171,7 @@ void MainView::initializeGL() {
     glEnable(GL_DEPTH_TEST);
 
     // Enable backface culling
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     // Default is GL_LESS
     glDepthFunc(GL_LEQUAL);
@@ -195,7 +205,6 @@ void MainView::resizeGL(int newWidth, int newHeight) {
     Q_UNUSED(newWidth)
     Q_UNUSED(newHeight)
 }
- //small value (0x(nil)). Is this intended to be used as an offset into a buffer object?
 /**
  * @brief MainView::paintGL
  *
@@ -204,6 +213,19 @@ void MainView::resizeGL(int newWidth, int newHeight) {
  */
 void MainView::paintGL() {
 
+    model.setToIdentity();
+    view.setToIdentity();
+    projection.setToIdentity();
+
+    projection.perspective(60.0, 1.0, 0.1, 100.0);
+
+    model.translate(45,342,42);
+
+    for (int i = 0; i < vertices.length(); i++){
+        vertices[i]*model;
+        vertices[i]*view;
+        vertices[i]*projection;
+    }
     // Clear the screen before rendering
     glClearColor(0.0f,0.0f,0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -212,7 +234,7 @@ void MainView::paintGL() {
 
     // TODO: implement your drawing functions
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES,0,numVertices); //36 moet vervagnen worden door een dynamisch statement ja zo is het wel goedjan willem hou op
+    glDrawArrays(GL_TRIANGLES,0,numVertices);
 
     mainShaderProg->release();
 }
