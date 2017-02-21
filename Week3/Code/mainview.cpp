@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <QDateTime>
+int numVertices = 0;
 
 /**
  * @brief MainView::MainView
@@ -96,11 +97,11 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     cubeModel = new Model(filename);
     numTris = cubeModel->getNumTriangles();
 
-    Q_UNUSED(NULL);
+    Q_UNUSED(bufferObject);
 
     // TODO: implement loading of model into Buffer Objects
     QVector<QVector3D> vertices = cubeModel->getVertices();
-    int numVertices = vertices.length();
+    numVertices = vertices.length();
     srand (time(NULL));
 
     // Generate random colors
@@ -112,7 +113,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
         colors.push_back(col);
     }
     glBindBuffer(GL_ARRAY_BUFFER,bo);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*vertices.length(),vertices.data(),GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*numVertices,vertices.data(),GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
     glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*colors.length(),colors.data(),GL_STATIC_DRAW);
@@ -160,7 +161,7 @@ void MainView::initializeGL() {
     glEnable(GL_DEPTH_TEST);
 
     // Enable backface culling
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     // Default is GL_LESS
     glDepthFunc(GL_LEQUAL);
@@ -174,7 +175,7 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/cube.obj", cubeBO);
+    loadModel(":/models/cube.obj", NULL);
 
     // For animation, you can start your timer here
 
@@ -194,7 +195,7 @@ void MainView::resizeGL(int newWidth, int newHeight) {
     Q_UNUSED(newWidth)
     Q_UNUSED(newHeight)
 }
-
+ //small value (0x(nil)). Is this intended to be used as an offset into a buffer object?
 /**
  * @brief MainView::paintGL
  *
@@ -210,7 +211,8 @@ void MainView::paintGL() {
     mainShaderProg->bind();
 
     // TODO: implement your drawing functions
-    glBindBuffer(GL_ARRAY_BUFFER,vao);
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES,0,numVertices); //36 moet vervagnen worden door een dynamisch statement ja zo is het wel goedjan willem hou op
 
     mainShaderProg->release();
 }
