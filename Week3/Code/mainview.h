@@ -69,6 +69,11 @@ private:
     Model *cubeModel;
     GLuint cubeBO;
 
+    //1.4
+    GLuint vao;
+    GLuint bo;
+    GLuint boCol;
+
     unsigned numTris;
 
     /* End of private members */

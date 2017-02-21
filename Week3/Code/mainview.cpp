@@ -1,5 +1,6 @@
 #include "mainview.h"
 #include "math.h"
+#include <iostream>
 
 #include <QDateTime>
 
@@ -32,6 +33,11 @@ MainView::~MainView() {
     // Free the main shader
     delete mainShaderProg;
 
+    //1.5
+    glDeleteBuffers(1,&bo);
+    glDeleteBuffers(1,&boCol);
+    glDeleteVertexArrays(1,&vao);
+
     debugLogger->stopLogging();
 
     qDebug() << "MainView destructor";
@@ -63,18 +69,55 @@ void MainView::createShaderPrograms() {
  * Creates necessary buffers for your application
  */
 void MainView::createBuffers() {
-    // TODO: implement buffer creation
+    // 1.6
+    glGenVertexArrays(1,&vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1,&bo);
+    glGenBuffers(1,&boCol);
+
+    glBindBuffer(GL_ARRAY_BUFFER,bo);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,0);
+
+    glBindBuffer(GL_ARRAY_BUFFER,boCol);
+    glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,0);
+
+    glBindVertexArray(0);
 
 }
+
 
 void MainView::loadModel(QString filename, GLuint bufferObject) {
 
     cubeModel = new Model(filename);
     numTris = cubeModel->getNumTriangles();
 
-    Q_UNUSED(bufferObject);
+    Q_UNUSED(NULL);
 
     // TODO: implement loading of model into Buffer Objects
+    QVector<QVector3D> vertices = cubeModel->getVertices();
+    int numVertices = vertices.length();
+    srand (time(NULL));
+
+    // Generate random colors
+    QVector<QVector3D> colors;
+    for (int i = 0; i < numVertices/3; i++)
+    {
+        //srand (time(NULL));
+        QVector3D col = QVector3D(rand()/(float)RAND_MAX,rand()/(float)RAND_MAX,rand()/(float)RAND_MAX);
+        colors.push_back(col);
+    }
+    glBindBuffer(GL_ARRAY_BUFFER,bo);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*vertices.length(),vertices.data(),GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER,boCol);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*colors.length(),colors.data(),GL_STATIC_DRAW);
+
+
 }
 
 void MainView::updateBuffers() {
@@ -167,6 +210,7 @@ void MainView::paintGL() {
     mainShaderProg->bind();
 
     // TODO: implement your drawing functions
+    glBindBuffer(GL_ARRAY_BUFFER,vao);
 
     mainShaderProg->release();
 }
