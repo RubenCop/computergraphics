@@ -26,8 +26,6 @@ void main()
     // Currently without any transformation
 
 
-    gl_Position = vec4(vertCoordinates_in, 1.0);
-    gl_Position *= model;
-    gl_Position *= view;
-    gl_Position *= projection;
+    gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
+
 }

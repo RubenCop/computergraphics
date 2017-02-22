@@ -121,10 +121,10 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
         colors.push_back(col);
     }
     glBindBuffer(GL_ARRAY_BUFFER,bo);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*numVertices,vertices.data(),GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*vertices.length() * 3,vertices.data(),GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat)*colors.length(),colors.data(),GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length() * 3,colors.data(),GL_STATIC_DRAW);
 
 
 }
@@ -171,7 +171,7 @@ void MainView::initializeGL() {
     glEnable(GL_DEPTH_TEST);
 
     // Enable backface culling
-    //glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     // Default is GL_LESS
     glDepthFunc(GL_LEQUAL);
@@ -217,9 +217,15 @@ void MainView::paintGL() {
     view.setToIdentity();
     projection.setToIdentity();
 
+    QVector3D eye = QVector3D(5,5,5);
+    QVector3D centre = QVector3D(0,0,0);
+    QVector3D up = QVector3D(0,1,0);
+
+    view.lookAt(eye,centre,up);
+    //view.translate(,0,0);
     projection.perspective(60.0, 1.0, 0.1, 100.0);
 
-    model.translate(0,0,4);
+    //model.translate(0,0,4);
 
     // Clear the screen before rendering
     glClearColor(0.0f,0.0f,0.0f, 0.0f);
@@ -235,7 +241,8 @@ void MainView::paintGL() {
 
     // TODO: implement your drawing functions
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES,0,numVertices);
+    glDrawArrays(GL_TRIANGLES,0,numVertices/3);
+    glBindVertexArray(0);
 
     mainShaderProg->release();
 }
