@@ -81,7 +81,7 @@ private:
     QMatrix4x4 view;
     QMatrix4x4 projection;
 
-    GLint a, b, c;
+    GLint ULmodel, ULview, ULprojection;
 
 
     /* End of private members */

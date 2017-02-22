@@ -57,20 +57,9 @@ void MainView::createShaderPrograms() {
     mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
     mainShaderProg->link();
 
-    model.setToIdentity();
-    view.setToIdentity();
-    projection.setToIdentity();
-
-    projection.perspective(60.0, 1.0, 0.1, 100.0);
-
-    model.translate(3,2,-6);
-    view.translate(50,21,-213);
-
-    QMatrix4x4 pvm = projection * view * model;
-
-    for (int i = 0; i < vertices.length(); i++){
-        vertices[i] = pvm * vertices[i];
-    }
+    ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
+    ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
+    ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
 
     /* Add your other shaders below */
 
@@ -150,13 +139,8 @@ void MainView::updateBuffers() {
 
 void MainView::updateUniforms() {
     // TODO: update the uniforms in the shaders using the glUniform<datatype> functions
-    a = glGetUniformLocation(mainShaderProg->programId(), "model");
-    b = glGetUniformLocation(mainShaderProg->programId(), "view");
-    c = glGetUniformLocation(mainShaderProg->programId(), "projection");
 
-    glUniformMatrix4fv(a, 1, GL_FALSE, model.data());
-    glUniformMatrix4fv(b, 1, GL_FALSE, view.data());
-    glUniformMatrix4fv(c, 1, GL_FALSE, projection.data());
+
 
 }
 
@@ -237,16 +221,15 @@ void MainView::paintGL() {
 
     model.translate(0,0,4);
 
-    QMatrix4x4 sdaf = projection * view * model;
-
-    for (int i = 0; i < vertices.length(); i++){
-        vertices[i] = sdaf * vertices[i];
-    }
     // Clear the screen before rendering
     glClearColor(0.0f,0.0f,0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mainShaderProg->bind();
+
+    glUniformMatrix4fv(ULmodel, 1, GL_FALSE, model.data());
+    glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
+    glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
 
     updateUniforms();
 
