@@ -114,10 +114,12 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 
     // Generate random colors
     QVector<QVector3D> colors;
-    for (int i = 0; i < numVertices/3; i++)
+    for (int i = 0; i < numVertices; i++)
     {
         //srand (time(NULL));
         QVector3D col = QVector3D(rand()/(float)RAND_MAX,rand()/(float)RAND_MAX,rand()/(float)RAND_MAX);
+        colors.push_back(col);
+        colors.push_back(col);
         colors.push_back(col);
     }
     glBindBuffer(GL_ARRAY_BUFFER,bo);
@@ -140,7 +142,9 @@ void MainView::updateBuffers() {
 void MainView::updateUniforms() {
     // TODO: update the uniforms in the shaders using the glUniform<datatype> functions
 
-
+    glUniformMatrix4fv(ULmodel, 1, GL_FALSE, model.data());
+    glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
+    glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
 
 }
 
@@ -233,15 +237,11 @@ void MainView::paintGL() {
 
     mainShaderProg->bind();
 
-    glUniformMatrix4fv(ULmodel, 1, GL_FALSE, model.data());
-    glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
-    glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
-
     updateUniforms();
 
     // TODO: implement your drawing functions
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES,0,numVertices/3);
+    glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
 
     mainShaderProg->release();
