@@ -27,6 +27,7 @@ void MainView::updateScale(float scale)
 {
     qDebug() << "updateScale(" << scale << ")";
     // TODO: update model scale
+    newScale = scale;
 
     update();
 }

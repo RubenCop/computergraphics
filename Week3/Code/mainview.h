@@ -24,6 +24,8 @@ public:
     void updateShader(QString name);
     void updateScale(float scale);
 
+    float newScale;
+
     /* Add your public members below */
 
     /* End of public members */

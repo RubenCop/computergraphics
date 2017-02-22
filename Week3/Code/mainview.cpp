@@ -63,9 +63,6 @@ void MainView::createShaderPrograms() {
 
     /* Add your other shaders below */
 
-    qDebug() << model << endl;
-    qDebug() << view << endl;
-    qDebug() << projection << endl;
     /* End of custom shaders */
 
     // Store the locations (pointers in gpu memory) of uniforms in Glint's
@@ -118,8 +115,6 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     {
         //srand (time(NULL));
         QVector3D col = QVector3D(rand()/(float)RAND_MAX,rand()/(float)RAND_MAX,rand()/(float)RAND_MAX);
-        colors.push_back(col);
-        colors.push_back(col);
         colors.push_back(col);
     }
     glBindBuffer(GL_ARRAY_BUFFER,bo);
@@ -191,6 +186,8 @@ void MainView::initializeGL() {
 
     loadModel(":/models/cube.obj", NULL);
 
+
+
     // For animation, you can start your timer here
 
 }
@@ -209,6 +206,7 @@ void MainView::resizeGL(int newWidth, int newHeight) {
     Q_UNUSED(newWidth)
     Q_UNUSED(newHeight)
 }
+
 /**
  * @brief MainView::paintGL
  *
@@ -221,7 +219,7 @@ void MainView::paintGL() {
     view.setToIdentity();
     projection.setToIdentity();
 
-    QVector3D eye = QVector3D(5,5,5);
+    QVector3D eye = QVector3D(4,5,6);
     QVector3D centre = QVector3D(0,0,0);
     QVector3D up = QVector3D(0,1,0);
 
@@ -238,6 +236,7 @@ void MainView::paintGL() {
     mainShaderProg->bind();
 
     updateUniforms();
+
 
     // TODO: implement your drawing functions
     glBindVertexArray(vao);
