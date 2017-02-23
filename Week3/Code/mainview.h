@@ -26,7 +26,7 @@ public:
 
     float newScale = 1.0;
     float newX, newY, newZ;
-    float camPosX = 0, camPosY = 0, camPosZ = 0;
+    float camPosX = 20, camPosY = 20, camPosZ = 0;
     QVector3D eye = QVector3D(camPosX,camPosY,camPosZ);
 
     int xStart, yStart;
