@@ -6,10 +6,20 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     // Use Model(":/models/sphere.obj") for the model
 
     // you must remove these Q_UNUSED when you implement this function
-    Q_UNUSED(pos)
+    //Q_UNUSED(pos)
     Q_UNUSED(color)
     Q_UNUSED(material)
     Q_UNUSED(lightpos)
+
+    model.translate(pos);
+
+    //qDebug() << model << endl;
+
+    glDrawArrays(GL_TRIANGLES,0,numVertices);
+    //Needs to call drawVertexArrays
+    //we have vertices from mainview
+    //
+    //qDebug() << "hello" << endl;
 }
 
 /**

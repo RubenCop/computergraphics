@@ -16,8 +16,12 @@
 out vec4 fColor;
 flat in vec3 color;
 
+uniform vec3 objCol;
+uniform vec4 intensities;
+uniform vec3 lightPos;
+
 void main()
 {
     // Plain White
-    fColor = vec4(color, 1.0);
+    fColor = vec4(color, 1.0); //of MaterialColor????
 }

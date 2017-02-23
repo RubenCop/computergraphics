@@ -13,6 +13,8 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform mat3 normalMatrix;
+
 // uniform mat4 modelTransform; for example
 
 // Specify the outputs of the vertex shader

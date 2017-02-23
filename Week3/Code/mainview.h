@@ -31,6 +31,8 @@ public:
 
     int screenWidth, screenHeight;
 
+    int numVertices = 0;
+
     /* Add your public members below */
 
     /* End of public members */
@@ -80,6 +82,7 @@ private:
     GLuint vao;
     GLuint bo;
     GLuint boCol;
+    GLuint normalInt;
 
     unsigned numTris;
 
@@ -87,6 +90,7 @@ private:
     QMatrix4x4 model;
     QMatrix4x4 view;
     QMatrix4x4 projection;
+    QMatrix3x3 normalMatrix;
 
     GLint ULmodel, ULview, ULprojection;
 

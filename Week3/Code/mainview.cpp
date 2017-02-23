@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <QDateTime>
-int numVertices = 0;
+
 QVector<QVector3D> vertices;
 
 /**
@@ -76,7 +76,7 @@ void MainView::createShaderPrograms() {
  */
 void MainView::createBuffers() {
     // 1.6
-    glGenVertexArrays(1,&vao);
+    glGenVertexArrays(2,&vao);
     glBindVertexArray(vao);
 
     glGenBuffers(1,&bo);
@@ -105,7 +105,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     Q_UNUSED(bufferObject);
 
     // TODO: implement loading of model into Buffer Objects
-    vertices = cubeModel->getVertices();
+    vertices = cubeModel->getNormals();
     numVertices = vertices.length();
     srand (time(NULL));
 
@@ -184,7 +184,7 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/cube.obj", NULL);
+    loadModel(":/models/sphere.obj", NULL);
 
 
 
@@ -235,7 +235,7 @@ void MainView::paintGL() {
 
     view.lookAt(eye,centre,up);
     //view.translate(,0,0);
-    projection.perspective(60.0, 1.0, 0.1, 100.0);
+    projection.perspective(30.0, 1.0, 0.1, 800.0);
 
     //model.translate(0,0,4);
 
@@ -250,7 +250,8 @@ void MainView::paintGL() {
 
     // TODO: implement your drawing functions
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES,0,numVertices);
+    renderRaytracerScene();
+    //glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
 
     mainShaderProg->release();
