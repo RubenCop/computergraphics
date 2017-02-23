@@ -24,8 +24,12 @@ public:
     void updateShader(QString name);
     void updateScale(float scale);
 
-    float newScale;
+    float newScale = 1.0;
     float newX, newY, newZ;
+
+    int xStart, yStart;
+
+    int screenWidth, screenHeight;
 
     /* Add your public members below */
 

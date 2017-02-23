@@ -80,6 +80,16 @@ void MainView::mouseMoveEvent(QMouseEvent *ev)
 {
     qDebug() << "x" << ev->x() << "y" << ev->y();
 
+    float currentX = ev->x();
+    float currentY = ev->y();
+
+    newX -= currentX - xStart;
+    newY -= currentY - yStart;
+
+    xStart = currentX;
+    yStart = currentY;
+
+
     update();
 }
 
@@ -87,6 +97,8 @@ void MainView::mouseMoveEvent(QMouseEvent *ev)
 void MainView::mousePressEvent(QMouseEvent *ev)
 {
     qDebug() << "Mouse button pressed:" << ev->button();
+    xStart = ev->x();
+    yStart = ev->y();
 
     update();
     // Do not remove the line below, clicking must focus on this widget!

@@ -203,8 +203,10 @@ void MainView::initializeGL() {
 void MainView::resizeGL(int newWidth, int newHeight) {
 
     // TODO: Update projection to fit the new aspect ratio
-    Q_UNUSED(newWidth)
-    Q_UNUSED(newHeight)
+    screenWidth = newWidth;
+    screenHeight = newHeight;
+
+    qDebug() << newWidth << " " << newHeight << endl;
 }
 
 /**
@@ -223,7 +225,7 @@ void MainView::paintGL() {
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
 
-    qDebug() << newWidth << endl;
+    //qDebug() << newWidth << endl;
 
     QVector3D eye = QVector3D(4,4,0);
     QVector3D centre = QVector3D(0,0,0);
