@@ -118,6 +118,8 @@ void MainView::wheelEvent(QWheelEvent *ev)
 {
     // Implement something
     qDebug() << "Mouse wheel:" << ev->delta();
+    newScale += (float)ev->delta()/1000;
+    qDebug() << "wheel scale " << newScale << endl;
 
     update();
 }
