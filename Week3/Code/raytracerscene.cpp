@@ -11,9 +11,12 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     Q_UNUSED(material)
     Q_UNUSED(lightpos)
 
-    model.translate(pos);
+    model.translate(pos/100);
+    updateUniforms();
 
-    //qDebug() << model << endl;
+    // TODO: implement your drawing functions
+    glBindVertexArray(vao);
+    qDebug() << model << endl;
 
     glDrawArrays(GL_TRIANGLES,0,numVertices);
     //Needs to call drawVertexArrays

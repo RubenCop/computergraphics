@@ -225,6 +225,8 @@ void MainView::paintGL() {
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
 
+    //model.translate(1,0,0);
+
     //qDebug() << newWidth << endl;
 
     QVector3D eye = QVector3D(4,4,0);
@@ -245,11 +247,7 @@ void MainView::paintGL() {
 
     mainShaderProg->bind();
 
-    updateUniforms();
 
-
-    // TODO: implement your drawing functions
-    glBindVertexArray(vao);
     renderRaytracerScene();
     //glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
