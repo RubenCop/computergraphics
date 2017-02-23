@@ -110,7 +110,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     srand (time(NULL));
 
     // Generate random colors
-    QVector<QVector3D> colors;
+
     for (int i = 0; i < numVertices; i++)
     {
         //srand (time(NULL));
@@ -221,24 +221,27 @@ void MainView::paintGL() {
     view.setToIdentity();
     projection.setToIdentity();
 
+    /*
     model.rotate(newX,1,0,0);
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
-
+    */
     //model.translate(1,0,0);
 
     //qDebug() << newWidth << endl;
 
-    QVector3D eye = QVector3D(4,4,0);
-    QVector3D centre = QVector3D(0,0,0);
+    //eye declared in mainview.h
+    QVector3D centre = QVector3D(11,13,20);
     QVector3D up = QVector3D(0,1,0);
 
-    model.scale(newScale,newScale,newScale);
-
+    //model.scale(newScale,newScale,newScale);
+    eye.setX(camPosX);
+    eye.setY(camPosY);
+    eye.setZ(camPosZ);
     view.lookAt(eye,centre,up);
     //view.translate(,0,0);
     projection.perspective(30.0, 1.0, 0.1, 800.0);
-
+    qDebug() << "eye " << eye << endl;
     //model.translate(0,0,4);
 
     // Clear the screen before rendering

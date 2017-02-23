@@ -5,6 +5,7 @@
 void MainView::updateRotation(int x, int y, int z)
 {
     qDebug() << "updateRotation(" << x << "," << y << "," << z << ");";
+    // divide by 100 to decrease sensitivity
     newX = x;
     newY = y;
     newZ = z;
@@ -41,7 +42,24 @@ void MainView::updateScale(float scale)
 void MainView::keyPressEvent(QKeyEvent *ev)
 {
     switch(ev->key()) {
-    case 'A': qDebug() << "A pressed"; break;
+    case 'Q': qDebug() << "A pressed";
+        camPosX = camPosX - 1;
+        break;
+    case 'W': qDebug() << "A pressed";
+        camPosX = camPosX + 1;
+        break;
+    case 'A': qDebug() << "A pressed";
+        camPosY = camPosY - 1;
+        break;
+    case 'S': qDebug() << "A pressed";
+        camPosY = camPosY + 1;
+        break;
+    case 'Z': qDebug() << "A pressed";
+        camPosZ = camPosZ - 1;
+        break;
+    case 'X': qDebug() << "A pressed";
+        camPosZ = camPosZ + 1;
+        break;
     default:
         // ev->key() is an integer. For alpha numeric characters keys it equivalent with the char value ('A' == 65, '1' == 49)
         // Alternatively, you could use Qt Key enums, see http://doc.qt.io/qt-5/qt.html#Key-enum
@@ -82,9 +100,9 @@ void MainView::mouseMoveEvent(QMouseEvent *ev)
 
     float currentX = ev->x();
     float currentY = ev->y();
-
-    newX -= currentX - xStart;
-    newY -= currentY - yStart;
+    // divide by 100 to decrease sensitivity
+    newX -= (currentX - xStart);
+    newY -= (currentY - yStart);
 
     xStart = currentX;
     yStart = currentY;
@@ -118,7 +136,7 @@ void MainView::wheelEvent(QWheelEvent *ev)
 {
     // Implement something
     qDebug() << "Mouse wheel:" << ev->delta();
-    newScale += (float)ev->delta()/1000;
+    newScale += (float)ev->delta()/10000;
     qDebug() << "wheel scale " << newScale << endl;
 
     update();

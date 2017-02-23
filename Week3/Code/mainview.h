@@ -26,12 +26,15 @@ public:
 
     float newScale = 1.0;
     float newX, newY, newZ;
+    float camPosX = 0, camPosY = 0, camPosZ = 0;
+    QVector3D eye = QVector3D(camPosX,camPosY,camPosZ);
 
     int xStart, yStart;
 
     int screenWidth, screenHeight;
 
     int numVertices = 0;
+    QVector<QVector3D> colors;
 
     /* Add your public members below */
 
