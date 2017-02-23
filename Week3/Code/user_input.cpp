@@ -5,6 +5,10 @@
 void MainView::updateRotation(int x, int y, int z)
 {
     qDebug() << "updateRotation(" << x << "," << y << "," << z << ");";
+    newX = x;
+    newY = y;
+    newZ = z;
+    update();
 }
 
 void MainView::updateModel(QString name)

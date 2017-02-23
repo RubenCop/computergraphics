@@ -219,9 +219,17 @@ void MainView::paintGL() {
     view.setToIdentity();
     projection.setToIdentity();
 
-    QVector3D eye = QVector3D(4,5,6);
+    model.rotate(newX,1,0,0);
+    model.rotate(newY,0,1,0);
+    model.rotate(newZ,0,0,1);
+
+    qDebug() << newWidth << endl;
+
+    QVector3D eye = QVector3D(4,4,0);
     QVector3D centre = QVector3D(0,0,0);
     QVector3D up = QVector3D(0,1,0);
+
+    model.scale(newScale,newScale,newScale);
 
     view.lookAt(eye,centre,up);
     //view.translate(,0,0);

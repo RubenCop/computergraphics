@@ -25,6 +25,7 @@ public:
     void updateScale(float scale);
 
     float newScale;
+    float newX, newY, newZ;
 
     /* Add your public members below */
 
