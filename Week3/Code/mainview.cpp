@@ -110,18 +110,17 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     srand (time(NULL));
 
     // Generate random colors
-
-    for (int i = 0; i < numVertices; i++)
+   /* for (int i = 0; i < numVertices; i++)
     {
         //srand (time(NULL));
         QVector3D col = QVector3D(rand()/(float)RAND_MAX,rand()/(float)RAND_MAX,rand()/(float)RAND_MAX);
         colors.push_back(col);
-    }
+    }*/
     glBindBuffer(GL_ARRAY_BUFFER,bo);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*vertices.length() * 3,vertices.data(),GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length() * 3,colors.data(),GL_STATIC_DRAW);
+    updateBuffers();
 
 
 }
@@ -130,7 +129,7 @@ void MainView::updateBuffers() {
     // Change the data inside buffers (if you want)
     // make sure to change GL_STATIC_DRAW to GL_DYNAMIC_DRAW
     // in the call to glBufferData for better performance
-
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length()* 3,colors.data(),GL_DYNAMIC_DRAW);
 }
 
 
