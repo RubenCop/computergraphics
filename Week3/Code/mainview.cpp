@@ -190,7 +190,7 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/eyeball.obj", NULL);
+    loadModel(":/models/sphere.obj", NULL);
 
 
 
