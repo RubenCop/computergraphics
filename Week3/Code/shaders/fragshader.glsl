@@ -15,6 +15,7 @@
 // Usually a vec4 describing a color (Red, Green, Blue, Alpha/Transparency)
 out vec4 fColor;
 flat in vec3 color;
+in vec4 intensities;
 
 uniform vec3 objCol;
 uniform vec4 intensities;
@@ -24,4 +25,5 @@ void main()
 {
     // Plain White
     fColor = vec4(color, 1.0); //of MaterialColor????
+    //qDebug() << intensities << endl;
 }

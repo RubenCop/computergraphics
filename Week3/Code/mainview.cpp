@@ -57,6 +57,8 @@ void MainView::createShaderPrograms() {
     mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
     mainShaderProg->link();
 
+    ULintensities = glGetUniformLocation(mainShaderProg->programId(), "intensities");
+
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
@@ -140,6 +142,11 @@ void MainView::updateUniforms() {
     glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
     glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
 
+    //glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
+    //glUniform3f();
+    //glUniform4fv(ULintensities, 1, intensities);
+    glUniform4f(ULintensities,intensities[0],intensities[1],intensities[2],intensities[3]);
+
 }
 
 /**
@@ -183,7 +190,7 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/sphere.obj", NULL);
+    loadModel(":/models/eyeball.obj", NULL);
 
 
 
@@ -239,7 +246,7 @@ void MainView::paintGL() {
     eye.setZ(camPosZ);
     view.lookAt(eye,centre,up);
     //view.translate(,0,0);
-    projection.perspective(30.0, 1.0, 0.1, 800.0);
+    projection.perspective(30.0, 1.0, 50.0, 1800.0);
     qDebug() << "eye " << eye << endl;
     //model.translate(0,0,4);
 

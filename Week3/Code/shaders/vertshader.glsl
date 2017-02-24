@@ -12,6 +12,7 @@ layout (location = 2) in vec3 vertNormal_in;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform vec4 intensities;
 
 uniform mat3 normalMatrix;
 
@@ -22,6 +23,7 @@ uniform mat3 normalMatrix;
 
 // out vec3 vertPos; for example
 flat out vec3 color;
+out vec4 intensities;
 
 void main()
 {

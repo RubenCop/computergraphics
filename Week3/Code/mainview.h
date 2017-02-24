@@ -106,7 +106,11 @@ private:
     QMatrix4x4 projection;
     QMatrix3x3 normalMatrix;
 
+    QVector4D intensities;
+
     GLint ULmodel, ULview, ULprojection;
+
+    GLint ULintensities;
 
 
     /* End of private members */
