@@ -56,24 +56,25 @@ void MainView::updateScale(float scale)
 // Triggered by pressing a key
 void MainView::keyPressEvent(QKeyEvent *ev)
 {
+    int moveStep = 10; //Initialize the unit (speed) with which the camera should move around
     switch(ev->key()) {
     case 'Q': qDebug() << "A pressed";
-        camPosX = camPosX - 1;
+        camPosX = camPosX - moveStep;
         break;
     case 'W': qDebug() << "A pressed";
-        camPosX = camPosX + 1;
+        camPosX = camPosX + moveStep;
         break;
     case 'A': qDebug() << "A pressed";
-        camPosY = camPosY - 1;
+        camPosY = camPosY - moveStep;
         break;
     case 'S': qDebug() << "A pressed";
-        camPosY = camPosY + 1;
+        camPosY = camPosY + moveStep;
         break;
     case 'Z': qDebug() << "A pressed";
-        camPosZ = camPosZ - 1;
+        camPosZ = camPosZ - moveStep;
         break;
     case 'X': qDebug() << "A pressed";
-        camPosZ = camPosZ + 1;
+        camPosZ = camPosZ + moveStep;
         break;
     default:
         // ev->key() is an integer. For alpha numeric characters keys it equivalent with the char value ('A' == 65, '1' == 49)
