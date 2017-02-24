@@ -16,7 +16,7 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     model.rotate(newZ,0,0,1);
     model.scale(newScale,newScale,newScale);
     //qDebug() << "start model " << model << endl;
-    model.translate(pos/10);
+    model.translate(pos);
     updateUniforms();
     //qDebug() << "translated model " << model << endl;
 

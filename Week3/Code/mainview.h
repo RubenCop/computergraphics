@@ -19,6 +19,8 @@ public:
     MainView(QWidget *parent = 0);
     ~MainView();
 
+    void resetCameraView();
+    void resetScale();
     void updateRotation(int x, int y, int z);
     void updateModel(QString name);
     void updateShader(QString name);
@@ -26,8 +28,17 @@ public:
 
     float newScale = 1.0;
     float newX, newY, newZ;
-    float camPosX = 20, camPosY = 20, camPosZ = 0;
-    QVector3D eye = QVector3D(camPosX,camPosY,camPosZ);
+//##The eye/camera position and the center (focuspoint of the camera) can be initialized here. They are used in mainview.cpp
+    float camPosX = 200, camPosY = 200, camPosZ = 1000; //Starting camera position
+    float centerX = 200, centerY = 200, centerZ = 200; //Center position
+
+    float initCamPosX = camPosX; //set initial camera positions (used for reset button)
+    float initCamPosY = camPosY;
+    float initCamPosZ = camPosZ;
+    float initCenterPosX = centerX;
+    float initCenterPosY = centerY;
+    float initCenterPosZ = centerZ;
+    QVector3D eye = QVector3D(camPosX,camPosY,camPosZ); //Initialize camera position
 
     int xStart, yStart;
 

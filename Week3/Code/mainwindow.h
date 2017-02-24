@@ -28,6 +28,12 @@ private slots:
 
     void on_scaleSlider_valueChanged(int value);
 
+    void on_resetRotationButton_clicked();
+
+    void on_resetCameraButton_clicked();
+
+    void on_resetScaleButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 

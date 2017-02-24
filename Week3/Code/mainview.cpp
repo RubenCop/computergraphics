@@ -76,7 +76,7 @@ void MainView::createShaderPrograms() {
  */
 void MainView::createBuffers() {
     // 1.6
-    glGenVertexArrays(2,&vao);
+    glGenVertexArrays(1,&vao);
     glBindVertexArray(vao);
 
     glGenBuffers(1,&bo);
@@ -105,7 +105,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     Q_UNUSED(bufferObject);
 
     // TODO: implement loading of model into Buffer Objects
-    vertices = cubeModel->getNormals();
+    vertices = cubeModel->getVertices();
     numVertices = vertices.length();
     srand (time(NULL));
 
@@ -231,7 +231,7 @@ void MainView::paintGL() {
     //qDebug() << newWidth << endl;
 
     //eye declared in mainview.h
-    QVector3D centre = QVector3D(11,13,20);
+    QVector3D centre = QVector3D(centerX,centerY,centerZ);
     QVector3D up = QVector3D(0,1,0);
 
     //model.scale(newScale,newScale,newScale);

@@ -12,6 +12,21 @@ void MainView::updateRotation(int x, int y, int z)
     update();
 }
 
+void MainView::resetCameraView()
+{
+    camPosX = initCamPosX;
+    camPosY = initCamPosY;
+    camPosZ = initCamPosZ;
+    update();
+}
+
+void MainView::resetScale()
+{
+    newScale = 1;
+    update();
+}
+
+
 void MainView::updateModel(QString name)
 {
     qDebug() << "updateModel(" << name << ")";
@@ -100,9 +115,9 @@ void MainView::mouseMoveEvent(QMouseEvent *ev)
 
     float currentX = ev->x();
     float currentY = ev->y();
-    // divide by 100 to decrease sensitivity
-    newX -= (currentX - xStart);
-    newY -= (currentY - yStart);
+    // divide by 10 to decrease sensitivity
+    newX += (currentY - yStart)/10;
+    newY += (currentX - xStart)/10;
 
     xStart = currentX;
     yStart = currentY;
