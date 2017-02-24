@@ -7,7 +7,7 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
 
     // you must remove these Q_UNUSED when you implement this function
     //Q_UNUSED(pos)
-    Q_UNUSED(color)
+    //Q_UNUSED(color)
     Q_UNUSED(material)
     Q_UNUSED(lightpos)
     model.setToIdentity();
@@ -19,8 +19,12 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     model.translate(pos);
     updateUniforms();
     //qDebug() << "translated model " << model << endl;
+    colors.clear();
+    for (int i=0; i<numVertices; i++){
+        colors.push_back(color);
+    }
+    updateBuffers();
 
-    // TODO: implement your drawing functions
     glBindVertexArray(vao);
     //qDebug() << model << endl;
 
