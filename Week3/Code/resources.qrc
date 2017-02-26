@@ -11,6 +11,5 @@
         <file>models/cat.obj</file>
         <file>models/sphere.obj</file>
         <file>models/spongebob.obj</file>
-        <file>eyeball.obj</file>
     </qresource>
 </RCC>

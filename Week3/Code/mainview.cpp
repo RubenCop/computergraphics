@@ -5,6 +5,7 @@
 #include <QDateTime>
 
 QVector<QVector3D> vertices;
+QVector<QVector3D> normals;
 
 /**
  * @brief MainView::MainView
@@ -108,6 +109,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 
     // TODO: implement loading of model into Buffer Objects
     vertices = cubeModel->getVertices();
+    normals = cubeModel->getNormals();
     numVertices = vertices.length();
     srand (time(NULL));
 
@@ -122,8 +124,8 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*vertices.length() * 3,vertices.data(),GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
-    updateBuffers();
-
+    //updateBuffers();
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*normals.length()* 3,normals.data(),GL_STATIC_DRAW);
 
 }
 
@@ -131,7 +133,7 @@ void MainView::updateBuffers() {
     // Change the data inside buffers (if you want)
     // make sure to change GL_STATIC_DRAW to GL_DYNAMIC_DRAW
     // in the call to glBufferData for better performance
-    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length()* 3,colors.data(),GL_DYNAMIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length()* 3,colors.data(),GL_DYNAMIC_DRAW);
 }
 
 

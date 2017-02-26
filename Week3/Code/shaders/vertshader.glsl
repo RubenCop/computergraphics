@@ -26,6 +26,7 @@ flat out vec3 color;
 out vec3 vertexCoordinates;
 out vec3 normal;
 //out vec4 intensities;
+out vec3 FragPos;
 
 void main()
 {
@@ -33,6 +34,7 @@ void main()
     // Currently without any transformation
     color = vertColor_in;
     vertexCoordinates = vertCoordinates_in;
-    normal = vertNormal_in;
+    FragPos = vec3(model * vec4(vertexCoordinates, 1.0));
+    normal = vertColor_in;
     gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
 }
