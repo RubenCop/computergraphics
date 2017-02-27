@@ -11,12 +11,13 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     Q_UNUSED(material)
     Q_UNUSED(lightpos)
     model.setToIdentity();
+    model.translate(centre);
     model.rotate(newX,1,0,0);
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
     model.scale(newScale,newScale,newScale);
     //qDebug() << "start model " << model << endl;
-    model.translate(pos);
+    model.translate(pos-centre);
 
     ULmatCol= glGetUniformLocation(mainShaderProg->programId(), "matColor");
     glUniform3fv(ULmatCol,1, &color[0]);

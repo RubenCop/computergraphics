@@ -40,7 +40,6 @@ void main()
     finalColor += pow(max(1.0, dot(R, vertexCoordinates)),intensities[3])*intensities[2];
     */
 
-
     vec3 norm = normalize(normal);
     vec3 lightDir = (lightPos - FragPos);
 
@@ -54,7 +53,7 @@ void main()
     vec3 specular = pow(max(dot(R,V),0.0),intensities[3])*lightColor*intensities[2];
     //fColor = vec4(color, 1); //Works! But not with phong shading
     */
-    R = (2*(dot(-norm,normalize(lightDir)))*-norm) - normalize(lightDir);
+    R = (2*(dot(norm,normalize(lightDir)))*norm) - normalize(lightDir);
     vec3 specular = pow(max(0.0,dot(R,normalize(-FragPos))),intensities[3]) * intensities[2] * lightColor;
 
     finalColor = (specular + ambient + diffuse) * matColor;
