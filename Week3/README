@@ -5,10 +5,11 @@ You will find 2 folders with code:
 	-the sphere model with phong shading
 
 We experienced some difficulties during this assignment. The biggest of them was getting the phong shading right. In the end we did not manage to get 
-the specular lighting right. We now have spheres for which the specurar spot is at the back of the sphere. But we didn't manage to get these spots in the
+the specular lighting right. We now have spheres for which the specular spot is at the back of the sphere. But we didn't manage to get these spots in the
 right place. 
 
 In the folder 'Screenshots' you will find some screenshots of our sphere model and our cube model.
+When running the code in Qt, it is possible to rotate the object (either cube or sphere) using the mouse. 
 
 
 EXTRA/BONUS
