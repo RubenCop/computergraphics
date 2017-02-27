@@ -58,8 +58,6 @@ void MainView::createShaderPrograms() {
     mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
     mainShaderProg->link();
 
-    ULintensities = glGetUniformLocation(mainShaderProg->programId(), "intensities");
-
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
@@ -147,7 +145,6 @@ void MainView::updateUniforms() {
     //glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
     //glUniform3f();
     //glUniform4fv(ULintensities, 1, intensities);
-    glUniform4f(ULintensities,intensities[0],intensities[1],intensities[2],intensities[3]);
 }
 
 /**
