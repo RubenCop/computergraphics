@@ -14,7 +14,7 @@ uniform mat4 view;
 uniform mat4 projection;
 //uniform vec4 intensities;
 
-uniform mat3 normalMatrix;
+uniform mat4 normalMatrix;
 
 // uniform mat4 modelTransform; for example
 

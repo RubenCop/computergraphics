@@ -8,6 +8,10 @@ We experienced some difficulties during this assignment. The biggest of them was
 the specular lighting right. We now have spheres for which the specurar spot is at the back of the sphere. But we didn't manage to get these spots in the
 right place. 
 
+In the folder 'Screenshots' you will find some screenshots of our sphere model and our cube model.
+
+normalMatrix = transpose(inverse(view));
+
 
 EXTRA/BONUS
 We have written 2 extra's (both only possible in the code for the spheres):

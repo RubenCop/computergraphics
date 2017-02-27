@@ -131,6 +131,7 @@ void MainView::updateBuffers() {
     // Change the data inside buffers (if you want)
     // make sure to change GL_STATIC_DRAW to GL_DYNAMIC_DRAW
     // in the call to glBufferData for better performance
+    //glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length()* 3,colors.data(),GL_DYNAMIC_DRAW);
 }
 
 

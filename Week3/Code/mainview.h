@@ -109,8 +109,7 @@ private:
     QVector3D matColor, lightPos;
     QVector4D intensities;
 
-    GLint ULmodel, ULview, ULprojection;
-
+    GLint ULmodel, ULview, ULprojection, ULnormal;
     GLint ULintensities, ULmatCol, ULlightPos;
 
 
