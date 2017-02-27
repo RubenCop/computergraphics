@@ -10,8 +10,6 @@ right place.
 
 In the folder 'Screenshots' you will find some screenshots of our sphere model and our cube model.
 
-normalMatrix = transpose(inverse(view));
-
 
 EXTRA/BONUS
 We have written 2 extra's (both only possible in the code for the spheres):
