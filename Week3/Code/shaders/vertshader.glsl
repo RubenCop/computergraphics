@@ -25,6 +25,7 @@ uniform mat3 normalMatrix;
 flat out vec3 color;
 out vec3 vertexCoordinates;
 out vec3 normal;
+out vec3 P;
 //out vec4 intensities;
 out vec3 FragPos;
 
@@ -34,7 +35,8 @@ void main()
     // Currently without any transformation
     color = vertColor_in;
     vertexCoordinates = vertCoordinates_in;
-    FragPos = vec3(model * vec4(vertexCoordinates, 1.0));
+    FragPos = vec3(view *model * vec4(vertexCoordinates, 1.0));
+    P = FragPos;
     normal = vertColor_in;
     gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
 }

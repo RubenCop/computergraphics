@@ -39,7 +39,7 @@ public:
     float initCenterPosY = centerY;
     float initCenterPosZ = centerZ;
     QVector3D eye = QVector3D(camPosX,camPosY,camPosZ); //Initialize camera position
-
+    QVector3D centre = QVector3D(centerX,centerY,centerZ);
     int xStart, yStart;
 
     int screenWidth, screenHeight;
@@ -106,11 +106,12 @@ private:
     QMatrix4x4 projection;
     QMatrix3x3 normalMatrix;
 
+    QVector3D matColor;
     QVector4D intensities;
 
     GLint ULmodel, ULview, ULprojection;
 
-    GLint ULintensities;
+    GLint ULintensities, ULmatCol;
 
 
     /* End of private members */

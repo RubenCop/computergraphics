@@ -18,6 +18,9 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     //qDebug() << "start model " << model << endl;
     model.translate(pos);
 
+    ULmatCol= glGetUniformLocation(mainShaderProg->programId(), "matColor");
+    glUniform3fv(ULmatCol,1, &color[0]);
+
     intensities = material;
 
     updateUniforms();

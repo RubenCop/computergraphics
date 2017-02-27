@@ -148,7 +148,6 @@ void MainView::updateUniforms() {
     //glUniform3f();
     //glUniform4fv(ULintensities, 1, intensities);
     glUniform4f(ULintensities,intensities[0],intensities[1],intensities[2],intensities[3]);
-
 }
 
 /**
@@ -239,7 +238,7 @@ void MainView::paintGL() {
     //qDebug() << newWidth << endl;
 
     //eye declared in mainview.h
-    QVector3D centre = QVector3D(centerX,centerY,centerZ);
+
     QVector3D up = QVector3D(0,1,0);
 
     //model.scale(newScale,newScale,newScale);

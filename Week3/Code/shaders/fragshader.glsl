@@ -18,14 +18,15 @@ flat in vec3 color;
 in vec3 vertexCoordinates;
 in vec3 normal;
 in vec3 FragPos;
+in vec3 P;
 
 uniform vec3 objCol;
 uniform vec4 intensities;
+uniform vec3 matColor;
 //uniform vec3 lightPos;
 
 void main()
 {
-    vec3 tempCol = vec3(1,0,0);
     vec3 lightPos = vec3(-200,600,1500);
     vec3 lightColor = vec3(1,1,1);
     vec3 cameraPosition = vec3(0, 0, 0);
@@ -39,16 +40,23 @@ void main()
     finalColor += pow(max(1.0, dot(R, vertexCoordinates)),intensities[3])*intensities[2];
     */
 
-    vec3 ambient = intensities[0] * lightColor;
 
     vec3 norm = normalize(normal);
     vec3 lightDir = (lightPos - FragPos);
 
+    vec3 ambient = intensities[0] * lightColor;
+
     float diff = max(dot(norm, normalize(lightDir)), 0.0);
     vec3 diffuse = diff * lightColor;
-
+    /*
+    vec3 V = normalize(-FragPos);
+    R = 2*dot(normalize(lightPos-FragPos), norm)*norm-lightPos;
+    vec3 specular = pow(max(dot(R,V),0.0),intensities[3])*lightColor*intensities[2];
     //fColor = vec4(color, 1); //Works! But not with phong shading
+    */
+    R = (2*(dot(-norm,normalize(lightDir)))*-norm) - normalize(lightDir);
+    vec3 specular = pow(max(0.0,dot(R,normalize(-FragPos))),intensities[3]) * intensities[2] * lightColor;
 
-    finalColor = (ambient + diffuse) * tempCol;
+    finalColor = (specular + ambient + diffuse) * matColor;
     fColor = vec4(finalColor, 1);
 }
