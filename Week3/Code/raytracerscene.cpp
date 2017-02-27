@@ -23,7 +23,6 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
 
     updateUniforms();
 
-    QVector3D intensities = QVector3D(1,1,1);
     //qDebug() << "translated model " << model << endl;
     colors.clear();
     for (int i=0; i<numVertices; i++){

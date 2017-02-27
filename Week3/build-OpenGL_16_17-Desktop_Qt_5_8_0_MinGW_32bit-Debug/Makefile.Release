@@ -117,7 +117,6 @@ compiler_rcc_clean:
 	-$(DEL_FILE) release\qrc_resources.cpp
 release/qrc_resources.cpp: ../Code/resources.qrc \
 		C:/Qt/5.8/mingw53_32/bin/rcc.exe \
-		../Code/eyeball.obj \
 		../Code/shaders/fragshader.glsl \
 		../Code/shaders/vertshader.glsl \
 		../Code/models/flat_surface.obj \
@@ -779,95 +778,7 @@ release/mainwindow.o: ../Code/mainwindow.cpp ../Code/mainwindow.h \
 		C:/Qt/5.8/mingw53_32/include/QtGui/qtouchdevice.h \
 		C:/Qt/5.8/mingw53_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/5.8/mingw53_32/include/QtGui/qicon.h \
-		ui_mainwindow.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/QVariant \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QAction \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qaction.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qactiongroup.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QApplication \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qapplication.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qcoreapplication.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qeventloop.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qdesktopwidget.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qguiapplication.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qinputmethod.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QButtonGroup \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qbuttongroup.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QComboBox \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qcombobox.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qabstractitemdelegate.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qstyleoption.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qabstractspinbox.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qvalidator.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qregularexpression.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qslider.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qabstractslider.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qstyle.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qtabbar.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qrubberband.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qframe.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qabstractitemmodel.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QFormLayout \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qformlayout.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QLayout \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qlayout.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qlayoutitem.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qboxlayout.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qgridlayout.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QGroupBox \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qgroupbox.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QHBoxLayout \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QHeaderView \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qheaderview.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qabstractitemview.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qabstractscrollarea.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qitemselectionmodel.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QLabel \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qlabel.h \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QSlider \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QSpacerItem \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QWidget \
-		../Code/mainview.h \
-		../Code/model.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/QString \
-		C:/Qt/5.8/mingw53_32/include/QtCore/QStringList \
-		C:/Qt/5.8/mingw53_32/include/QtCore/QVector \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QVector2D \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QVector3D \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qvector3d.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QKeyEvent \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QMouseEvent \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/QOpenGLWidget \
-		C:/Qt/5.8/mingw53_32/include/QtWidgets/qopenglwidget.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QSurfaceFormat \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qsurfaceformat.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopengl.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qt_windows.h \
-		C:/Qt/5.8/mingw53_32/include/QtANGLE/GLES3/gl3.h \
-		C:/Qt/5.8/mingw53_32/include/QtANGLE/GLES3/gl3platform.h \
-		C:/Qt/5.8/mingw53_32/include/QtANGLE/KHR/khrplatform.h \
-		C:/Qt/5.8/mingw53_32/include/QtANGLE/GLES2/gl2.h \
-		C:/Qt/5.8/mingw53_32/include/QtANGLE/GLES2/gl2platform.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopengles2ext.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopenglext.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QOpenGLFunctions_3_3_Core \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopenglfunctions_3_3_core.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QOpenGLVersionFunctions \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopenglversionfunctions.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopenglcontext.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/QObject \
-		C:/Qt/5.8/mingw53_32/include/QtCore/QScopedPointer \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QOpenGLDebugLogger \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopengldebug.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/QOpenGLShaderProgram \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qopenglshaderprogram.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qvector4d.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qmatrix4x4.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qquaternion.h \
-		C:/Qt/5.8/mingw53_32/include/QtGui/qgenericmatrix.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/QTimer \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qtimer.h \
-		C:/Qt/5.8/mingw53_32/include/QtCore/qbasictimer.h
+		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o ..\Code\mainwindow.cpp
 
 release/mainview.o: ../Code/mainview.cpp ../Code/mainview.h \

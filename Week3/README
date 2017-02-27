@@ -1,8 +1,30 @@
 This is a README file
 
-When submitting your assignment, describe (briefly) the changes you made and what difficulties you encountered in this file.
+You will find 2 folders with code:
+	-the cube model
+	-the sphere model with phong shading
 
-Also describe what controls (key short-cuts, mouse clicks, mouse movement etc) and possible bonus assignments you implemented, so we can check them more easily.
+We experienced some difficulties during this assignment. The biggest of them was getting the phong shading right. In the end we did not manage to get 
+the specular lighting right. We now have spheres for which the specurar spot is at the back of the sphere. But we didn't manage to get these spots in the
+right place. 
 
-If you have any suggestions/feedback for improving the practical assignments or support from teaching assistants, you may include it here OR post in anonymously on Nestor under Feedback.
+
+EXTRA/BONUS
+We have written 2 extra's (both only possible in the code for the spheres):
+	-It is possible to move the camera with the following keys:
+		- x-coordinates:
+			-'q' to go in negative direction
+			-'w' to go in positive direction 
+		- y-coordinates:
+			-'a' to go in negative direction
+			-'s' to go in positive direction 
+		- z-coordinates:
+			-'z' to go in negative direction
+			-'x' to go in positive direction 
+	
+	-Reset buttons for: 
+		-Rotation
+		-Scaling
+		-Camera position
+	These buttons may be handy if you have turned, scaled or rotated the model and you want to go back to the initial position. 
 
