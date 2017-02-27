@@ -244,7 +244,7 @@ void MainView::paintGL() {
     eye.setZ(camPosZ);
     view.lookAt(eye,centre,up);
     //view.translate(,0,0);
-    projection.perspective(30.0, 1.0, 50.0, 1800.0);
+    projection.perspective(30.0, 1.0, 50.0, 1000.0);
     qDebug() << "eye " << eye << endl;
     //model.translate(0,0,4);
 

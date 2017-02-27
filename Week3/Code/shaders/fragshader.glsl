@@ -16,8 +16,8 @@
 out vec4 fColor;
 flat in vec3 color;
 in vec3 vertexCoordinates;
-in vec3 normal;
-in vec3 FragPos;
+in vec3 norm;
+in vec4 FragPos;
 in vec3 P;
 
 uniform vec3 objCol;
@@ -27,21 +27,15 @@ uniform vec3 lightPos;
 
 void main()
 {
-    vec3 lightColor = vec3(1,1,1);
-    vec3 cameraPosition = vec3(0, 0, 0);
-    vec3 finalColor, R;
+    vec3 R;
+    vec3 a = vec3(intensities[0],intensities[0],intensities[0]);
+    vec3 i = vec3(1,1,1);
+    vec3 light_pos = vec3(-200,600,1500);
 
-    vec3 norm = normalize(normal);
-    vec3 lightDir = (lightPos - FragPos);
-
-    vec3 ambient = intensities[0] * lightColor;
-
-    float diff = max(dot(norm, normalize(lightDir)), 0.0);
-    vec3 diffuse = diff * lightColor;
-
-    R = (2*(dot(norm,normalize(lightDir)))*norm) - normalize(lightDir);
-    vec3 specular = pow(max(0.0,dot(normalize(-FragPos),R)),intensities[3]) * intensities[2] * lightColor;
-
-    finalColor = (specular + ambient + diffuse) * matColor;
-    fColor = vec4(finalColor, 1);
+    vec3 N = normalize(norm);
+    vec3 L = normalize(lightPos - P);
+    vec3 V = normalize(-P);
+    R = 2 * dot(L,N) * N - L;
+    vec3 col = 0.2*a + 1.0 * max(dot(L, N),0.) * i + 0.6 * pow( max(dot(R,V),0.) , 6.) * i;
+    fColor = vec4(matColor * col, 1.0);
 }

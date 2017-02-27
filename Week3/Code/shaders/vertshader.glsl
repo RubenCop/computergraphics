@@ -24,19 +24,25 @@ uniform mat4 normalMatrix;
 // out vec3 vertPos; for example
 flat out vec3 color;
 out vec3 vertexCoordinates;
-out vec3 normal;
+out vec3 norm;
 out vec3 P;
 //out vec4 intensities;
-out vec3 FragPos;
 
 void main()
 {
+    vec3 normalMat;
     // gl_Position is the output (a vec4) of the vertex shader
     // Currently without any transformation
-    color = vertColor_in;
-    vertexCoordinates = vertCoordinates_in;
-    FragPos = vec3(view *model * vec4(vertexCoordinates, 1.0));
-    P = FragPos;
-    normal = vertColor_in;
-    gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
+
+    vec4 mv_pos = (view * model) * vec4(vertCoordinates_in, 1);
+
+    gl_Position = projection * mv_pos;
+
+    normalMat = mat3(transpose(inverse(model))) * vertColor_in;
+
+    norm = vertCoordinates_in;
+
+
+    P = mv_pos.xyz / mv_pos.w;
+
 }
