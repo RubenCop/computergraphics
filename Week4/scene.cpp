@@ -19,6 +19,23 @@
 #include <algorithm>
 #include <cmath>
 
+bool Scene::traceShad(const Ray &ray)
+{
+	Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
+    Object *obj = NULL;
+    for (unsigned int i = 0; i < objects.size(); ++i) {
+        Hit hit(objects[i]->intersect(ray));
+        if (hit.t<min_hit.t) {
+            min_hit = hit;
+            obj = objects[i];
+        }
+    }
+    
+    if(obj) return true;
+	
+	else return false;
+}
+
 Color Scene::trace(const Ray &ray)
 {
     // Find hit object and distance
@@ -43,20 +60,35 @@ Color Scene::trace(const Ray &ray)
     Vector L;
     Vector R;
 
-    Color color;
+    Color color, colorAmb;
+	bool shadowLoop;
+	Ray shadowRay(hit,hit); //Initialise empty ray
 
     //Add ambient intensity
     color += material->color * material->ka;
-
     //For each light, add diffuse and specular intensity to "color"
     for (unsigned int idx = 0; idx < lights.size(); idx++)
     {
         L = (lights[idx]->position - hit).normalized();
-        color += (std::max(0.0,N.dot(L)) * material->kd) * material->color * lights[idx]->color;
+		shadowRay = Ray(hit,L);
+		if (!traceShad(shadowRay)){
+			color += (std::max(0.0,N.dot(L)) * material->kd) * material->color * lights[idx]->color;
 
-        R = (2*(N.dot(L))*N)-L;
-        color += (std::pow(std::max(0.0,R.dot(V)),material->n) * material->ks);
-    }
+			R = (2*(N.dot(L))*N)-L;
+			color += (std::pow(std::max(0.0,R.dot(V)),material->n) * lights[idx]->color * material->ks);
+		}
+	}
+
+    /*for (unsigned int idx = 0; idx < lights.size(); idx++)
+    {
+		if (traceShad(shadowRay))
+		{
+			colorAmb += colorAmb;
+			shadowLoop = true;
+		}
+	}
+	if (shadowLoop)
+		return colorAmb;*/
     return color;
 }
 

@@ -144,7 +144,16 @@ bool Raytracer::readScene(const std::string& inputFilename)
             scene->setEye(parseTriple(doc["Eye"]));
 
             //Read and save render mode;
-            doc["RenderMode"] >> scene->renderMode;
+			if (doc.FindValue("RenderMode")) 
+				doc["RenderMode"] >> scene->renderMode;
+			else 
+				scene->renderMode = "phong";
+			if (doc.FindValue("Shadows"))
+				doc["Shadows"] >> scene->Shadows;
+			else
+				scene->Shadows = false;
+			
+			cout << scene->Shadows << endl;
 
             // Read and parse the scene objects
             const YAML::Node& sceneObjects = doc["Objects"];

@@ -32,6 +32,8 @@ private:
 public:
     //string renderMode added to save render mode (phong, normal, z-buffer)
     std::string renderMode;
+	bool Shadows;
+	bool traceShad(const Ray &ray);
     Color trace(const Ray &ray); //phong
     Color traceZ(const Ray &ray); //z-buffer
     Color traceNormal(const Ray &ray); //normal
