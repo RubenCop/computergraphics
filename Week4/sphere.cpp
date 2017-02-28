@@ -28,6 +28,9 @@ Hit Sphere::intersect(const Ray &ray)
         t = x;
     else
         t = x2;
+	
+	if (t < 0)
+		return Hit::NO_HIT();
 
     //Normal calculation
     Vector N = ((ray.O + (ray.D * t)) - position).normalized();
