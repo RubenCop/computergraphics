@@ -145,25 +145,28 @@ Color Scene::traceNormal(const Ray &ray)
 
 void Scene::render(Image &img)
 {
-	cout << this->superSampling << endl;
     int w = img.width();
     int h = img.height();
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
-            Point pixel(x+0.5, h-1-y+0.5, 0);
-            Ray ray(eye, (pixel-eye).normalized());
-            Color col;
+			Color totalCol(0.0,0.0,0.0);
+			for (int ss = 0; ss < this->superSampling; ss++){
+				Point pixel(x+0.5, h-1-y+0.5, 0);
+				Ray ray(eye, (pixel-eye).normalized());
+				Color col;
 
-            //Use different trace functions based on render mode
-            if (this->renderMode == "phong")
-                col = trace(ray,reflectCount+1);
-            if (this->renderMode == "normal")
-                col = traceNormal(ray);
-            if (this->renderMode == "zbuffer")
-                col = traceZ(ray);
+				//Use different trace functions based on render mode
+				if (this->renderMode == "phong")
+					col = trace(ray,reflectCount+1);
+				if (this->renderMode == "normal")
+					col = traceNormal(ray);
+				if (this->renderMode == "zbuffer")
+					col = traceZ(ray);
 
-            col.clamp();
-            img(x,y) = col;
+				col.clamp();	
+				totalCol += col;
+			}
+			img(x,y) = totalCol;
         }
     }
     if(this->renderMode == "zbuffer"){ //if zbuffer, scale from closest to furthest
