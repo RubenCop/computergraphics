@@ -32,9 +32,11 @@ bool Scene::traceShad(const Ray &ray)
             obj = objects[i];
         }
     }
-    
+	
+	//The ray hits an object, there should be a shadow
     if(obj) return true;
 	
+	//No object was hit, compute light normally
 	else return false;
 }
 
@@ -74,7 +76,8 @@ Color Scene::trace(const Ray &ray, int reflectCount)
     {
         L = (lights[idx]->position - hit).normalized();
 		shadowRay = Ray(hit,L);
-		if (!traceShad(shadowRay)){
+		//If there should not be a shadow, compute light normally
+		if (this->Shadows == false || !traceShad(shadowRay)){
 			color += (std::max(0.0,N.dot(L)) * material->kd) * material->color * lights[idx]->color;
 
 			R = (2*(N.dot(L))*N)-L;
