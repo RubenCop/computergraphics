@@ -148,10 +148,16 @@ bool Raytracer::readScene(const std::string& inputFilename)
 				doc["RenderMode"] >> scene->renderMode;
 			else 
 				scene->renderMode = "phong";
+			
 			if (doc.FindValue("Shadows"))
 				doc["Shadows"] >> scene->Shadows;
 			else
 				scene->Shadows = false;
+			
+			if (doc.FindValue("MaxRecursionDepth"))
+				doc["MaxRecursionDepth"] >> scene->reflectCount;
+			else
+				scene->reflectCount = 0;
 			
 			cout << scene->Shadows << endl;
 

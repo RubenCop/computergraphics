@@ -40,7 +40,7 @@ bool Scene::traceShad(const Ray &ray)
 
 Color Scene::trace(const Ray &ray, int reflectCount)
 {
-	if (reflectCount < 0)
+	if (reflectCount <= 0)
 		return Color(0.0,0.0,0.0);
     // Find hit object and distance
     Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
@@ -152,7 +152,7 @@ void Scene::render(Image &img)
 
             //Use different trace functions based on render mode
             if (this->renderMode == "phong")
-                col = trace(ray,1);
+                col = trace(ray,reflectCount+1);
             if (this->renderMode == "normal")
                 col = traceNormal(ray);
             if (this->renderMode == "zbuffer")
