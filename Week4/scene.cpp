@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <cmath>
 
-#define EPSILON 0.00001
+#define EPSILON 0.01
 
 bool Scene::traceShad(const Ray &ray)
 {
@@ -40,7 +40,7 @@ bool Scene::traceShad(const Ray &ray)
 
 Color Scene::trace(const Ray &ray, int reflectCount)
 {
-	if (reflectCount <= 0)
+	if (reflectCount < 0)
 		return Color(0.0,0.0,0.0);
     // Find hit object and distance
     Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
@@ -79,13 +79,20 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 
 			R = (2*(N.dot(L))*N)-L;
 			color += (std::pow(std::max(0.0,R.dot(V)),material->n) * lights[idx]->color * material->ks);
+			
 		}
+		
 	}
+	R = (2*(N.dot(V))*N)-V;
+	
+	Ray reflectRay(hit + EPSILON, R);
+	color += material->ks * trace(reflectRay, reflectCount-1); 
+		
+
+	return color;
 
 
-    Vector reflectVector = V - 2 * V.dot(N) * N;
-	Ray reflectRay(hit + EPSILON, reflectVector.normalized());
-    return color += material->ks * trace(reflectRay, reflectCount-1); 
+
 }
 
 Color Scene::traceZ(const Ray &ray)
@@ -145,7 +152,7 @@ void Scene::render(Image &img)
 
             //Use different trace functions based on render mode
             if (this->renderMode == "phong")
-                col = trace(ray,2);
+                col = trace(ray,1);
             if (this->renderMode == "normal")
                 col = traceNormal(ray);
             if (this->renderMode == "zbuffer")
