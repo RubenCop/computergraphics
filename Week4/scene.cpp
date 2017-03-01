@@ -19,6 +19,8 @@
 #include <algorithm>
 #include <cmath>
 
+#define EPSILON 0.00001
+
 bool Scene::traceShad(const Ray &ray)
 {
 	Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
@@ -36,8 +38,10 @@ bool Scene::traceShad(const Ray &ray)
 	else return false;
 }
 
-Color Scene::trace(const Ray &ray)
+Color Scene::trace(const Ray &ray, int reflectCount)
 {
+	if (reflectCount <= 0)
+		return Color(0.0,0.0,0.0);
     // Find hit object and distance
     Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
     Object *obj = NULL;
@@ -61,7 +65,6 @@ Color Scene::trace(const Ray &ray)
     Vector R;
 
     Color color, colorAmb;
-	bool shadowLoop;
 	Ray shadowRay(hit,hit); //Initialise empty ray
 
     //Add ambient intensity
@@ -79,17 +82,10 @@ Color Scene::trace(const Ray &ray)
 		}
 	}
 
-    /*for (unsigned int idx = 0; idx < lights.size(); idx++)
-    {
-		if (traceShad(shadowRay))
-		{
-			colorAmb += colorAmb;
-			shadowLoop = true;
-		}
-	}
-	if (shadowLoop)
-		return colorAmb;*/
-    return color;
+
+    Vector reflectVector = V - 2 * V.dot(N) * N;
+	Ray reflectRay(hit + EPSILON, reflectVector.normalized());
+    return color += material->ks * trace(reflectRay, reflectCount-1); 
 }
 
 Color Scene::traceZ(const Ray &ray)
@@ -149,7 +145,7 @@ void Scene::render(Image &img)
 
             //Use different trace functions based on render mode
             if (this->renderMode == "phong")
-                col = trace(ray);
+                col = trace(ray,2);
             if (this->renderMode == "normal")
                 col = traceNormal(ray);
             if (this->renderMode == "zbuffer")
