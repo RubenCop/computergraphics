@@ -159,6 +159,15 @@ bool Raytracer::readScene(const std::string& inputFilename)
 			else
 				scene->reflectCount = 0;
 			
+			if(doc.FindValue("SuperSampling")){
+				const YAML::Node& ss = doc["SuperSampling"];
+				if (ss.FindValue("factor")){
+					ss["factor"] >> scene->superSampling;
+				} 
+			} else{
+				scene->superSampling = 1;
+			}
+			
 			cout << scene->Shadows << endl;
 
             // Read and parse the scene objects

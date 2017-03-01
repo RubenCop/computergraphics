@@ -35,6 +35,7 @@ public:
 	bool Shadows;
 	bool traceShad(const Ray &ray);
 	int reflectCount;
+	int superSampling;
     Color trace(const Ray &ray, int reflectCount); //phong
     Color traceZ(const Ray &ray); //z-buffer
     Color traceNormal(const Ray &ray); //normal

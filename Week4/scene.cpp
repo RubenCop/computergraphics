@@ -145,6 +145,7 @@ Color Scene::traceNormal(const Ray &ray)
 
 void Scene::render(Image &img)
 {
+	cout << this->superSampling << endl;
     int w = img.width();
     int h = img.height();
     for (int y = 0; y < h; y++) {
