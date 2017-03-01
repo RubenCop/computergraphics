@@ -153,8 +153,8 @@ void Scene::render(Image &img)
         for (int x = 0; x < w; x++) {
 			Color totalCol(0.0,0.0,0.0);
 			//super sampling
-			for (int ssX = 0; ssX < this->superSampling/2; ssX++) {
-				for (int ssY = 0; ssY < this->superSampling/2; ssY++) {
+			for (int ssX = 0; ssX < this->superSampling; ssX++) {
+				for (int ssY = 0; ssY < this->superSampling; ssY++) {
 
 					Point pixel(x+(((double)ssX+1)/(double)this->superSampling), h-1-y+(((double)ssY+1)/(double)this->superSampling), 0);
 					Ray ray(eye, (pixel-eye).normalized());
