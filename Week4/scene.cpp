@@ -32,10 +32,10 @@ bool Scene::traceShad(const Ray &ray)
             obj = objects[i];
         }
     }
-	
+
 	//The ray hits an object, there should be a shadow
     if(obj) return true;
-	
+
 	//No object was hit, compute light normally
 	else return false;
 }
@@ -82,15 +82,15 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 
 			R = (2*(N.dot(L))*N)-L;
 			color += (std::pow(std::max(0.0,R.dot(V)),material->n) * lights[idx]->color * material->ks);
-			
+
 		}
-		
+
 	}
 	R = (2*(N.dot(V))*N)-V;
-	
+
 	Ray reflectRay(hit + EPSILON, R);
-	color += material->ks * trace(reflectRay, reflectCount-1); 
-		
+	color += material->ks * trace(reflectRay, reflectCount-1);
+
 
 	return color;
 
@@ -143,6 +143,8 @@ Color Scene::traceNormal(const Ray &ray)
     return color;
 }
 
+
+
 void Scene::render(Image &img)
 {
     int w = img.width();
@@ -150,22 +152,29 @@ void Scene::render(Image &img)
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
 			Color totalCol(0.0,0.0,0.0);
-			for (int ss = 0; ss < this->superSampling; ss++){
-				Point pixel(x+0.5, h-1-y+0.5, 0);
-				Ray ray(eye, (pixel-eye).normalized());
-				Color col;
+			//super sampling
+			for (int ssX = 0; ssX < this->superSampling/2; ssX++) {
+				for (int ssY = 0; ssY < this->superSampling/2; ssY++) {
 
-				//Use different trace functions based on render mode
-				if (this->renderMode == "phong")
-					col = trace(ray,reflectCount+1);
-				if (this->renderMode == "normal")
-					col = traceNormal(ray);
-				if (this->renderMode == "zbuffer")
-					col = traceZ(ray);
+					Point pixel(x+(((double)ssX+1)/(double)this->superSampling), h-1-y+(((double)ssY+1)/(double)this->superSampling), 0);
+					Ray ray(eye, (pixel-eye).normalized());
+					Color col(0.0,0.0,0.0);
 
-				col.clamp();	
-				totalCol += col;
+					//Use different trace functions based on render mode
+					if (this->renderMode == "phong")
+						col = trace(ray,reflectCount+1);
+					if (this->renderMode == "normal")
+						col = traceNormal(ray);
+					if (this->renderMode == "zbuffer")
+						col = traceZ(ray);
+
+					col.clamp();
+					totalCol += (col / (this->superSampling * this->superSampling));
+				}
 			}
+			//cout << "before division" << totalCol << endl;
+			//cout << "after division" << totalCol << endl;
+			totalCol.clamp();
 			img(x,y) = totalCol;
         }
     }
@@ -181,7 +190,7 @@ void Scene::render(Image &img)
                     minCol = img(x,y).data[0];
             }
         }
-        //Scale color based on minimum and maximum 
+        //Scale color based on minimum and maximum
         double range = maxCol - minCol;
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {

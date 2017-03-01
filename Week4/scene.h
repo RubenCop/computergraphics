@@ -40,6 +40,7 @@ public:
     Color traceZ(const Ray &ray); //z-buffer
     Color traceNormal(const Ray &ray); //normal
     void render(Image &img);
+    Point sample(int currentSample, int totalSamples, int x, int y, int h); 
     void addObject(Object *o);
     void addLight(Light *l);
     void setEye(Triple e);
