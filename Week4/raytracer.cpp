@@ -139,9 +139,32 @@ bool Raytracer::readScene(const std::string& inputFilename)
         if (parser) {
             YAML::Node doc;
             parser.GetNextDocument(doc);
-
+			
+			if (doc.FindValue("Eye")){
             // Read scene configuration options
-            scene->setEye(parseTriple(doc["Eye"]));
+				scene->setEye(parseTriple(doc["Eye"]));
+			}else if(doc.FindValue("Camera")){
+				const YAML::Node& camera = doc["Camera"];
+				if (camera.FindValue("eye")){
+					Triple tempEye;
+					camera["eye"] >> tempEye;
+					scene->setEye(tempEye);
+				}
+				if (camera.FindValue("center")){
+					camera["center"] >> scene->center;
+				}
+				if (camera.FindValue("up")){
+					camera["up"] >> scene->up;
+				}
+				if (camera.FindValue("viewSize")){
+					Triple viewSize;
+					int h, w;
+					//camera["viewSize"] >> viewSize;
+					//cout << viewSize;
+					//camera["viewSize"] >> scene->image;
+					
+				}
+			}
 
             //Read and save render mode;
 			if (doc.FindValue("RenderMode")) 
