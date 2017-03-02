@@ -139,7 +139,7 @@ bool Raytracer::readScene(const std::string& inputFilename)
         if (parser) {
             YAML::Node doc;
             parser.GetNextDocument(doc);
-			
+
 			if (doc.FindValue("Eye")){
             // Read scene configuration options
 				scene->setEye(parseTriple(doc["Eye"]));
@@ -157,40 +157,40 @@ bool Raytracer::readScene(const std::string& inputFilename)
 					camera["up"] >> scene->up;
 				}
 				if (camera.FindValue("viewSize")){
-					Triple viewSize;
-					int h, w;
-					//camera["viewSize"] >> viewSize;
+					camera["viewSize"][0] >> scene->h;
+                    camera["viewSize"][1] >> scene->w;
+ 					//camera["viewSize"] >> viewSize;
 					//cout << viewSize;
 					//camera["viewSize"] >> scene->image;
-					
+
 				}
 			}
 
             //Read and save render mode;
-			if (doc.FindValue("RenderMode")) 
+			if (doc.FindValue("RenderMode"))
 				doc["RenderMode"] >> scene->renderMode;
-			else 
+			else
 				scene->renderMode = "phong";
-			
+
 			if (doc.FindValue("Shadows"))
 				doc["Shadows"] >> scene->Shadows;
 			else
 				scene->Shadows = false;
-			
+
 			if (doc.FindValue("MaxRecursionDepth"))
 				doc["MaxRecursionDepth"] >> scene->reflectCount;
 			else
 				scene->reflectCount = 0;
-			
+
 			if(doc.FindValue("SuperSampling")){
 				const YAML::Node& ss = doc["SuperSampling"];
 				if (ss.FindValue("factor")){
 					ss["factor"] >> scene->superSampling;
-				} 
+				}
 			} else{
 				scene->superSampling = 1;
 			}
-			
+
 			cout << scene->Shadows << endl;
 
             // Read and parse the scene objects
@@ -233,7 +233,7 @@ bool Raytracer::readScene(const std::string& inputFilename)
 
 void Raytracer::renderToFile(const std::string& outputFilename)
 {
-    Image img(400,400);
+    Image img(scene->h,scene->w);
     cout << "Tracing..." << endl;
     scene->render(img);
     cout << "Writing image to " << outputFilename << "..." << endl;

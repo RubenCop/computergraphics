@@ -31,21 +31,30 @@ private:
     Triple eye;
 public:
     //string renderMode added to save render mode (phong, normal, z-buffer)
+
+
     std::string renderMode;
 	bool Shadows;
 	bool traceShad(const Ray &ray);
 	int reflectCount;
 	int superSampling;
-	
+
 	Triple center;
 	Triple up;
 	Image image;
-	
+
+    int h, w;
+
+    Scene() {
+        h = 400;
+        w = 400;
+    }
+
     Color trace(const Ray &ray, int reflectCount); //phong
     Color traceZ(const Ray &ray); //z-buffer
     Color traceNormal(const Ray &ray); //normal
     void render(Image &img);
-    Point sample(int currentSample, int totalSamples, int x, int y, int h); 
+    Point sample(int currentSample, int totalSamples, int x, int y, int h);
     void addObject(Object *o);
     void addLight(Light *l);
     void setEye(Triple e);

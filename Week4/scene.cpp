@@ -149,14 +149,29 @@ void Scene::render(Image &img)
 {
     int w = img.width();
     int h = img.height();
+
+	cout << eye << endl;
+
+	Triple G = center - eye;
+
+	Triple A = G.cross(up);
+	Triple B = A.cross(G);
+
+	Triple M = eye + G;
+
+	cout << M << endl;
+
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
 			Color totalCol(0.0,0.0,0.0);
 			//super sampling
 			for (int ssX = 0; ssX < this->superSampling; ssX++) {
 				for (int ssY = 0; ssY < this->superSampling; ssY++) {
+					Triple P = M + ((2*x - 1)) + ((2*y -1));
+					cout << P << endl;
 
-					Point pixel(x+(1/(superSampling*2))+(((double)ssX+1)/(double)this->superSampling), h-1-y+(1/(superSampling*2))+(((double)ssY+1)/(double)this->superSampling), 0);
+					Point pixel(P.data[0]+(1/(superSampling*2))+(((double)ssX+1)/(double)this->superSampling), h-1-P.data[1]+(1/(superSampling*2))+(((double)ssY+1)/(double)this->superSampling), P.data[2]);
+
 					Ray ray(eye, (pixel-eye).normalized());
 					Color col(0.0,0.0,0.0);
 
