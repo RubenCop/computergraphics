@@ -153,18 +153,17 @@ void Scene::render(Image &img)
 	cout << eye << endl;
 
 	Triple G = center - eye;
-	
 	G = G.normalized();
 
 	Triple A = G.cross(up);
 	Triple B = A.cross(G);
 	
-	//A = A.normalized();
-	//B = B.normalized();
+	A = A.normalized();
+	B = B.normalized();
 
 	Triple M = eye + G;
 	
-	//M = M.normalized();
+	M = M.normalized();
 
 	//cout << M << endl;
 
@@ -181,7 +180,11 @@ void Scene::render(Image &img)
 					
 					//cout << G << endl;
 					
-					Triple P = center + ((x - w) * A) + (y * B) + (G * eye / up.y) - (eye * G); 
+					//Triple P = M + ((x-w) * A) + ((y) * B) + (G * eye / up.y) - (eye * G); 
+          Triple P;
+          P += center + ((x-(w/2)) * A);
+          P += ((h-y-(h/2)) * B);
+          P += (G * eye / up.y) - (eye * G);
 					
 					//cout << P << endl;
 					
@@ -190,7 +193,7 @@ void Scene::render(Image &img)
 // 					P.y *= B.y;
 // 					P.z += G.z;
 					
-					Point pixel((P.x+(1/(superSampling*2))+(((double)ssX+1)/(double)this->superSampling))+0.5*w, (h-1-P.y+(1/(superSampling*2))+(((double)ssY+1)/(double)this->superSampling))+0.5*h, P.z);
+					Point pixel((P.x+(1/(superSampling*2))+(((double)ssX+1)/(double)this->superSampling))+0.5, (P.y+(1/(superSampling*2))+(((double)ssY+1)/(double)this->superSampling))+0.5, P.z);
 
 					Ray ray(eye, (pixel-eye).normalized());
 					Color col(0.0,0.0,0.0);
