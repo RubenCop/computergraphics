@@ -48,6 +48,9 @@ public:
     Scene() {
         h = 400;
         w = 400;
+		center = Triple(200,200,0);
+		up = Triple(0,1,0);
+		
     }
 
     Color trace(const Ray &ray, int reflectCount); //phong

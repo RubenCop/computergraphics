@@ -1,41 +1,10 @@
-Raytracer 1 assignment for Computer Graphics
+Raytracer 2 assignment for Computer Graphics
 
 By
 	Ruben Cop (s2703122)
 	Jan Willem de Wit (s2616602)
 
+For the shadows, we have added a new function "traceShad" that is called with a new ray from the hit to each lightsource. It returns true if there should be a shadow, false if not. If there should be a shadow, diffuse and specular are not calculated.
 
-For the different render modes, we have added a string to the Scene class that
-stores the render mode described in the yaml file. We have added to new trace
-functions to the scene class:
-	- trace (phong)
-	- traceZ (z-buffer)
-	- traceNormal (normal)
-We have adjusted the function "render" to choose one of the trace functions
-based on the render mode save in the string. We have also adjusted this function
-so that it scales the colours in case of the z-buffer image. In the traceZ
-function, we divide the calculated colours by 1000 so that they become a small
-number that can be scaled later.
+For the reflection, we recursively call trace again. It has an argument, which is the number of reflections read from the yaml file. In the recursive call, we use a new ray from hit to the reflect vector, with a small value added to hit to prevent the ray from hitting the hit points. We multiply the result from this recursive call with the specular component from the material colour.
 
-We have added three new objects to the raytracer: a plane and a triangle.
-	- Plane: a plane is defined by a normal (normal)
-	- Triangle: a triangle is defined by three triples (a,b,c) that define the
-	  points of the triangle. The intersection of the ray and triangle is
-	  calculated using the Möller-Trumbore algorithm.
-	- Cylinder: a cylinder is defined by two points, one for each end, and a
-      radius. However, it is infinitely long.
-
-The code stored in the subdirectory ´Code´ can be compiled using the makefile and typing make in the terminal. 
-Afterwards, the code can be run typing ./ray <the scene file you want to run>
-
-We have constructed the following scenes:
-	- scene01-phong.yaml: showing scene01 in original "phong" render mode
-	- scene01-normal.yaml: showing scene01 in the render mode "normal"
-	- scene01-zbuffer.yaml: showing scene01 in the render mode "z-buffer"
-	- scene02.yaml: showing scene02 in original "phong" render mode. This scene can also be rendered in the normal and zbuffer modes. 
-	- scene-cylinder.yaml: showing a blue cylinder. The cylinder can be placed in another angle in the .yaml file by altering the plane origin points. 
-	- scene-patrick.yaml: shows patrick from spongebob. 
-	- scene-triangle.yaml: shows a green tetrahedron consisting of 3 triangles. 
-	- testscene.yaml: shows different objects in a scene: sphere, plane, tetrahedron(consisting of triangles) and a cylinder
-
-The scene render modes can be altered to either "phong", "z-buffer" or "normal" to get the phong, z-buffer or normal display of the scene respectively. 
