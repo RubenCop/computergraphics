@@ -87,15 +87,9 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 
 	}
 	R = (2*(N.dot(V))*N)-V;
-
 	Ray reflectRay(hit + EPSILON, R);
 	color += material->ks * trace(reflectRay, reflectCount-1);
-
-
 	return color;
-
-
-
 }
 
 Color Scene::traceZ(const Ray &ray)
@@ -150,22 +144,18 @@ void Scene::render(Image &img)
     int w = img.width();
     int h = img.height();
 
-	cout << eye << endl;
+    Triple G = center - eye;
+    G = G.normalized();
 
-	Triple G = center - eye;
-	G = G.normalized();
+    Triple A = G.cross(up);
+    Triple B = A.cross(G);
+    
+    A = A.normalized();
+    B = B.normalized();
 
-	Triple A = G.cross(up);
-	Triple B = A.cross(G);
-	
-	A = A.normalized();
-	B = B.normalized();
-
-	Triple M = eye + G;
-	
-	M = M.normalized();
-
-	//cout << M << endl;
+    Triple M = eye + G;
+    
+    M = M.normalized();
 
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
@@ -173,25 +163,12 @@ void Scene::render(Image &img)
 			//super sampling
 			for (int ssX = 0; ssX < this->superSampling; ssX++) { 
 				for (int ssY = 0; ssY < this->superSampling; ssY++) {
-					//Triple P = M + ((2*x - 1)) + ((2*y -1));
-					//cout << P << endl;
-					
 
-					
-					//cout << G << endl;
-					
-					//Triple P = M + ((x-w) * A) + ((y) * B) + (G * eye / up.y) - (eye * G); 
+          //For rotation and zoom
           Triple P;
           P += center + ((x-(w/2)) * A);
           P += ((h-y-(h/2)) * B);
           P += (G * eye / up.y) - (eye * G);
-					
-					//cout << P << endl;
-					
-					
-// 					P.x *= A.x;
-// 					P.y *= B.y;
-// 					P.z += G.z;
 					
 					Point pixel((P.x+(1/(superSampling*2))+(((double)ssX+1)/(double)this->superSampling))+0.5, (P.y+(1/(superSampling*2))+(((double)ssY+1)/(double)this->superSampling))+0.5, P.z);
 
@@ -210,11 +187,10 @@ void Scene::render(Image &img)
 					totalCol += (col / (this->superSampling * this->superSampling));
 				}
 			}
-			//cout << "before division" << totalCol << endl;
-			//cout << "after division" << totalCol << endl;
+
 			totalCol.clamp();
 			img(x,y) = totalCol;
-        }
+      }
     }
     if(this->renderMode == "zbuffer"){ //if zbuffer, scale from closest to furthest
         //Determine minimum and maximum color values
