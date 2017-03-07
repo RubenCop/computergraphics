@@ -25,16 +25,16 @@ uniform vec3 lightPos;
 // out vec3 vertPos; for example
 out vec3 normal;
 out vec3 FragPos;
-out mat3 lightPosOut;
+out vec3 lightPosOut;
 
 void main()
 {
     // gl_Position is the output (a vec4) of the vertex shader
     // Currently without any transformation
-    lightPosOut = view*model*lightPos;
+    lightPosOut = mat3(view) * mat3(model) * lightPos;
     FragPos = vertCoordinates_in;
 
     gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
-    normal = vertColor_in;
+    normal = normalMatrix * vertColor_in;
 
 }

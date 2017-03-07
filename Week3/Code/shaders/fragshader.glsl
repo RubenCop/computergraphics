@@ -16,7 +16,7 @@
 out vec4 fColor;
 in vec3 FragPos;
 in vec3 normal;
-in mat3 lightPosOut;
+in vec3 lightPosOut;
 
 //uniform mat3 normalMatrix;
 
