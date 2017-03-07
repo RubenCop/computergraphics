@@ -16,12 +16,14 @@
 out vec4 fColor;
 in vec3 FragPos;
 in vec3 normal;
+in mat3 lightPosOut;
+
 //uniform mat3 normalMatrix;
 
 uniform vec3 objCol;
 uniform vec4 intensities;
 uniform vec3 matColor;
-uniform vec3 lightPos;
+
 
 void main()
 {
@@ -29,7 +31,7 @@ void main()
 
     vec3 norm = normalize(normal);
 
-    vec3 lightDir = normalize(lightPos - FragPos);
+    vec3 lightDir = normalize(lightPosOut - FragPos);
     vec3 R = -reflect(lightDir, norm);
 
     float comAmbient = intensities[0];

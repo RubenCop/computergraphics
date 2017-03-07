@@ -5,7 +5,7 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     // OpenGL assignment 1, part 2: create a function to render the sphere
     // Use Model(":/models/sphere.obj") for the model
 
-    model.setToIdentity();
+    model.setToIdentity();      //reset matrix
     model.translate(centre);    //rotate around the point the camera is focussed on
     model.rotate(newX,1,0,0);
     model.rotate(newY,0,1,0);
