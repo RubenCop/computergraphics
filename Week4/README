@@ -8,3 +8,5 @@ For the shadows, we have added a new function "traceShad" that is called with a 
 
 For the reflection, we recursively call trace again. It has an argument, which is the number of reflections read from the yaml file. In the recursive call, we use a new ray from hit to the reflect vector, with a small value added to hit to prevent the ray from hitting the hit points. We multiply the result from this recursive call with the specular component from the material colour.
 
+We apply supersampling in the render function by creating two loops for the amount of sampling we need, which is read from the yaml file. We offset the pixel based on the amount of supersampling, and take an average for all the samples of the current pixel. 
+

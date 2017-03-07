@@ -21,13 +21,17 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     ULlightPos = glGetUniformLocation(mainShaderProg->programId(), "lightPos");
     glUniform3fv(ULlightPos,1, &lightpos[0]);
 
+    normalMatrix = (view * model).normalMatrix();
+
     updateUniforms();
 
     colors.clear();
     for (int i=0; i<numVertices; i++){
         colors.push_back(color);
     }
+
     updateBuffers();
+
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
 }

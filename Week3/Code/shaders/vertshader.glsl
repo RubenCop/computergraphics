@@ -14,7 +14,7 @@ uniform mat4 view;
 uniform mat4 projection;
 //uniform vec4 intensities;
 
-uniform mat4 normalMatrix;
+uniform mat3 normalMatrix;
 
 // uniform mat4 modelTransform; for example
 
@@ -22,21 +22,16 @@ uniform mat4 normalMatrix;
 // These will be the input for the fragment shader
 
 // out vec3 vertPos; for example
-flat out vec3 color;
-out vec3 vertexCoordinates;
 out vec3 normal;
-out vec3 P;
-//out vec4 intensities;
 out vec3 FragPos;
 
 void main()
 {
     // gl_Position is the output (a vec4) of the vertex shader
     // Currently without any transformation
-    color = vertColor_in;
-    vertexCoordinates = vertCoordinates_in;
-    FragPos = vec3(view *model * vec4(vertexCoordinates, 1.0));
-    P = FragPos;
-    normal = vertColor_in;
+    FragPos = vertCoordinates_in;
+
     gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
+    normal = vertColor_in;
+
 }

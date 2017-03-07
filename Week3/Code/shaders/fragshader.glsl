@@ -14,11 +14,9 @@
 // Specify the output of the fragment shader
 // Usually a vec4 describing a color (Red, Green, Blue, Alpha/Transparency)
 out vec4 fColor;
-flat in vec3 color;
-in vec3 vertexCoordinates;
-in vec3 normal;
 in vec3 FragPos;
-in vec3 P;
+in vec3 normal;
+//uniform mat3 normalMatrix;
 
 uniform vec3 objCol;
 uniform vec4 intensities;
@@ -27,21 +25,21 @@ uniform vec3 lightPos;
 
 void main()
 {
-    vec3 lightColor = vec3(1,1,1);
-    vec3 cameraPosition = vec3(0, 0, 0);
-    vec3 finalColor, R;
+    const vec3 lightColor = vec3(1,1,1);
 
     vec3 norm = normalize(normal);
-    vec3 lightDir = (lightPos - FragPos);
 
-    vec3 ambient = intensities[0] * lightColor;
+    vec3 lightDir = normalize(lightPos - FragPos);
+    vec3 R = -reflect(lightDir, norm);
 
-    float diff = max(dot(norm, normalize(lightDir)), 0.0);
-    vec3 diffuse = diff * lightColor;
+    float comAmbient = intensities[0];
+    float comDiffuse = max(dot(norm, lightDir), 0.0) * intensities[1];
+    float comSpecular = pow(max(dot(R, vec3(0, 0, 1)), 0), intensities[3]) * intensities[2];
 
-    R = (2*(dot(norm,normalize(lightDir)))*norm) - normalize(lightDir);
-    vec3 specular = pow(max(0.0,dot(normalize(-FragPos),R)),intensities[3]) * intensities[2] * lightColor;
+    vec3 finalColor =
+            comAmbient * matColor +
+            comDiffuse * matColor * lightColor +
+            comSpecular * lightColor;
 
-    finalColor = (specular + ambient + diffuse) * matColor;
     fColor = vec4(finalColor, 1);
 }

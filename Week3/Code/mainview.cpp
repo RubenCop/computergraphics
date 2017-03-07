@@ -61,6 +61,7 @@ void MainView::createShaderPrograms() {
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
+    ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
     /* Add your other shaders below */
 
@@ -141,6 +142,7 @@ void MainView::updateUniforms() {
     glUniformMatrix4fv(ULmodel, 1, GL_FALSE, model.data());
     glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
     glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
+    glUniformMatrix3fv(ULnormal, 1, GL_FALSE, normalMatrix.data());
 
     //glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
     //glUniform3f();
@@ -224,6 +226,7 @@ void MainView::paintGL() {
     model.setToIdentity();
     view.setToIdentity();
     projection.setToIdentity();
+
 
     /*
     model.rotate(newX,1,0,0);
