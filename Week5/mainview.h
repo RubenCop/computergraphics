@@ -11,6 +11,7 @@
 #include <QOpenGLShaderProgram>
 #include <QTimer>
 #include <QVector3D>
+#include <QImage>
 
 class MainView : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core {
     Q_OBJECT
@@ -25,6 +26,10 @@ public:
     void updateModel(QString name);
     void updateShader(QString name);
     void updateScale(float scale);
+    // Add this as a public member in mainview.h
+    // (you might need to include QImage)
+    void loadTexture(QString file, GLuint texBendi);
+    QVector<quint8> imageToBytes(QImage image);
 
     float newScale = 1.0;
     float newX, newY, newZ;
@@ -97,6 +102,7 @@ private:
     GLuint bo;
     GLuint boCol;
     GLuint normalInt;
+    GLuint texBendi;
 
     unsigned numTris;
 

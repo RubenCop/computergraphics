@@ -7,6 +7,7 @@
 layout (location = 0) in vec3 vertCoordinates_in;
 layout (location = 1) in vec3 vertColor_in;
 layout (location = 2) in vec3 vertNormal_in;
+layout (location = 3) in vec2 vertTexture_in;
 
 // Specify the Uniforms of the vertex shader
 uniform mat4 model;
@@ -26,6 +27,7 @@ uniform vec3 lightPos;
 out vec3 normal;
 out vec3 FragPos;
 out vec3 lightPosOut;
+out vec2 vertexTexCoords;
 
 void main()
 {
@@ -36,5 +38,8 @@ void main()
 
     gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
     normal = normalMatrix * vertColor_in;
+
+    vertexTexCoords = vertTexture_in;
+
 
 }

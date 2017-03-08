@@ -41,6 +41,8 @@ MainView::~MainView() {
     glDeleteBuffers(1,&boCol);
     glDeleteVertexArrays(1,&vao);
 
+    glDeleteTextures(1,&texBendi);
+
     debugLogger->stopLogging();
 
     qDebug() << "MainView destructor";
@@ -63,6 +65,7 @@ void MainView::createShaderPrograms() {
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
     ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
+    ULtexCol = glGetUniformLocation(mainShaderProg->programId(),"texCol")
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -96,6 +99,11 @@ void MainView::createBuffers() {
 
     glBindVertexArray(0);
 
+    glGenBuffers(1,&texBendi);
+    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,0,0);
+    glEnableVertexAttribArray(3);
+
+
 }
 
 
@@ -127,6 +135,21 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*normals.length()* 3,normals.data(),GL_STATIC_DRAW);
 
 }
+
+void MainView::loadTexture(QString file, GLuint texBendi) {
+    QImage texture;
+    texture.load(file);
+    QVector<quint8> textureVec = imageToBytes(texture);
+
+    glBindTexture(GL_TEXTURE_2D, texBendi);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,texture.width(),texture.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVec.data());
+
+
+}
+
+
+
 
 void MainView::updateBuffers() {
     // Change the data inside buffers (if you want)
@@ -191,6 +214,8 @@ void MainView::initializeGL() {
     createBuffers();
 
     loadModel(":/models/sphere.obj", NULL);
+
+    glGenTextures(1,&texBendi);
 
 
 
