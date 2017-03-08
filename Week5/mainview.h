@@ -97,16 +97,17 @@ private:
     Model *cubeModel;
     GLuint cubeBO;
 
-    //1.4
     GLuint vao;
     GLuint bo;
     GLuint boCol;
     GLuint normalInt;
+
+    //1.1
     GLuint texBendi;
+    GLint ULtexCol;
 
     unsigned numTris;
 
-    //T2
     QMatrix4x4 model;
     QMatrix4x4 view;
     QMatrix4x4 projection;
@@ -117,6 +118,7 @@ private:
 
     GLint ULmodel, ULview, ULprojection, ULnormal;
     GLint ULintensities, ULmatCol, ULlightPos;
+
 
 
     /* End of private members */

@@ -24,6 +24,7 @@ in vec2 vertexTexCoords;
 uniform vec3 objCol;
 uniform vec4 intensities;
 uniform vec3 matColor;
+uniform sampler2D texCol;
 
 
 void main()
@@ -44,5 +45,6 @@ void main()
             comDiffuse * matColor * lightColor +
             comSpecular * lightColor;
 
-    fColor = vec4(finalColor, 1);
+    //fColor = vec4(finalColor, 1);
+    fColor = texture2D(texCol, vertexTexCoords);
 }

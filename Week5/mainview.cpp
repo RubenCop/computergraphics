@@ -65,7 +65,7 @@ void MainView::createShaderPrograms() {
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
     ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
-    ULtexCol = glGetUniformLocation(mainShaderProg->programId(),"texCol")
+    ULtexCol = glGetUniformLocation(mainShaderProg->programId(),"texCol");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -100,8 +100,9 @@ void MainView::createBuffers() {
     glBindVertexArray(0);
 
     glGenBuffers(1,&texBendi);
-    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,0,0);
     glEnableVertexAttribArray(3);
+    glBindVertexArray(3);
+    glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
 
 
 }
@@ -136,15 +137,21 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 
 }
 
+//1.2
 void MainView::loadTexture(QString file, GLuint texBendi) {
+    qDebug() << "Loading texture" << endl;
     QImage texture;
     texture.load(file);
+    //1.3
     QVector<quint8> textureVec = imageToBytes(texture);
 
+    //1.4
     glBindTexture(GL_TEXTURE_2D, texBendi);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+    //1.5
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,texture.width(),texture.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVec.data());
-
+    //1.6 Optional for mipmapping
+    //glGenerateMipmap(GL_TEXTURE_2D);
 
 }
 
@@ -166,6 +173,8 @@ void MainView::updateUniforms() {
     glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
     glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
     glUniformMatrix3fv(ULnormal, 1, GL_FALSE, normalMatrix.data());
+
+    //glUniform1i(ULtexCol,1);
 
     //glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
     //glUniform3f();
@@ -209,13 +218,18 @@ void MainView::initializeGL() {
 
     /* TODO: call your initialization functions here */
 
+
+
     createShaderPrograms();
+
 
     createBuffers();
 
-    loadModel(":/models/sphere.obj", NULL);
+    loadModel(":/models/cat.obj", NULL);
 
+    //1.7
     glGenTextures(1,&texBendi);
+    loadTexture(":/textures/cat.png",texBendi);
 
 
 
@@ -282,10 +296,12 @@ void MainView::paintGL() {
 
     mainShaderProg->bind();
 
-
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texBendi);
     renderRaytracerScene();
     //glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
+
 
     mainShaderProg->release();
 }
