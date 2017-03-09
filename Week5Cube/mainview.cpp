@@ -63,7 +63,7 @@ void MainView::createShaderPrograms() {
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
 
-    texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
+    texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureCoords");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -95,8 +95,10 @@ void MainView::createBuffers() {
 
     glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,0);
 
-    glGenTextures(1,&texBendi);
-    glBindTexture(GL_TEXTURE_2D,texBendi);
+    QVector<QVector2D> textureCoords = cubeModel->getTextureCoords();
+
+    glGenBuffers(1,&texUniform);
+    glBindBuffer(GL_ARRAY_BUFFER,texUniform);
     glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
     glEnableVertexAttribArray(3);
 
@@ -114,6 +116,8 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 
     // TODO: implement loading of model into Buffer Objects
     vertices = cubeModel->getVertices();
+
+    //textureCoords = cubeModel->getTextureCoords()
     numVertices = vertices.length();
     srand (time(NULL));
 
@@ -139,6 +143,7 @@ void MainView::loadTexture(QString file, GLuint texBendi) {
     textureImage.load(file);
 
     textureVector = imageToBytes(textureImage);
+    //qDebug() << textureVector << endl;
 
     glBindTexture(GL_TEXTURE_2D, texBendi);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);

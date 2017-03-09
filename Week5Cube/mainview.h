@@ -87,6 +87,9 @@ private:
     GLuint texBendi;
     GLint texUniform;
 
+
+    QVector<QVector2D> textureCoords;
+
     unsigned numTris;
 
     //T2
