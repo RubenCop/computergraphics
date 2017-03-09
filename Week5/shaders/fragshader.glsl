@@ -45,6 +45,6 @@ void main()
             comDiffuse * matColor * lightColor +
             comSpecular * lightColor;
 
-    //fColor = vec4(finalColor, 1);
-    fColor = texture2D(texCol, vertexTexCoords);
+    fColor = vec4(1,1,1, 1);
+    //fColor = texture2D(texCol, vertexTexCoords);
 }

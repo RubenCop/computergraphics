@@ -82,6 +82,7 @@ void MainView::createShaderPrograms() {
 void MainView::createBuffers() {
     // 1.6
     glGenVertexArrays(1,&vao);
+    qDebug() << "vao" << endl;
     glBindVertexArray(vao);
 
     glGenBuffers(1,&bo);
@@ -97,14 +98,19 @@ void MainView::createBuffers() {
 
     glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,0);
 
-    glBindVertexArray(0);
 
+   // glGenVertexArrays(3,&texBendi);
     glGenBuffers(1,&texBendi);
-    glEnableVertexAttribArray(3);
-    glBindVertexArray(3);
+    //glBufferData(GL_ARRAY_BUFFER,sizeof(float)*textureVec.length()* 3,textureVec.data(),GL_STATIC_DRAW);
+    glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA8, texBendi);
+
+    //glBindVertexArray(texBendi);
     glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
+    glEnableVertexAttribArray(3);
 
 
+    //empty bind
+    glBindVertexArray(0);
 }
 
 
@@ -149,7 +155,7 @@ void MainView::loadTexture(QString file, GLuint texBendi) {
     glBindTexture(GL_TEXTURE_2D, texBendi);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
     //1.5
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,texture.width(),texture.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVec.data());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, texture.width(),texture.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVec.data());
     //1.6 Optional for mipmapping
     //glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -174,7 +180,7 @@ void MainView::updateUniforms() {
     glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
     glUniformMatrix3fv(ULnormal, 1, GL_FALSE, normalMatrix.data());
 
-    //glUniform1i(ULtexCol,1);
+    glUniform1i(ULtexCol,1);
 
     //glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
     //glUniform3f();
@@ -225,11 +231,12 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/cat.obj", NULL);
+    loadModel(":/models/cube.obj", NULL);
 
     //1.7
+
+    loadTexture(":/textures/rug_logo.png",texBendi);
     glGenTextures(1,&texBendi);
-    loadTexture(":/textures/cat.png",texBendi);
 
 
 
@@ -294,13 +301,16 @@ void MainView::paintGL() {
     glClearColor(0.0f,0.0f,0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mainShaderProg->bind();
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texBendi);
-    renderRaytracerScene();
-    //glDrawArrays(GL_TRIANGLES,0,numVertices);
+    //renderRaytracerScene();
+    glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
+
+    mainShaderProg->bind();
+
+
 
 
     mainShaderProg->release();
