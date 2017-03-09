@@ -82,6 +82,7 @@ private:
     GLuint vao;
     GLuint bo;
     GLuint boCol;
+    GLuint texCoords;
 
 
     GLuint texBendi;

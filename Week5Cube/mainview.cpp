@@ -63,7 +63,7 @@ void MainView::createShaderPrograms() {
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
 
-    texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureCoords");
+    texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -82,6 +82,8 @@ void MainView::createBuffers() {
     glGenVertexArrays(1,&vao);
     glBindVertexArray(vao);
 
+
+
     glGenBuffers(1,&bo);
     glGenBuffers(1,&boCol);
 
@@ -95,12 +97,10 @@ void MainView::createBuffers() {
 
     glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,0);
 
-    QVector<QVector2D> textureCoords = cubeModel->getTextureCoords();
-
-    glGenBuffers(1,&texUniform);
-    glBindBuffer(GL_ARRAY_BUFFER,texUniform);
-    glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
-    glEnableVertexAttribArray(3);
+    glGenBuffers(1,&texCoords);
+    glBindBuffer(GL_ARRAY_BUFFER,texCoords);
+   glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
+   glEnableVertexAttribArray(3);
 
     glBindVertexArray(0);
 
@@ -135,6 +135,11 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length() * 3,colors.data(),GL_STATIC_DRAW);
 
+    QVector<QVector2D> textureCoords = cubeModel->getTextureCoords();
+
+    glBindBuffer(GL_ARRAY_BUFFER,texCoords);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*textureCoords.length() * 3,textureCoords.data(),GL_STATIC_DRAW);
+
 
 }
 
@@ -147,6 +152,12 @@ void MainView::loadTexture(QString file, GLuint texBendi) {
 
     glBindTexture(GL_TEXTURE_2D, texBendi);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_CLAMP_TO_EDGE);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_CLAMP_TO_EDGE);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureImage.width(),textureImage.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVector.data());
 
