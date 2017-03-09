@@ -30,7 +30,7 @@ public:
     int numVertices = 0;
 
 
-    void loadTexture(QString file, GLuint texBendi);
+    void loadTexture(QString file, GLuint texPointer);
     QVector<quint8> imageToBytes(QImage image);
 
     /* Add your public members below */
@@ -85,7 +85,7 @@ private:
     GLuint texCoords;
 
 
-    GLuint texBendi;
+    GLuint texPointer;
     GLint texUniform;
 
 

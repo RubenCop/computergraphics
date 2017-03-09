@@ -39,8 +39,9 @@ MainView::~MainView() {
     glDeleteBuffers(1,&bo);
     glDeleteBuffers(1,&boCol);
     glDeleteVertexArrays(1,&vao);
+    glDeleteVertexArrays(1,&texCoords);
 
-    glDeleteTextures(1,&texBendi);
+    glDeleteTextures(1,&texPointer);
 
     debugLogger->stopLogging();
 
@@ -143,21 +144,21 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 
 }
 
-void MainView::loadTexture(QString file, GLuint texBendi) {
+void MainView::loadTexture(QString file, GLuint texPointer) {
     QImage textureImage;
     textureImage.load(file);
 
     textureVector = imageToBytes(textureImage);
     //qDebug() << textureVector << endl;
 
-    glBindTexture(GL_TEXTURE_2D, texBendi);
+    glBindTexture(GL_TEXTURE_2D, texPointer);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureImage.width(),textureImage.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVector.data());
 
@@ -224,8 +225,8 @@ void MainView::initializeGL() {
     createBuffers();
 
     loadModel(":/models/cube.obj", NULL);
-    glGenTextures(1,&texBendi);
-    loadTexture(":/textures/rug_logo.png",texBendi);
+    glGenTextures(1,&texPointer);
+    loadTexture(":/textures/rug_logo.png",texPointer);
 
 
 
@@ -296,7 +297,7 @@ void MainView::paintGL() {
     glBindVertexArray(0);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texBendi);
+    glBindTexture(GL_TEXTURE_2D, texPointer);
     glUniform1i(texUniform,0);
 
     mainShaderProg->release();

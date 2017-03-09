@@ -22,7 +22,7 @@ in vec2 vertexTexCoords;
 void main()
 {
     // Plain White
-    fColor = vec4(color, 1.0);
-    //fColor = texture2D(texUniform, vertexTexCoords);
+    //fColor = vec4(color, 1.0);
+    fColor = texture2D(texUniform, vertexTexCoords);
 
 }
