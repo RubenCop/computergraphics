@@ -5,11 +5,35 @@ void MainView::renderSphere(QVector3D pos, QVector3D color, QVector4D material, 
     // OpenGL assignment 1, part 2: create a function to render the sphere
     // Use Model(":/models/sphere.obj") for the model
 
-    // you must remove these Q_UNUSED when you implement this function
-    Q_UNUSED(pos)
-    Q_UNUSED(color)
-    Q_UNUSED(material)
-    Q_UNUSED(lightpos)
+    model.setToIdentity();      //reset matrix
+    model.translate(centre);    //rotate around the point the camera is focussed on
+    model.rotate(newX,1,0,0);
+    model.rotate(newY,0,1,0);
+    model.rotate(newZ,0,0,1);
+    model.scale(newScale,newScale,newScale);
+    model.translate(pos-centre);
+
+    //pass uniforms
+    ULintensities = glGetUniformLocation(mainShaderProg->programId(), "intensities");
+    glUniform4fv(ULintensities, 1, &material[0]);
+    ULmatCol= glGetUniformLocation(mainShaderProg->programId(), "matColor");
+    glUniform3fv(ULmatCol,1, &color[0]);
+    ULlightPos = glGetUniformLocation(mainShaderProg->programId(), "lightPos");
+    glUniform3fv(ULlightPos,1, &lightpos[0]);
+
+    normalMatrix = (view * model).normalMatrix();
+
+    updateUniforms();
+
+    colors.clear();
+    for (int i=0; i<numVertices; i++){
+        colors.push_back(color);
+    }
+
+    updateBuffers();
+
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES,0,numVertices);
 }
 
 /**
@@ -24,7 +48,7 @@ void MainView::renderRaytracerScene()
     renderSphere(QVector3D(90,320,100),QVector3D(0,0,1),QVector4D(0.2f,0.7f,0.5f,64),lightpos);
 
     // Green sphere
-    renderSphere(QVector3D(210,270,300),QVector3D(0,1,0),QVector4D(0.2f,0.3f,0.5f,8),lightpos);
+    renderSphere(QVector3D(210,270,300),QVector3D(0,1,0),QVector4D(0.2f,0.3f,0.5f,8),lightpos); // ka, kd, ks, n
 
     // Red sphere
     renderSphere(QVector3D(290,170,150),QVector3D(1,0,0),QVector4D(0.2f,0.7f,0.8f,32),lightpos);

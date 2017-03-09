@@ -220,6 +220,27 @@
          </property>
         </widget>
        </item>
+       <item row="7" column="0">
+        <widget class="QPushButton" name="resetRotationButton">
+         <property name="text">
+          <string>Reset Rotation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QPushButton" name="resetCameraButton">
+         <property name="text">
+          <string>Reset Camera</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QPushButton" name="resetScaleButton">
+         <property name="text">
+          <string>Reset Scale</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>

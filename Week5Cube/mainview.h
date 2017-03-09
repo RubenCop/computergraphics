@@ -18,18 +18,30 @@ class MainView : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core {
 public:
     MainView(QWidget *parent = 0);
     ~MainView();
-
+    void resetCameraView();
+    void resetScale();
     void updateRotation(int x, int y, int z);
     void updateModel(QString name);
     void updateShader(QString name);
     void updateScale(float scale);
     float newScale = 1.0;
     float newX, newY, newZ;
+    //##The eye/camera position and the center (focuspoint of the camera) can be initialized here. They are used in mainview.cpp
+    float camPosX = 200, camPosY = 200, camPosZ = 1000; //Starting camera position
+    float centerX = 200, centerY = 200, centerZ = 200; //Center position
+
+    float initCamPosX = camPosX; //set initial camera positions (used for reset button)
+    float initCamPosY = camPosY;
+    float initCamPosZ = camPosZ;
+    float initCenterPosX = centerX;
+    float initCenterPosY = centerY;
+    float initCenterPosZ = centerZ;
+    QVector3D eye = QVector3D(camPosX,camPosY,camPosZ); //Initialize camera position
+    QVector3D centre = QVector3D(centerX,centerY,centerZ);
     int xStart, yStart;
     int screenWidth, screenHeight;
     int numVertices = 0;
-
-
+    QVector<QVector3D> colors;
     void loadTexture(QString file, GLuint texPointer);
     QVector<quint8> imageToBytes(QImage image);
 
@@ -83,7 +95,7 @@ private:
     GLuint bo;
     GLuint boCol;
     GLuint texCoords;
-
+    GLuint normalInt;
 
     GLuint texPointer;
     GLint texUniform;
@@ -97,10 +109,14 @@ private:
     QMatrix4x4 model;
     QMatrix4x4 view;
     QMatrix4x4 projection;
+    QMatrix3x3 normalMatrix;
+    QVector3D matColor, lightPos;
+    QVector4D intensities;
 
     QVector<quint8> textureVector;
 
-    GLint ULmodel, ULview, ULprojection;
+    GLint ULmodel, ULview, ULprojection, ULnormal;
+    GLint ULintensities, ULmatCol, ULlightPos;
 
 
     /* End of private members */

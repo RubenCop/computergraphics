@@ -56,3 +56,19 @@ void MainWindow::on_scaleSlider_valueChanged(int value)
     double scale = (double)value / (double)(ui->scaleSlider->maximum()/3);
     ui->mainView->updateScale((float)scale);
 }
+
+void MainWindow::on_resetRotationButton_clicked()
+{
+    ui->mainView->updateRotation(0,0,0);
+}
+
+void MainWindow::on_resetCameraButton_clicked()
+{
+    ui->mainView->resetCameraView();
+}
+
+void MainWindow::on_resetScaleButton_clicked()
+{
+    ui->mainView->resetScale();
+}
+

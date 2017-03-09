@@ -5,7 +5,7 @@
 #include <QDateTime>
 
 QVector<QVector3D> vertices;
-
+QVector<QVector3D> normals;
 /**
  * @brief MainView::MainView
  *
@@ -63,6 +63,7 @@ void MainView::createShaderPrograms() {
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
+    ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
     texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
     /* Add your other shaders below */
@@ -112,6 +113,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 
     cubeModel = new Model(filename);
     numTris = cubeModel->getNumTriangles();
+    normals = cubeModel->getNormals();
 
     Q_UNUSED(bufferObject);
 
@@ -136,8 +138,9 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length() * 3,colors.data(),GL_STATIC_DRAW);
 
-    QVector<QVector2D> textureCoords = cubeModel->getTextureCoords();
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*normals.length()* 3,normals.data(),GL_STATIC_DRAW);
 
+    QVector<QVector2D> textureCoords = cubeModel->getTextureCoords();
     glBindBuffer(GL_ARRAY_BUFFER,texCoords);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*textureCoords.length() * 3,textureCoords.data(),GL_STATIC_DRAW);
 
@@ -180,6 +183,7 @@ void MainView::updateUniforms() {
     glUniformMatrix4fv(ULmodel, 1, GL_FALSE, model.data());
     glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
     glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
+    glUniformMatrix3fv(ULnormal, 1, GL_FALSE, normalMatrix.data());
 
 }
 
@@ -224,7 +228,7 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/cube.obj", NULL);
+    loadModel(":/models/sphere.obj", NULL);
     glGenTextures(1,&texPointer);
     loadTexture(":/textures/rug_logo.png",texPointer);
 
@@ -264,38 +268,30 @@ void MainView::paintGL() {
     view.setToIdentity();
     projection.setToIdentity();
 
+
+    model.translate(centre);    //rotate around the point the camera is focussed on
     model.rotate(newX,1,0,0);
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
-
-    //qDebug() << newWidth << endl;
-
-    QVector3D eye = QVector3D(4,4,0);
-    QVector3D centre = QVector3D(0,0,0);
-    QVector3D up = QVector3D(0,1,0);
-
     model.scale(newScale,newScale,newScale);
+    //model.translate(pos-centre);
 
+    QVector3D up = QVector3D(0,1,0);
+    model.scale(newScale,newScale,newScale);
+    eye.setX(camPosX);
+    eye.setY(camPosY);
+    eye.setZ(camPosZ);
     view.lookAt(eye,centre,up);
-    //view.translate(,0,0);
-    projection.perspective(60.0, 1.0, 0.1, 100.0);
-
-    //model.translate(0,0,4);
-
+    projection.perspective(30.0, 1.0, 50.0, 1000.0);
     // Clear the screen before rendering
     glClearColor(0.0f,0.0f,0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     mainShaderProg->bind();
-
     updateUniforms();
-
-
-    // TODO: implement your drawing functions
+    //renderRaytracerScene();
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texPointer);
     glUniform1i(texUniform,0);

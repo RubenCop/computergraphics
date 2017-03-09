@@ -5,11 +5,27 @@
 void MainView::updateRotation(int x, int y, int z)
 {
     qDebug() << "updateRotation(" << x << "," << y << "," << z << ");";
+    // divide by 100 to decrease sensitivity
     newX = x;
     newY = y;
     newZ = z;
     update();
 }
+
+void MainView::resetCameraView()
+{
+    camPosX = initCamPosX;
+    camPosY = initCamPosY;
+    camPosZ = initCamPosZ;
+    update();
+}
+
+void MainView::resetScale()
+{
+    newScale = 1;
+    update();
+}
+
 
 void MainView::updateModel(QString name)
 {
@@ -40,8 +56,26 @@ void MainView::updateScale(float scale)
 // Triggered by pressing a key
 void MainView::keyPressEvent(QKeyEvent *ev)
 {
+    int moveStep = 10; //Initialize the unit (speed) with which the camera should move around
     switch(ev->key()) {
-    case 'A': qDebug() << "A pressed"; break;
+    case 'Q': qDebug() << "Q pressed";
+        camPosX = camPosX - moveStep;
+        break;
+    case 'W': qDebug() << "W pressed";
+        camPosX = camPosX + moveStep;
+        break;
+    case 'A': qDebug() << "A pressed";
+        camPosY = camPosY - moveStep;
+        break;
+    case 'S': qDebug() << "S pressed";
+        camPosY = camPosY + moveStep;
+        break;
+    case 'Z': qDebug() << "Z pressed";
+        camPosZ = camPosZ - moveStep;
+        break;
+    case 'X': qDebug() << "X pressed";
+        camPosZ = camPosZ + moveStep;
+        break;
     default:
         // ev->key() is an integer. For alpha numeric characters keys it equivalent with the char value ('A' == 65, '1' == 49)
         // Alternatively, you could use Qt Key enums, see http://doc.qt.io/qt-5/qt.html#Key-enum
@@ -82,9 +116,9 @@ void MainView::mouseMoveEvent(QMouseEvent *ev)
 
     float currentX = ev->x();
     float currentY = ev->y();
-
-    newX -= currentX - xStart;
-    newY -= currentY - yStart;
+    // divide by 10 to decrease sensitivity
+    newX += (currentY - yStart)/10;
+    newY += (currentX - xStart)/10;
 
     xStart = currentX;
     yStart = currentY;
@@ -118,7 +152,7 @@ void MainView::wheelEvent(QWheelEvent *ev)
 {
     // Implement something
     qDebug() << "Mouse wheel:" << ev->delta();
-    newScale += (float)ev->delta()/1000;
+    newScale += (float)ev->delta()/10000;
     qDebug() << "wheel scale " << newScale << endl;
 
     update();

@@ -13,6 +13,8 @@ layout (location = 3) in vec2 textureCoords_in;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat3 normalMatrix;
+uniform vec3 lightPos;
 
 // uniform mat4 modelTransform; for example
 
@@ -22,14 +24,18 @@ uniform mat4 projection;
 // out vec3 vertPos; for example
 flat out vec3 color;
 out vec2 vertexTexCoords;
+out vec3 normal;
+out vec3 FragPos;
+out vec3 lightPosOut;
 
 void main()
 {
     // gl_Position is the output (a vec4) of the vertex shader
     // Currently without any transformation
     color = vertColor_in;
-
+    lightPosOut = mat3(view) * mat3(model) * lightPos;
+    FragPos = vertCoordinates_in;
     gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
-
+    normal = normalMatrix * vertColor_in;
     vertexTexCoords = textureCoords_in;
 }

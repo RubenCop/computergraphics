@@ -108,7 +108,6 @@ void MainView::createBuffers() {
     glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
     glEnableVertexAttribArray(3);
 
-
     //empty bind
     glBindVertexArray(0);
 }
