@@ -40,6 +40,8 @@ MainView::~MainView() {
     glDeleteBuffers(1,&boCol);
     glDeleteVertexArrays(1,&vao);
 
+    glDeleteTextures(1,&texBendi);
+
     debugLogger->stopLogging();
 
     qDebug() << "MainView destructor";
@@ -61,6 +63,7 @@ void MainView::createShaderPrograms() {
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
 
+    texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -92,6 +95,11 @@ void MainView::createBuffers() {
 
     glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,0);
 
+    glGenTextures(1,&texBendi);
+    glBindTexture(GL_TEXTURE_2D,texBendi);
+    glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
+    glEnableVertexAttribArray(3);
+
     glBindVertexArray(0);
 
 }
@@ -122,6 +130,21 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length() * 3,colors.data(),GL_STATIC_DRAW);
+
+
+}
+
+void MainView::loadTexture(QString file, GLuint texBendi) {
+    QImage textureImage;
+    textureImage.load(file);
+
+    textureVector = imageToBytes(textureImage);
+
+    glBindTexture(GL_TEXTURE_2D, texBendi);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureImage.width(),textureImage.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVector.data());
+
 
 
 }
@@ -185,6 +208,9 @@ void MainView::initializeGL() {
     createBuffers();
 
     loadModel(":/models/cube.obj", NULL);
+    glGenTextures(1,&texBendi);
+    loadTexture(":/textures/rug_logo.png",texBendi);
+
 
 
 
@@ -252,6 +278,10 @@ void MainView::paintGL() {
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texBendi);
+    glUniform1i(texUniform,0);
 
     mainShaderProg->release();
 }

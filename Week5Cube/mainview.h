@@ -29,6 +29,10 @@ public:
     int screenWidth, screenHeight;
     int numVertices = 0;
 
+
+    void loadTexture(QString file, GLuint texBendi);
+    QVector<quint8> imageToBytes(QImage image);
+
     /* Add your public members below */
 
     /* End of public members */
@@ -79,12 +83,18 @@ private:
     GLuint bo;
     GLuint boCol;
 
+
+    GLuint texBendi;
+    GLint texUniform;
+
     unsigned numTris;
 
     //T2
     QMatrix4x4 model;
     QMatrix4x4 view;
     QMatrix4x4 projection;
+
+    QVector<quint8> textureVector;
 
     GLint ULmodel, ULview, ULprojection;
 
