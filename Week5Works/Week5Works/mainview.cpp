@@ -228,9 +228,9 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/sphere.obj", NULL);
+    loadModel(":/models/cat.obj", NULL);
     glGenTextures(1,&texPointer);
-    loadTexture(":/textures/rug_logo.png",texPointer);
+    loadTexture(":/textures/cat_diff.png",texPointer);
 
 
 

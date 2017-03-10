@@ -27,8 +27,8 @@ public:
     float newScale = 1.0;
     float newX, newY, newZ;
     //##The eye/camera position and the center (focuspoint of the camera) can be initialized here. They are used in mainview.cpp
-    float camPosX = 200, camPosY = 200, camPosZ = 1000; //Starting camera position
-    float centerX = 200, centerY = 200, centerZ = 200; //Center position
+    float camPosX = 0, camPosY = 0, camPosZ = 4; //Starting camera position
+    float centerX = 0, centerY = 0, centerZ = 0; //Center position
 
     float initCamPosX = camPosX; //set initial camera positions (used for reset button)
     float initCamPosY = camPosY;
