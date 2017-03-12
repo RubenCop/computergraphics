@@ -42,7 +42,6 @@ MainView::~MainView() {
     glDeleteVertexArrays(1,&texCoords);
 
     glDeleteTextures(1,&texPointer);
-    glDeleteTextures(1,&texPointer2);
 
     debugLogger->stopLogging();
 
@@ -62,14 +61,12 @@ void MainView::createShaderPrograms() {
     mainShaderProg->link();
 
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
-    ULmodel2 = glGetUniformLocation(mainShaderProg->programId(), "model2");
 
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
     ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
     texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
-    texUniform2 = glGetUniformLocation(mainShaderProg->programId(), "textureVector2");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -106,11 +103,6 @@ void MainView::createBuffers() {
    glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
    glEnableVertexAttribArray(3);
 
-   glGenBuffers(1,&texCoords);
-   glBindBuffer(GL_ARRAY_BUFFER,texCoords);
-   glVertexAttribPointer(4,2,GL_FLOAT,GL_FALSE,0,0);
-   glEnableVertexAttribArray(4);
-
    glBindVertexArray(0);
 
 }
@@ -121,14 +113,11 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     currentModel = new Model(filename);
     numTris = currentModel->getNumTriangles();
     normals = currentModel->getNormals();
-
     // TODO: implement loading of model into Buffer Objects
     vertices = currentModel->getVertices();
-
     //textureCoords = currentModel->getTextureCoords()
     numVertices = vertices.length();
     srand (time(NULL));
-
     // Generate random colors
     QVector<QVector3D> colors;
     for (int i = 0; i < numVertices; i++)
@@ -139,10 +128,8 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     }
     glBindBuffer(GL_ARRAY_BUFFER,bo);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*vertices.length() * 3,vertices.data(),GL_STATIC_DRAW);
-
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length() * 3,colors.data(),GL_STATIC_DRAW);
-
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*normals.length()* 3,normals.data(),GL_STATIC_DRAW);
 
     QVector<QVector2D> textureCoords = currentModel->getTextureCoords();
@@ -154,7 +141,6 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
 void MainView::loadTexture(QString file, GLuint texPointer) {
     QImage textureImage;
     textureImage.load(file);
-
     textureVector = imageToBytes(textureImage);
     //qDebug() << textureVector << endl;
 
@@ -178,7 +164,6 @@ void MainView::updateUniforms() {
     // TODO: update the uniforms in the shaders using the glUniform<datatype> functions
 
     glUniformMatrix4fv(ULmodel, 1, GL_FALSE, model.data());
-    glUniformMatrix4fv(ULmodel2, 1, GL_FALSE, model2.data());
 
     glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
     glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
@@ -230,11 +215,11 @@ void MainView::initializeGL() {
     loadModel(":/models/cat.obj", NULL);
     glGenTextures(1,&texPointer);
     loadTexture(":/textures/cat_diff.png",texPointer);
-
+/*
     loadModel(":/models/cube.obj", NULL);
     glGenTextures(1,&texPointer2);
     loadTexture(":/textures/rug_logo.png",texPointer2);
-
+*/
     //timer start
     timer.start(30);
 
@@ -282,12 +267,14 @@ void MainView::paintGL() {
     model.rotate(newZ,0,0,1);
     model.scale(newScale,newScale,newScale);
 
+    /*
     model2.setToIdentity();
     model2.translate(centre2);    //rotate around the point the camera is focussed on
     model2.rotate(newX2,1,0,0);
     model2.rotate(newY2,0,1,0);
     model2.rotate(newZ2,0,0,1);
     model2.scale(newScale,newScale,newScale);
+    */
 
     eye.setX(camPosX);
     eye.setY(camPosY);
@@ -306,10 +293,6 @@ void MainView::paintGL() {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texPointer);
     glUniform1i(texUniform,0);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texPointer2);
-    glUniform1i(texUniform2,0);
 
     mainShaderProg->release();
 }
