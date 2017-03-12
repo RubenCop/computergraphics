@@ -11,7 +11,6 @@
 #include <QOpenGLShaderProgram>
 #include <QTimer>
 #include <QVector3D>
-#include <QImage>
 
 class MainView : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core {
     Q_OBJECT
@@ -19,49 +18,55 @@ class MainView : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core {
 public:
     MainView(QWidget *parent = 0);
     ~MainView();
-
     void resetCameraView();
     void resetScale();
     void updateRotation(int x, int y, int z);
     void updateModel(QString name);
     void updateShader(QString name);
     void updateScale(float scale);
-    // Add this as a public member in mainview.h
-    // (you might need to include QImage)
-    void loadTexture(QString file, GLuint texBendi);
-    QVector<quint8> imageToBytes(QImage image);
-
-    float newScale = 1.0;
-    float newX, newY, newZ;
-//##The eye/camera position and the center (focuspoint of the camera) can be initialized here. They are used in mainview.cpp
-    float camPosX = 200, camPosY = 200, camPosZ = 1000; //Starting camera position
-    float centerX = 200, centerY = 200, centerZ = 200; //Center position
-
+    //camera initialization
+    float camPosX = 0, camPosY = 0, camPosZ = 4; //Starting camera position
+    QVector3D eye = QVector3D(camPosX,camPosY,camPosZ); //Initialize camera position
     float initCamPosX = camPosX; //set initial camera positions (used for reset button)
     float initCamPosY = camPosY;
     float initCamPosZ = camPosZ;
+
+    //center initializtion model 1
+    float centerX = 0, centerY = 0, centerZ = 0; //Center position
     float initCenterPosX = centerX;
     float initCenterPosY = centerY;
     float initCenterPosZ = centerZ;
-    QVector3D eye = QVector3D(camPosX,camPosY,camPosZ); //Initialize camera position
     QVector3D centre = QVector3D(centerX,centerY,centerZ);
+    //rotate/translate initialization model 1
+    float newX, newY, newZ;
+
+    //center initializtion model 2
+    float centerX2 = 2, centerY2 = 2, centerZ2 = 4; //Center position
+    float initCenterPosX2 = centerX2;
+    float initCenterPosY2 = centerY2;
+    float initCenterPosZ2 = centerZ2;
+    QVector3D centre2 = QVector3D(centerX2,centerY2,centerZ2);
+    //rotate/translate initialization model 2
+    float newX2, newY2, newZ2;
+
+    //other variables
     int xStart, yStart;
-
+    float newScale = 1.0;
     int screenWidth, screenHeight;
-
     int numVertices = 0;
     QVector<QVector3D> colors;
-
-    /* Add your public members below */
-
-    /* End of public members */
-
+    void loadTexture(QString file, GLuint texPointer);
+    QVector<quint8> imageToBytes(QImage image);
     QVector3D convertHSLtoRGB(float H, float S, float L);
+
+    //Animation parameters from animate() in mainview.cpp
+    float xRate = 1.0;
 
 protected:
     void initializeGL();
     void resizeGL(int newWidth, int newHeight);
     void paintGL();
+    void animate();
 
     // Functions for keyboard input events
     void keyPressEvent(QKeyEvent *ev);
@@ -94,31 +99,37 @@ private:
 
     QTimer timer; // timer used for animation
 
-    Model *cubeModel;
+    Model *currentModel;
     GLuint cubeBO;
 
+    //1.4
     GLuint vao;
     GLuint bo;
     GLuint boCol;
+    GLuint texCoords, texCoords2;
     GLuint normalInt;
 
-    //1.1
-    GLuint texBendi;
-    GLint ULtexCol;
+    GLuint texPointer, texPointer2;
+    GLint texUniform, texUniform2;
+
+
+    QVector<QVector2D> textureCoords, textureCoords2;
 
     unsigned numTris;
 
+    //T2
     QMatrix4x4 model;
+    QMatrix4x4 model2;
     QMatrix4x4 view;
     QMatrix4x4 projection;
     QMatrix3x3 normalMatrix;
-
     QVector3D matColor, lightPos;
     QVector4D intensities;
 
-    GLint ULmodel, ULview, ULprojection, ULnormal;
-    GLint ULintensities, ULmatCol, ULlightPos;
+    QVector<quint8> textureVector, textureVector2;
 
+    GLint ULmodel, ULmodel2, ULview, ULprojection, ULnormal;
+    GLint ULintensities, ULmatCol, ULlightPos;
 
 
     /* End of private members */

@@ -55,7 +55,6 @@ QVector3D MainView::convertHSLtoRGB(float H, float S, float L) {
     return preRGB + QVector3D(m,m,m);
 }
 
-
 // Add this to utility.cpp
 QVector<quint8> MainView::imageToBytes(QImage image) {
     // needed since (0,0) is bottom left in OpenGL
@@ -83,3 +82,4 @@ QVector<quint8> MainView::imageToBytes(QImage image) {
     }
     return pixelData;
 }
+

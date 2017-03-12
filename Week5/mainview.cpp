@@ -6,7 +6,6 @@
 
 QVector<QVector3D> vertices;
 QVector<QVector3D> normals;
-
 /**
  * @brief MainView::MainView
  *
@@ -29,7 +28,7 @@ MainView::MainView(QWidget *parent) : QOpenGLWidget(parent) {
  *
  */
 MainView::~MainView() {
-    delete cubeModel;
+    delete currentModel;
 
     // Free Buffer Objects before Vertex Arrays
 
@@ -40,8 +39,10 @@ MainView::~MainView() {
     glDeleteBuffers(1,&bo);
     glDeleteBuffers(1,&boCol);
     glDeleteVertexArrays(1,&vao);
+    glDeleteVertexArrays(1,&texCoords);
 
-    glDeleteTextures(1,&texBendi);
+    glDeleteTextures(1,&texPointer);
+    glDeleteTextures(1,&texPointer2);
 
     debugLogger->stopLogging();
 
@@ -61,11 +62,14 @@ void MainView::createShaderPrograms() {
     mainShaderProg->link();
 
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
+    ULmodel2 = glGetUniformLocation(mainShaderProg->programId(), "model2");
+
     ULview = glGetUniformLocation(mainShaderProg->programId(), "view");
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
     ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
-    ULtexCol = glGetUniformLocation(mainShaderProg->programId(),"texCol");
+    texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
+    texUniform2 = glGetUniformLocation(mainShaderProg->programId(), "textureVector2");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -82,7 +86,6 @@ void MainView::createShaderPrograms() {
 void MainView::createBuffers() {
     // 1.6
     glGenVertexArrays(1,&vao);
-    qDebug() << "vao" << endl;
     glBindVertexArray(vao);
 
     glGenBuffers(1,&bo);
@@ -98,76 +101,76 @@ void MainView::createBuffers() {
 
     glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,0,0);
 
+    glGenBuffers(1,&texCoords);
+    glBindBuffer(GL_ARRAY_BUFFER,texCoords);
+   glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
+   glEnableVertexAttribArray(3);
 
-   // glGenVertexArrays(3,&texBendi);
-    glGenBuffers(1,&texBendi);
-    //glBufferData(GL_ARRAY_BUFFER,sizeof(float)*textureVec.length()* 3,textureVec.data(),GL_STATIC_DRAW);
-    glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA8, texBendi);
+   glGenBuffers(1,&texCoords);
+   glBindBuffer(GL_ARRAY_BUFFER,texCoords);
+   glVertexAttribPointer(4,2,GL_FLOAT,GL_FALSE,0,0);
+   glEnableVertexAttribArray(4);
 
-    //glBindVertexArray(texBendi);
-    glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
-    glEnableVertexAttribArray(3);
+   glBindVertexArray(0);
 
-    //empty bind
-    glBindVertexArray(0);
 }
 
 
 void MainView::loadModel(QString filename, GLuint bufferObject) {
 
-    cubeModel = new Model(filename);
-    numTris = cubeModel->getNumTriangles();
-
-    Q_UNUSED(bufferObject);
+    currentModel = new Model(filename);
+    numTris = currentModel->getNumTriangles();
+    normals = currentModel->getNormals();
 
     // TODO: implement loading of model into Buffer Objects
-    vertices = cubeModel->getVertices();
-    normals = cubeModel->getNormals();
+    vertices = currentModel->getVertices();
+
+    //textureCoords = currentModel->getTextureCoords()
     numVertices = vertices.length();
     srand (time(NULL));
 
     // Generate random colors
-   /* for (int i = 0; i < numVertices; i++)
+    QVector<QVector3D> colors;
+    for (int i = 0; i < numVertices; i++)
     {
         //srand (time(NULL));
         QVector3D col = QVector3D(rand()/(float)RAND_MAX,rand()/(float)RAND_MAX,rand()/(float)RAND_MAX);
         colors.push_back(col);
-    }*/
+    }
     glBindBuffer(GL_ARRAY_BUFFER,bo);
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*vertices.length() * 3,vertices.data(),GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER,boCol);
-    //updateBuffers();
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length() * 3,colors.data(),GL_STATIC_DRAW);
+
     glBufferData(GL_ARRAY_BUFFER,sizeof(float)*normals.length()* 3,normals.data(),GL_STATIC_DRAW);
 
+    QVector<QVector2D> textureCoords = currentModel->getTextureCoords();
+    glBindBuffer(GL_ARRAY_BUFFER,texCoords);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(float)*textureCoords.length() * 3,textureCoords.data(),GL_STATIC_DRAW);
+
 }
 
-//1.2
-void MainView::loadTexture(QString file, GLuint texBendi) {
-    qDebug() << "Loading texture" << endl;
-    QImage texture;
-    texture.load(file);
-    //1.3
-    QVector<quint8> textureVec = imageToBytes(texture);
+void MainView::loadTexture(QString file, GLuint texPointer) {
+    QImage textureImage;
+    textureImage.load(file);
 
-    //1.4
-    glBindTexture(GL_TEXTURE_2D, texBendi);
+    textureVector = imageToBytes(textureImage);
+    //qDebug() << textureVector << endl;
+
+    glBindTexture(GL_TEXTURE_2D, texPointer);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-    //1.5
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, texture.width(),texture.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVec.data());
-    //1.6 Optional for mipmapping
-    //glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, textureImage.width(),textureImage.height(),0,GL_RGBA,GL_UNSIGNED_BYTE,textureVector.data());
 }
-
-
-
 
 void MainView::updateBuffers() {
     // Change the data inside buffers (if you want)
     // make sure to change GL_STATIC_DRAW to GL_DYNAMIC_DRAW
     // in the call to glBufferData for better performance
-    //glBufferData(GL_ARRAY_BUFFER,sizeof(float)*colors.length()* 3,colors.data(),GL_DYNAMIC_DRAW);
 }
 
 
@@ -175,15 +178,12 @@ void MainView::updateUniforms() {
     // TODO: update the uniforms in the shaders using the glUniform<datatype> functions
 
     glUniformMatrix4fv(ULmodel, 1, GL_FALSE, model.data());
+    glUniformMatrix4fv(ULmodel2, 1, GL_FALSE, model2.data());
+
     glUniformMatrix4fv(ULview, 1, GL_FALSE, view.data());
     glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
     glUniformMatrix3fv(ULnormal, 1, GL_FALSE, normalMatrix.data());
 
-    glUniform1i(ULtexCol,1);
-
-    //glUniformMatrix4fv(ULprojection, 1, GL_FALSE, projection.data());
-    //glUniform3f();
-    //glUniform4fv(ULintensities, 1, intensities);
 }
 
 /**
@@ -223,19 +223,20 @@ void MainView::initializeGL() {
 
     /* TODO: call your initialization functions here */
 
-
-
     createShaderPrograms();
-
 
     createBuffers();
 
+    loadModel(":/models/cat.obj", NULL);
+    glGenTextures(1,&texPointer);
+    loadTexture(":/textures/cat_diff.png",texPointer);
+
     loadModel(":/models/cube.obj", NULL);
+    glGenTextures(1,&texPointer2);
+    loadTexture(":/textures/rug_logo.png",texPointer2);
 
-    //1.7
-
-    loadTexture(":/textures/rug_logo.png",texBendi);
-    glGenTextures(1,&texBendi);
+    //timer start
+    timer.start(30);
 
 
 
@@ -267,52 +268,54 @@ void MainView::resizeGL(int newWidth, int newHeight) {
  *
  */
 void MainView::paintGL() {
+    //call animation
+    animate();
 
-    model.setToIdentity();
     view.setToIdentity();
     projection.setToIdentity();
+    QVector3D up = QVector3D(0,1,0);
 
-
-    /*
+    model.setToIdentity();
+    model.translate(centre);    //rotate around the point the camera is focussed on
     model.rotate(newX,1,0,0);
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
-    */
-    //model.translate(1,0,0);
+    model.scale(newScale,newScale,newScale);
 
-    //qDebug() << newWidth << endl;
+    model2.setToIdentity();
+    model2.translate(centre2);    //rotate around the point the camera is focussed on
+    model2.rotate(newX2,1,0,0);
+    model2.rotate(newY2,0,1,0);
+    model2.rotate(newZ2,0,0,1);
+    model2.scale(newScale,newScale,newScale);
 
-    //eye declared in mainview.h
-
-    QVector3D up = QVector3D(0,1,0);
-
-    //model.scale(newScale,newScale,newScale);
     eye.setX(camPosX);
     eye.setY(camPosY);
     eye.setZ(camPosZ);
     view.lookAt(eye,centre,up);
-    //view.translate(,0,0);
-    projection.perspective(30.0, 1.0, 50.0, 1000.0);
-    qDebug() << "eye " << eye << endl;
-    //model.translate(0,0,4);
-
+    projection.perspective(30.0, 1.0, 0.1, 1000.0);
     // Clear the screen before rendering
     glClearColor(0.0f,0.0f,0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texBendi);
+    mainShaderProg->bind();
+    updateUniforms();
     //renderRaytracerScene();
+    glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texPointer);
+    glUniform1i(texUniform,0);
 
-    mainShaderProg->bind();
-
-
-
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texPointer2);
+    glUniform1i(texUniform2,0);
 
     mainShaderProg->release();
+}
+
+void MainView::animate() {
+   newX += xRate;
 }
 
 // Add your function implementations below

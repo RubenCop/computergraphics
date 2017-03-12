@@ -11,22 +11,21 @@
 // Specify the Uniforms of the vertex shaders
 // uniform vec3 lightPosition; for example
 
+uniform sampler2D texUniform;
+
 // Specify the output of the fragment shader
 // Usually a vec4 describing a color (Red, Green, Blue, Alpha/Transparency)
 out vec4 fColor;
+flat in vec3 color;
+in vec2 vertexTexCoords;
 in vec3 FragPos;
 in vec3 normal;
 in vec3 lightPosOut;
-in vec2 vertexTexCoords;
-
-//uniform mat3 normalMatrix;
 
 uniform vec3 objCol;
 uniform vec4 intensities;
 uniform vec3 matColor;
-uniform sampler2D texCol;
-
-
+/*
 void main()
 {
     const vec3 lightColor = vec3(1,1,1);
@@ -45,6 +44,16 @@ void main()
             comDiffuse * matColor * lightColor +
             comSpecular * lightColor;
 
-    fColor = vec4(1,1,1, 1);
-    //fColor = texture2D(texCol, vertexTexCoords);
+    fColor = vec4(finalColor, 1);
+}
+*/
+
+void main()
+{
+    // Plain White
+    //fColor = vec4(color, 1.0);
+
+    //texture instead of texture2D, otherwise it will not work on system
+    fColor = texture(texUniform, vertexTexCoords);
+
 }

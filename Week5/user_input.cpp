@@ -58,22 +58,22 @@ void MainView::keyPressEvent(QKeyEvent *ev)
 {
     int moveStep = 10; //Initialize the unit (speed) with which the camera should move around
     switch(ev->key()) {
-    case 'Q': qDebug() << "A pressed";
+    case 'Q': qDebug() << "Q pressed";
         camPosX = camPosX - moveStep;
         break;
-    case 'W': qDebug() << "A pressed";
+    case 'W': qDebug() << "W pressed";
         camPosX = camPosX + moveStep;
         break;
     case 'A': qDebug() << "A pressed";
         camPosY = camPosY - moveStep;
         break;
-    case 'S': qDebug() << "A pressed";
+    case 'S': qDebug() << "S pressed";
         camPosY = camPosY + moveStep;
         break;
-    case 'Z': qDebug() << "A pressed";
+    case 'Z': qDebug() << "Z pressed";
         camPosZ = camPosZ - moveStep;
         break;
-    case 'X': qDebug() << "A pressed";
+    case 'X': qDebug() << "X pressed";
         camPosZ = camPosZ + moveStep;
         break;
     default:
