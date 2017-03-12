@@ -10,5 +10,7 @@
         <file>textures/rug_logo.png</file>
         <file>models/cat.obj</file>
         <file>models/sphere.obj</file>
+        <file>models/spongebob.obj</file>
+        <file>textures/spongebob_d.png</file>
     </qresource>
 </RCC>
