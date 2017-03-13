@@ -8,6 +8,7 @@ layout (location = 0) in vec3 vertCoordinates_in;
 layout (location = 1) in vec3 vertColor_in;
 layout (location = 2) in vec3 vertNormal_in;
 layout (location = 3) in vec2 textureCoords_in;
+layout (location = 3) in vec2 textureCoords2_in;
 
 // Specify the Uniforms of the vertex shader
 uniform mat4 model;

@@ -215,6 +215,7 @@ void MainView::initializeGL() {
     loadModel(":/models/cat.obj", NULL);
     glGenTextures(1,&texPointer);
     loadTexture(":/textures/cat_diff.png",texPointer);
+
 /*
     loadModel(":/models/cube.obj", NULL);
     glGenTextures(1,&texPointer2);
@@ -259,14 +260,14 @@ void MainView::paintGL() {
     view.setToIdentity();
     projection.setToIdentity();
     QVector3D up = QVector3D(0,1,0);
-
+/*
     model.setToIdentity();
     model.translate(centre);    //rotate around the point the camera is focussed on
     model.rotate(newX,1,0,0);
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
     model.scale(newScale,newScale,newScale);
-
+*/
     /*
     model2.setToIdentity();
     model2.translate(centre2);    //rotate around the point the camera is focussed on
@@ -287,12 +288,15 @@ void MainView::paintGL() {
     mainShaderProg->bind();
     updateUniforms();
     //renderRaytracerScene();
+    renderAnimation();
+    /*
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texPointer);
     glUniform1i(texUniform,0);
+    */
 
     mainShaderProg->release();
 }
