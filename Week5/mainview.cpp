@@ -212,9 +212,9 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/cat.obj", NULL);
+    loadModel(":/models/patrick.obj", NULL);
     glGenTextures(1,&texPointer);
-    loadTexture(":/textures/cat_diff.png",texPointer);
+    loadTexture(":/textures/patrick_d.png",texPointer);
 
 /*
     loadModel(":/models/cube.obj", NULL);
@@ -302,7 +302,7 @@ void MainView::paintGL() {
 }
 
 void MainView::animate() {
-   newX += xRate;
+   newY += xRate;
 }
 
 // Add your function implementations below

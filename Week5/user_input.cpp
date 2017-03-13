@@ -56,7 +56,7 @@ void MainView::updateScale(float scale)
 // Triggered by pressing a key
 void MainView::keyPressEvent(QKeyEvent *ev)
 {
-    int moveStep = 10; //Initialize the unit (speed) with which the camera should move around
+    int moveStep = 1; //Initialize the unit (speed) with which the camera should move around
     switch(ev->key()) {
     case 'Q': qDebug() << "Q pressed";
         camPosX = camPosX - moveStep;

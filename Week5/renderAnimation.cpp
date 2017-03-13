@@ -1,15 +1,20 @@
 #include "mainview.h"
 
-void MainView::renderObject(QVector3D pos, QVector3D lightpos)
+void MainView::renderObject(QVector3D pos, QVector3D lightpos, QVector3D animateRotation, QVector3D animateTranslation)
 {
     // OpenGL assignment 1, part 2: create a function to render the sphere
     // Use Model(":/models/sphere.obj") for the model
 
     model.setToIdentity();      //reset matrix
     model.translate(centre);    //rotate around the point the camera is focussed on
-    model.rotate(newX,1,0,0);
-    model.rotate(newY,0,1,0);
-    model.rotate(newZ,0,0,1);
+    model.rotate(newX + newX*animateRotation.x(),1,0,0);
+    model.rotate(newY + newY*animateRotation.y(),0,1,0);
+    model.rotate(newZ + newZ*animateRotation.z(),0,0,1);
+    //qDebug() << animateRotation.x() << endl;
+    model.rotate(animateRotation.x(),1,0,0);
+    model.rotate(animateRotation.y(),0,1,0);
+    model.rotate(animateRotation.z(),0,0,1);
+
     model.scale(newScale,newScale,newScale);
     model.translate(pos-centre);
 
@@ -52,7 +57,17 @@ void MainView::renderAnimation()
 {
     QVector3D lightpos = QVector3D(-200,600,1500);
     // Blue sphere
-    renderObject(QVector3D(0,0,0),lightpos);
+    renderObject(QVector3D(0,0,0),lightpos,QVector3D(0,-2,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(3,0,0),lightpos,QVector3D(0,2.7,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(5,0,0),lightpos,QVector3D(0,1.1,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(7,0,0),lightpos,QVector3D(0,1.5,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(9,0,0),lightpos,QVector3D(0,0.3,0),QVector3D(0,0,0));
+
+
 
     // Green sphere
     //renderObject(QVector3D(210,270,300),QVector3D(0,1,0),QVector4D(0.2f,0.3f,0.5f,8),lightpos); // ka, kd, ks, n

@@ -89,7 +89,7 @@ private:
 
     // Raytracer scene functions
     void renderSphere(QVector3D pos, QVector3D color, QVector4D material, QVector3D lightpos);
-    void renderObject(QVector3D pos, QVector3D lightpos);
+    void renderObject(QVector3D pos, QVector3D lightpos, QVector3D animateRotation, QVector3D animateTranslation);
     void renderRaytracerScene();
     void renderAnimation();
 
