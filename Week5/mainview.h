@@ -25,7 +25,7 @@ public:
     void updateShader(QString name);
     void updateScale(float scale);
     //camera initialization
-    float camPosX = 0, camPosY = 0, camPosZ = 4; //Starting camera position
+    float camPosX = 0, camPosY = 5, camPosZ = 20; //Starting camera position
     QVector3D eye = QVector3D(camPosX,camPosY,camPosZ); //Initialize camera position
     float initCamPosX = camPosX; //set initial camera positions (used for reset button)
     float initCamPosY = camPosY;
@@ -40,15 +40,6 @@ public:
     //rotate/translate initialization model 1
     float newX, newY, newZ;
 
-    //center initializtion model 2
-    float centerX2 = 2, centerY2 = 2, centerZ2 = 4; //Center position
-    float initCenterPosX2 = centerX2;
-    float initCenterPosY2 = centerY2;
-    float initCenterPosZ2 = centerZ2;
-    QVector3D centre2 = QVector3D(centerX2,centerY2,centerZ2);
-    //rotate/translate initialization model 2
-    float newX2, newY2, newZ2;
-
     //other variables
     int xStart, yStart;
     float newScale = 1.0;
@@ -61,6 +52,8 @@ public:
 
     //Animation parameters from animate() in mainview.cpp
     float xRate = 1.0;
+    float yRate = 1.0;
+    float zRate = 0.5;
 
 protected:
     void initializeGL();
@@ -108,29 +101,28 @@ private:
     GLuint vao;
     GLuint bo;
     GLuint boCol;
-    GLuint texCoords, texCoords2;
+    GLuint texCoords;
     GLuint normalInt;
 
-    GLuint texPointer, texPointer2;
-    GLint texUniform, texUniform2;
+    GLuint texPointer;
+    GLint texUniform;
 
 
-    QVector<QVector2D> textureCoords, textureCoords2;
+    QVector<QVector2D> textureCoords;
 
     unsigned numTris;
 
     //T2
     QMatrix4x4 model;
-    QMatrix4x4 model2;
     QMatrix4x4 view;
     QMatrix4x4 projection;
     QMatrix3x3 normalMatrix;
     QVector3D matColor, lightPos;
     QVector4D intensities;
 
-    QVector<quint8> textureVector, textureVector2;
+    QVector<quint8> textureVector;
 
-    GLint ULmodel, ULmodel2, ULview, ULprojection, ULnormal;
+    GLint ULmodel, ULview, ULprojection, ULnormal;
     GLint ULintensities, ULmatCol, ULlightPos;
 
 

@@ -105,7 +105,9 @@ void MainView::keyReleaseEvent(QKeyEvent *ev)
 void MainView::mouseDoubleClickEvent(QMouseEvent *ev)
 {
     qDebug() << "Mouse double clicked:" << ev->button();
-
+    QVector3D lightpos = QVector3D(-200,600,1500);
+    QVector3D objPos = QVector3D(10,10,0);
+    renderObject(objPos,lightpos,QVector3D(0,-2.5,0),QVector3D(0,0,0));
     update();
 }
 
@@ -113,12 +115,12 @@ void MainView::mouseDoubleClickEvent(QMouseEvent *ev)
 void MainView::mouseMoveEvent(QMouseEvent *ev)
 {
     qDebug() << "x" << ev->x() << "y" << ev->y();
-
+    const int mouseSensitivity = 10;
     float currentX = ev->x();
     float currentY = ev->y();
     // divide by 10 to decrease sensitivity
-    newX += (currentY - yStart)/10;
-    newY += (currentX - xStart)/10;
+    newX += (currentY - yStart)/mouseSensitivity;
+    newY += (currentX - xStart)/mouseSensitivity;
 
     xStart = currentX;
     yStart = currentY;
@@ -150,9 +152,10 @@ void MainView::mouseReleaseEvent(QMouseEvent *ev)
 // Triggered when clicking scrolling with the scroll wheel on the mouse
 void MainView::wheelEvent(QWheelEvent *ev)
 {
+    const int scaleSensitivity = 10000;
     // Implement something
     qDebug() << "Mouse wheel:" << ev->delta();
-    newScale += (float)ev->delta()/10000;
+    newScale += (float)ev->delta()/scaleSensitivity;
     qDebug() << "wheel scale " << newScale << endl;
 
     update();

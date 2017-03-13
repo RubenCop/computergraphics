@@ -1,0 +1,41 @@
+This is a README file
+
+We have fixed the problems we had with openGL_1 by implementing a normal matrix in our program. 
+This solved the problem of showing speculars on the back of the spheres. 
+
+The program we handed in shows the animation of ´patricks´ that float around each other in circles, 
+representing stars that float around each other.
+
+Our framework is now able to show textures on various objects. 
+It is now also able to do animations with our framework. 
+
+For the patrick animation we load the patrick object in inigializeGL(). The animation is handled with 
+the timer and the function renderAnimation() in renderAnimation.cpp, which calls renderObject() respectively. 
+
+We have commented out parts of the code in mainview.cpp that are needed for the rendering of the raytracer scene, but 
+that are not needed for rendering our animation. 
+
+Information on how to controll the application
+-It is possible to move the camera with the following keys:
+		- x-coordinates:
+			-'q' to go in negative direction
+			-'w' to go in positive direction 
+		- y-coordinates:
+			-'a' to go in negative direction
+			-'s' to go in positive direction 
+		- z-coordinates:
+			-'z' to go in negative direction
+			-'x' to go in positive direction 
+		The sensitivity of camera translations can be altered with the ´moveStep´ constant in user_input.cpp
+		
+-Reset buttons for: 
+	-Rotation
+	-Scaling
+	-Camera position
+-	These buttons may be handy if you have turned, scaled or rotated the model and you want to go back to the initial position. 
+-	Furthermore the model can be rotated using the mouse. The mouse sensitivity can be adjusted with the ´mouseSensitivity´ constant in user_input.cpp. 
+	In the same manner, the scale sensitivity can be adjusted with the constant ´scaleSensitivity´ (which is also found in user_input.cpp)
+
+We have tried to implement rendering objects with different shapes and different textures, however, we have not managed to do so yet due to a lack of time. 
+
+

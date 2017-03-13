@@ -17,7 +17,6 @@ void MainView::renderObject(QVector3D pos, QVector3D lightpos, QVector3D animate
 
     model.scale(newScale,newScale,newScale);
     model.translate(pos-centre);
-
     //pass uniforms
     /*
     ULintensities = glGetUniformLocation(mainShaderProg->programId(), "intensities");
@@ -57,19 +56,24 @@ void MainView::renderAnimation()
 {
     QVector3D lightpos = QVector3D(-200,600,1500);
     // Blue sphere
-    renderObject(QVector3D(0,0,0),lightpos,QVector3D(0,-2,0),QVector3D(0,0,0));
+    renderObject(QVector3D(0,0,0),lightpos,QVector3D(0,2,0),QVector3D(0,0,0));
 
-    renderObject(QVector3D(3,0,0),lightpos,QVector3D(0,2.7,0),QVector3D(0,0,0));
+    renderObject(QVector3D(1,0,0),lightpos,QVector3D(0,-2.7,0),QVector3D(0,0,0));
 
-    renderObject(QVector3D(5,0,0),lightpos,QVector3D(0,1.1,0),QVector3D(0,0,0));
+    renderObject(QVector3D(2,0,0),lightpos,QVector3D(0,-1.1,0),QVector3D(0,0,0));
 
-    renderObject(QVector3D(7,0,0),lightpos,QVector3D(0,1.5,0),QVector3D(0,0,0));
+    renderObject(QVector3D(3,0,0),lightpos,QVector3D(0,-1.5,0),QVector3D(0,0,0));
 
-    renderObject(QVector3D(9,0,0),lightpos,QVector3D(0,0.3,0),QVector3D(0,0,0));
+    renderObject(QVector3D(4,0,0),lightpos,QVector3D(0,-1.3,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(5,0,0),lightpos,QVector3D(0,-1.5,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(6,0,0),lightpos,QVector3D(0,-2.0,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(7,0,0),lightpos,QVector3D(0,-1.8,0),QVector3D(0,0,0));
+
+    renderObject(QVector3D(8,0,0),lightpos,QVector3D(0,-2.5,0),QVector3D(0,0,0));
 
 
-
-    // Green sphere
-    //renderObject(QVector3D(210,270,300),QVector3D(0,1,0),QVector4D(0.2f,0.3f,0.5f,8),lightpos); // ka, kd, ks, n
 
 }

@@ -218,8 +218,8 @@ void MainView::initializeGL() {
 
 /*
     loadModel(":/models/cube.obj", NULL);
-    glGenTextures(1,&texPointer2);
-    loadTexture(":/textures/rug_logo.png",texPointer2);
+    glGenTextures(1,&texPointer);
+    loadTexture(":/textures/rug_logo.png",texPointer);
 */
     //timer start
     timer.start(30);
@@ -268,14 +268,6 @@ void MainView::paintGL() {
     model.rotate(newZ,0,0,1);
     model.scale(newScale,newScale,newScale);
 */
-    /*
-    model2.setToIdentity();
-    model2.translate(centre2);    //rotate around the point the camera is focussed on
-    model2.rotate(newX2,1,0,0);
-    model2.rotate(newY2,0,1,0);
-    model2.rotate(newZ2,0,0,1);
-    model2.scale(newScale,newScale,newScale);
-    */
 
     eye.setX(camPosX);
     eye.setY(camPosY);
@@ -289,20 +281,22 @@ void MainView::paintGL() {
     updateUniforms();
     //renderRaytracerScene();
     renderAnimation();
-    /*
+
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texPointer);
     glUniform1i(texUniform,0);
-    */
+
 
     mainShaderProg->release();
 }
 
 void MainView::animate() {
    newY += xRate;
+   newY += yRate;
+   newZ += zRate;
 }
 
 // Add your function implementations below
