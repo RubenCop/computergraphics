@@ -62,6 +62,9 @@ Color Scene::trace(const Ray &ray, int reflectCount)
     Point hit = ray.at(min_hit.t);                 //the hit point
     Vector N = min_hit.N;                          //the normal at hit point
     Vector V = -ray.D;                             //the view vector
+    Vector matCol;
+    
+    std::cout << "image " << material->texture << endl;
 
     Vector L;
     Vector R;

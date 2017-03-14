@@ -27,7 +27,7 @@ public:
     double kd;          // diffuse intensity
     double ks;          // specular intensity 
     double n;           // exponent for specular highlight size
-    Image *texture;
+    Image *texture = NULL;
 
     Material() { }
 };
