@@ -9,7 +9,7 @@ public:
     Sphere(Point position,double r) : position(position), r(r) { }
 
     virtual Hit intersect(const Ray &ray);
-
+	
     const Point position;
     const double r;
 };
