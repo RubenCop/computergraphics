@@ -100,10 +100,10 @@ void MainView::createBuffers() {
 
     glGenBuffers(1,&texCoords);
     glBindBuffer(GL_ARRAY_BUFFER,texCoords);
-   glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
-   glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
+    glEnableVertexAttribArray(3);
 
-   glBindVertexArray(0);
+    glBindVertexArray(0);
 
 }
 
@@ -216,17 +216,8 @@ void MainView::initializeGL() {
     glGenTextures(1,&texPointer);
     loadTexture(":/textures/patrick_d.png",texPointer);
 
-/*
-    loadModel(":/models/cube.obj", NULL);
-    glGenTextures(1,&texPointer);
-    loadTexture(":/textures/rug_logo.png",texPointer);
-*/
     //timer start
     timer.start(30);
-
-
-
-    // For animation, you can start your timer here
 
 }
 
@@ -254,20 +245,17 @@ void MainView::resizeGL(int newWidth, int newHeight) {
  *
  */
 void MainView::paintGL() {
-    //call animation
-    animate();
 
     view.setToIdentity();
     projection.setToIdentity();
     QVector3D up = QVector3D(0,1,0);
-/*
+
     model.setToIdentity();
     model.translate(centre);    //rotate around the point the camera is focussed on
     model.rotate(newX,1,0,0);
     model.rotate(newY,0,1,0);
     model.rotate(newZ,0,0,1);
     model.scale(newScale,newScale,newScale);
-*/
 
     eye.setX(camPosX);
     eye.setY(camPosY);
@@ -280,7 +268,9 @@ void MainView::paintGL() {
     mainShaderProg->bind();
     updateUniforms();
     //renderRaytracerScene();
-    renderAnimation();
+
+    //call animation
+    animate();
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
@@ -297,8 +287,6 @@ void MainView::animate() {
    newY += xRate;
    newY += yRate;
    newZ += zRate;
+   renderAnimation();
 }
 
-// Add your function implementations below
-
-// TODO: add your code

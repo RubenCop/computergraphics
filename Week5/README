@@ -1,16 +1,21 @@
-This is a README file
+README: OpenGL2
+
+By
+	Ruben Cop (s2703122)
+	Jan Willem de Wit (s2616602)
 
 We have fixed the problems we had with openGL_1 by implementing a normal matrix in our program. 
 This solved the problem of showing speculars on the back of the spheres. 
 
-The program we handed in shows the animation of ´patricks´ that float around each other in circles, 
+The program we handed in shows the animation of 'patricks' that float around each other in circles, 
 representing stars that float around each other.
 
 Our framework is now able to show textures on various objects. 
 It is now also able to do animations with our framework. 
 
-For the patrick animation we load the patrick object in inigializeGL(). The animation is handled with 
-the timer and the function renderAnimation() in renderAnimation.cpp, which calls renderObject() respectively. 
+For the patrick animation we load the patrick object in initializeGL(). The animation is handled with 
+the timer and the function renderAnimation() in renderAnimation.cpp, which calls renderObject() respectively.
+Animations are enabled by calling 'animate()' in mainview.cpp. 
 
 We have commented out parts of the code in mainview.cpp that are needed for the rendering of the raytracer scene, but 
 that are not needed for rendering our animation. 
