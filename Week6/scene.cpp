@@ -64,7 +64,13 @@ Color Scene::trace(const Ray &ray, int reflectCount)
     Vector V = -ray.D;                             //the view vector
     Vector matCol;
     
-    std::cout << "image " << material->texture << endl;
+    if (material->texture == NULL)
+	{
+		matCol = material->color;
+	} 
+	else {
+		cout << material->texture->colorAt(0.1,0.1) << endl;
+	}
 
     Vector L;
     Vector R;
@@ -81,7 +87,7 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 		shadowRay = Ray(hit,L);
 		//If there should not be a shadow, compute light normally
 		if (this->Shadows == false || !traceShad(shadowRay)){
-			color += (std::max(0.0,N.dot(L)) * material->kd) * material->color * lights[idx]->color;
+			color += (std::max(0.0,N.dot(L)) * material->kd) * matCol * lights[idx]->color;
 
 			R = (2*(N.dot(L))*N)-L;
 			color += (std::pow(std::max(0.0,R.dot(V)),material->n) * lights[idx]->color * material->ks);
