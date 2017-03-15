@@ -20,6 +20,7 @@
 #include <cmath>
 
 #define EPSILON 0.01
+#define PI 3.1415926535898
 
 bool Scene::traceShad(const Ray &ray)
 {
@@ -69,7 +70,11 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 		matCol = material->color;
 	} 
 	else {
-		cout << material->texture->colorAt(0.1,0.1) << endl;
+		//hit.z should be between -1 and 1
+		float u = 0.5 + (atan2(-N.y, -N.x) / 2*PI);
+		float v = 1 - (acos(-N.z)/PI);
+		//cout << "u: " << u << "v: " << v << endl;
+		matCol = material->texture->colorAt(u/32*PI,v);
 	}
 
     Vector L;
