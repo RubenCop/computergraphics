@@ -77,8 +77,28 @@ Object* Raytracer::parseObject(const YAML::Node& node)
         Point pos;
         node["position"] >> pos;
         double r;
-        node["radius"] >> r;
-        Sphere *sphere = new Sphere(pos,r);
+		Triple axis;
+		if (node["radius"].GetType() > 1)
+		{
+			node["radius"][0] >> r;
+			node["radius"][1] >> axis;
+			
+			cout << "axis: " << axis << endl;
+			
+		} else {
+			node["radius"] >> r;
+		}
+		
+		
+		
+		Sphere *sphere = new Sphere(pos,r);
+		sphere->axis = axis;
+		
+		if (node.FindValue("angle")){
+			int angle;
+			node["angle"] >> angle;
+			sphere->angle = angle;
+		}
         returnObject = sphere;
     }
 

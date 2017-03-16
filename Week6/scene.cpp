@@ -16,6 +16,7 @@
 
 #include "scene.h"
 #include "material.h"
+#include "sphere.h"
 #include <algorithm>
 #include <cmath>
 
@@ -64,17 +65,34 @@ Color Scene::trace(const Ray &ray, int reflectCount)
     Vector N = min_hit.N;                          //the normal at hit point
     Vector V = -ray.D;                             //the view vector
     Vector matCol;
+	
+	Vector rot = N;
+
     
     if (material->texture == NULL)
 	{
 		matCol = material->color;
 	} 
 	else {
+// 
+		double c1 = obj->axis.x;
+		double c2 = obj->axis.y;
+		double c3 = obj->axis.z;
+		
+		rot.x = rot.x * cos(obj->angle) + (1-cos(obj->angle)) * (c1*c1*rot.x + c1*c2*rot.y + c1*c3*rot.z) + (c2*rot.z - c3*rot.y) * sin(obj->angle);
+		rot.y = rot.y * cos(obj->angle) + (1-cos(obj->angle)) * (c2*c1*rot.x + c2*c2*rot.y + c2*c3*rot.z) + (c3*rot.x - c1*rot.z) * sin(obj->angle);
+		rot.z = rot.z * cos(obj->angle) + (1-cos(obj->angle)) * (c3*c1*rot.x + c3*c2*rot.y + c3*c3*rot.z) + (c1*rot.y - c2*rot.x) * sin(obj->angle);
+		
+		
 		//hit.z should be between -1 and 1
-		float u = 0.5 + (atan2(-N.y, -N.x) / 2*PI);
-		float v = 1 - (acos(-N.z)/PI);
-		//cout << "u: " << u << "v: " << v << endl;
-		matCol = material->texture->colorAt(u/32*PI,v);
+		float u = 0.5 - (atan2(-rot.x, -rot.y) / 2*PI);
+		float v = 1 - (acos(-rot.z)/PI);
+		u = (u+(2*PI))/(4*PI); // Normalize u between 0 and 1
+		
+		cout << "u haakjes " << u << "v haakjes " << v << endl;
+		
+		
+		matCol = material->texture->colorAt(u,v);
 	}
 
     Vector L;
@@ -84,7 +102,7 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 	Ray shadowRay(hit,hit); //Initialise empty ray
 
     //Add ambient intensity
-    color += material->color * material->ka;
+    color += matCol * material->ka;
     //For each light, add diffuse and specular intensity to "color"
     for (unsigned int idx = 0; idx < lights.size(); idx++)
     {

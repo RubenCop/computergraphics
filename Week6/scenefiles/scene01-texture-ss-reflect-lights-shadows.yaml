@@ -17,7 +17,7 @@ Eye: [200,200,1000]
 Shadows: true
 MaxRecursionDepth: 2
 SuperSampling:
-  factor: 4
+  factor: 4 
 
 Lights:
 - position: [-200,600,1500]
@@ -55,8 +55,8 @@ Objects:
     n: 32
 - type: sphere
   position: [140,220,400]
-  #radius: [50,[0,1,0.7]]
-  radius: 50
+  radius: [50,[0,1,0.7]]
+  #radius: 50
   angle: 90
   material:
     texture: aardkaart.png

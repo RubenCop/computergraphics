@@ -6,12 +6,15 @@
 class Sphere : public Object
 {
 public:
-    Sphere(Point position,double r) : position(position), r(r) { }
+    Sphere(Point position,double r) : position(position), r(r) {
+		angle = 0;
+	}
 
     virtual Hit intersect(const Ray &ray);
 	
     const Point position;
     const double r;
+
 };
 
 #endif /* end of include guard: SPHERE_H_115209AE */
