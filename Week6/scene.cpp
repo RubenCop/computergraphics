@@ -194,15 +194,23 @@ Color Scene::traceGooch(const Ray &ray)
     Vector V = -ray.D;    
 	Color color;
 	Vector L;
+	Ray shadowRay(hit,hit); //Initialise empty ray
 	
 	for (unsigned int idx = 0; idx < lights.size(); idx++)
     {
 		L = (lights[idx]->position - hit).normalized();
+		shadowRay = Ray(hit,L);
+		//If there should not be a shadow, compute light normally
+		if (this->Shadows == false || !traceShad(shadowRay)){
+			Color kd = lights[idx]->color*material->color*material->kd;
+			Color kCool = this->b + this->alpha*kd;
+			Color kWarm = this->y + this->beta*kd;
+			color += (kCool * (1-N.dot(L))/2) + (kWarm * (1+N.dot(L))/2);
+
 		
-		Color kd = lights[idx]->color*material->color*material->kd;
-		Color kCool = this->b + this->alpha*kd;
-		Color kWarm = this->y + this->beta*kd;
-		color += (kCool * (1-N.dot(L))/2) + (kWarm * (1+N.dot(L))/2);
+			Vector R = (2*(N.dot(L))*N)-L;
+			color += (std::pow(std::max(0.0,R.dot(V)),material->n) * lights[idx]->color * material->ks);
+		}
 	}
 	return color;	
 }
