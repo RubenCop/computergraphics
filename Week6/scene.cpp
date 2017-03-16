@@ -65,37 +65,37 @@ Color Scene::trace(const Ray &ray, int reflectCount)
     Vector N = min_hit.N;                          //the normal at hit point
     Vector V = -ray.D;                             //the view vector
     Vector matCol;
-	
+
 	Vector rot = N;
 
-    
+
     if (material->texture == NULL)
 	{
 		matCol = material->color;
-	} 
+	}
 	else {
-// 
+//
 		double c1 = obj->axis.x;
 		double c2 = obj->axis.y;
 		double c3 = obj->axis.z;
-		
+
 		//cout << "Voor: " << rot.x << " " << rot.y << " " <<rot.z << endl;
-		
+
 		Vector rot2;
 		rot2.x = rot.x * cos(obj->angle) + (1-cos(obj->angle)) * (c1*c1*rot.x + c1*c2*rot.y + c1*c3*rot.z) + (c2*rot.z - c3*rot.y) * sin(obj->angle);
 		rot2.y = rot.y * cos(obj->angle) + (1-cos(obj->angle)) * (c2*c1*rot.x + c2*c2*rot.y + c2*c3*rot.z) + (c3*rot.x - c1*rot.z) * sin(obj->angle);
 		rot2.z = rot.z * cos(obj->angle) + (1-cos(obj->angle)) * (c3*c1*rot.x + c3*c2*rot.y + c3*c3*rot.z) + (c1*rot.y - c2*rot.x) * sin(obj->angle);
-	
-		
+
+
 		//cout << "Na: " << rot.x << " " << rot.y << " " <<rot.z << endl;
-		
+
 		float u = 0.5 + (atan2(rot2.y, rot2.x) / 2*PI);
 		float v = 1 - (acos(rot2.z)/PI);
 		u = (u+(PI))/(2*PI); // Normalize u between 0 and 1
-		
+
 		//cout << "u haakjes " << u << " v haakjes " << v << endl;
-		
-		
+
+
 		matCol = material->texture->colorAt(u,v);
 	}
 
@@ -191,11 +191,11 @@ Color Scene::traceGooch(const Ray &ray)
     Material *material = obj->material;            //the hit objects material
     Point hit = ray.at(min_hit.t);                 //the hit point
     Vector N = min_hit.N;                          //the normal at hit point
-    Vector V = -ray.D;    
+    Vector V = -ray.D;
 	Color color;
 	Vector L;
 	Ray shadowRay(hit,hit); //Initialise empty ray
-	
+
 	for (unsigned int idx = 0; idx < lights.size(); idx++)
     {
 		L = (lights[idx]->position - hit).normalized();
@@ -207,12 +207,12 @@ Color Scene::traceGooch(const Ray &ray)
 			Color kWarm = this->y + this->beta*kd;
 			color += (kCool * (1-N.dot(L))/2) + (kWarm * (1+N.dot(L))/2);
 
-		
+
 			Vector R = (2*(N.dot(L))*N)-L;
 			color += (std::pow(std::max(0.0,R.dot(V)),material->n) * lights[idx]->color * material->ks);
 		}
 	}
-	return color;	
+	return color;
 }
 
 
@@ -227,19 +227,19 @@ void Scene::render(Image &img)
 
     Triple A = G.cross(up);
     Triple B = A.cross(G);
-    
+
     A = A.normalized();
     B = B.normalized();
 
     Triple M = eye + G;
-    
+
     M = M.normalized();
 
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
 			Color totalCol(0.0,0.0,0.0);
 			//super sampling
-			for (int ssX = 0; ssX < this->superSampling; ssX++) { 
+			for (int ssX = 0; ssX < this->superSampling; ssX++) {
 				for (int ssY = 0; ssY < this->superSampling; ssY++) {
 
           //For rotation and zoom
@@ -247,7 +247,7 @@ void Scene::render(Image &img)
           P += center + ((x-(w/2)) * A);
           P += ((h-y-(h/2)) * B);
           P += (G * eye / up.y) - (eye * G);
-					
+
 					Point pixel((P.x+(1/(superSampling*2))+(((double)ssX+1)/(double)this->superSampling))+0.5, (P.y+(1/(superSampling*2))+(((double)ssY+1)/(double)this->superSampling))+0.5, P.z);
 
 					Ray ray(eye, (pixel-eye).normalized());

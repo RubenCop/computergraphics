@@ -25,6 +25,7 @@
 #include <ctype.h>
 #include <fstream>
 #include <assert.h>
+#include "glm.h"
 
 // Functions to ease reading from YAML input
 void operator >> (const YAML::Node& node, Triple& t);
@@ -82,18 +83,18 @@ Object* Raytracer::parseObject(const YAML::Node& node)
 		{
 			node["radius"][0] >> r;
 			node["radius"][1] >> axis;
-			
+
 			cout << "axis: " << axis << endl;
-			
+
 		} else {
 			node["radius"] >> r;
 		}
-		
-		
-		
+
+
+
 		Sphere *sphere = new Sphere(pos,r);
 		sphere->axis = axis;
-		
+
 		if (node.FindValue("angle")){
 			int angle;
 			node["angle"] >> angle;
@@ -155,6 +156,16 @@ bool Raytracer::readScene(const std::string& inputFilename)
 {
     // Initialize a new scene
     scene = new Scene();
+
+    GLMmodel *model = glmReadOBJ("cube.obj");
+    cout << "Number of triangles: " << model->numtriangles << endl;
+    for (unsigned int triangle = 0; triangle < model->numtriangles; triangle++)
+    {
+        Object *obj = NULL;
+        Triple a = new Triple(model->triangles->vindices[0][0],model->triangles->vindices[0][1],model->triangles->vindices[0][2])
+        obj = new Triangle(a,a,a)
+        scene->addObject(obj);
+    }
 
     // Open file stream for reading and have the YAML module parse it
     std::ifstream fin(inputFilename.c_str());
@@ -225,8 +236,8 @@ bool Raytracer::readScene(const std::string& inputFilename)
 				gooch["alpha"] >> scene->alpha;
 				gooch["beta"] >> scene->beta;
 			}
-				
-				
+
+
 
 			cout << scene->Shadows << endl;
 
