@@ -79,17 +79,21 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 		double c2 = obj->axis.y;
 		double c3 = obj->axis.z;
 		
-		rot.x = rot.x * cos(obj->angle) + (1-cos(obj->angle)) * (c1*c1*rot.x + c1*c2*rot.y + c1*c3*rot.z) + (c2*rot.z - c3*rot.y) * sin(obj->angle);
-		rot.y = rot.y * cos(obj->angle) + (1-cos(obj->angle)) * (c2*c1*rot.x + c2*c2*rot.y + c2*c3*rot.z) + (c3*rot.x - c1*rot.z) * sin(obj->angle);
-		rot.z = rot.z * cos(obj->angle) + (1-cos(obj->angle)) * (c3*c1*rot.x + c3*c2*rot.y + c3*c3*rot.z) + (c1*rot.y - c2*rot.x) * sin(obj->angle);
+		//cout << "Voor: " << rot.x << " " << rot.y << " " <<rot.z << endl;
 		
+		Vector rot2;
+		rot2.x = rot.x * cos(obj->angle) + (1-cos(obj->angle)) * (c1*c1*rot.x + c1*c2*rot.y + c1*c3*rot.z) + (c2*rot.z - c3*rot.y) * sin(obj->angle);
+		rot2.y = rot.y * cos(obj->angle) + (1-cos(obj->angle)) * (c2*c1*rot.x + c2*c2*rot.y + c2*c3*rot.z) + (c3*rot.x - c1*rot.z) * sin(obj->angle);
+		rot2.z = rot.z * cos(obj->angle) + (1-cos(obj->angle)) * (c3*c1*rot.x + c3*c2*rot.y + c3*c3*rot.z) + (c1*rot.y - c2*rot.x) * sin(obj->angle);
+	
 		
-		//hit.z should be between -1 and 1
-		float u = 0.5 - (atan2(-rot.x, -rot.y) / 2*PI);
-		float v = 1 - (acos(-rot.z)/PI);
-		u = (u+(2*PI))/(4*PI); // Normalize u between 0 and 1
+		//cout << "Na: " << rot.x << " " << rot.y << " " <<rot.z << endl;
 		
-		cout << "u haakjes " << u << "v haakjes " << v << endl;
+		float u = 0.5 + (atan2(rot2.y, rot2.x) / 2*PI);
+		float v = 1 - (acos(rot2.z)/PI);
+		u = (u+(PI))/(2*PI); // Normalize u between 0 and 1
+		
+		//cout << "u haakjes " << u << " v haakjes " << v << endl;
 		
 		
 		matCol = material->texture->colorAt(u,v);
@@ -169,6 +173,29 @@ Color Scene::traceNormal(const Ray &ray)
     return color;
 }
 
+Color Scene::traceGooch(const Ray &ray)
+{
+    // Find hit object and distance
+    Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
+    Object *obj = NULL;
+    for (unsigned int i = 0; i < objects.size(); ++i) {
+        Hit hit(objects[i]->intersect(ray));
+        if (hit.t<min_hit.t) {
+            min_hit = hit;
+            obj = objects[i];
+        }
+    }
+
+    // No hit? Return background color.
+    if (!obj) return Color(0.0, 0.0, 0.0);
+
+    Vector N = min_hit.N;                          //the normal at hit point
+
+    //Initialise a new color with the normal at the hitpoint: normalise between 0 and 1
+    Color color = (Color(N.data[0], N.data[1], N.data[2])+1)/2;
+    return color;
+}
+
 
 
 void Scene::render(Image &img)
@@ -214,6 +241,8 @@ void Scene::render(Image &img)
 						col = traceNormal(ray);
 					if (this->renderMode == "zbuffer")
 						col = traceZ(ray);
+					if (this->renderMode == "gooch")
+						col = traceGooch(ray);
 
 					col.clamp();
 					totalCol += (col / (this->superSampling * this->superSampling));

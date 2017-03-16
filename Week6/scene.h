@@ -56,6 +56,7 @@ public:
     Color trace(const Ray &ray, int reflectCount); //phong
     Color traceZ(const Ray &ray); //z-buffer
     Color traceNormal(const Ray &ray); //normal
+	Color traceGooch(const Ray &ray); //Gooch
     void render(Image &img);
     Point sample(int currentSample, int totalSamples, int x, int y, int h);
     void addObject(Object *o);
