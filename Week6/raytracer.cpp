@@ -218,6 +218,15 @@ bool Raytracer::readScene(const std::string& inputFilename)
 			} else{
 				scene->superSampling = 1;
 			}
+			if(doc.FindValue("GoochParameters")){
+				const YAML::Node& gooch = doc["GoochParameters"];
+				gooch["b"] >> scene->b;
+				gooch["y"] >> scene->y;
+				gooch["alpha"] >> scene->alpha;
+				gooch["beta"] >> scene->beta;
+			}
+				
+				
 
 			cout << scene->Shadows << endl;
 

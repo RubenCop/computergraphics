@@ -28,6 +28,8 @@ public:
     Material *material;
 	int angle; 
 	Triple axis;
+	
+
 
     virtual ~Object() { }
 

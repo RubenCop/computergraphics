@@ -175,7 +175,6 @@ Color Scene::traceNormal(const Ray &ray)
 
 Color Scene::traceGooch(const Ray &ray)
 {
-    // Find hit object and distance
     Hit min_hit(std::numeric_limits<double>::infinity(),Vector());
     Object *obj = NULL;
     for (unsigned int i = 0; i < objects.size(); ++i) {
@@ -189,11 +188,23 @@ Color Scene::traceGooch(const Ray &ray)
     // No hit? Return background color.
     if (!obj) return Color(0.0, 0.0, 0.0);
 
+    Material *material = obj->material;            //the hit objects material
+    Point hit = ray.at(min_hit.t);                 //the hit point
     Vector N = min_hit.N;                          //the normal at hit point
-
-    //Initialise a new color with the normal at the hitpoint: normalise between 0 and 1
-    Color color = (Color(N.data[0], N.data[1], N.data[2])+1)/2;
-    return color;
+    Vector V = -ray.D;    
+	Color color;
+	Vector L;
+	
+	for (unsigned int idx = 0; idx < lights.size(); idx++)
+    {
+		L = (lights[idx]->position - hit).normalized();
+		
+		Color kd = lights[idx]->color*material->color*material->kd;
+		Color kCool = this->b + this->alpha*kd;
+		Color kWarm = this->y + this->beta*kd;
+		color += (kCool * (1-N.dot(L))/2) + (kWarm * (1+N.dot(L))/2);
+	}
+	return color;	
 }
 
 

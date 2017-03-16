@@ -52,6 +52,9 @@ public:
 		up = Triple(0,1,0);
 		
     }
+    
+    //Gooch
+    double b,y,alpha, beta;
 
     Color trace(const Ray &ray, int reflectCount); //phong
     Color traceZ(const Ray &ray); //z-buffer
