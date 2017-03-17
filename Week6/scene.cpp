@@ -90,8 +90,9 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 		//cout << "Na: " << rot.x << " " << rot.y << " " <<rot.z << endl;
 
 		float u = 0.5 + (atan2(rot2.y, rot2.x) / 2*PI);
+		//cout << "rot2.z: " << rot2.z << endl;
 		float v = 1 - (acos(rot2.z)/PI);
-		u = (u+(PI))/(2*PI); // Normalize u between 0 and 1
+		u = (u+(2*PI))/(4*PI); // Normalize u between 0 and 1
 
 		//cout << "u haakjes " << u << " v haakjes " << v << endl;
 

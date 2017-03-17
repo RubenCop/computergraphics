@@ -1,9 +1,9 @@
 ---
-#  This is an example scene description for the raytracer framework created 
+#  This is an example scene description for the raytracer framework created
 #  for the Computer Science course "Introduction to Computer Graphics"
 #  taught at the University of Groningen by Tobias Isenberg.
 #
-#  The scene description format we use is based on YAML, which is a human friendly 
+#  The scene description format we use is based on YAML, which is a human friendly
 #  data serialization standard. This gives us a flexible format which should be
 #  fairly easy to make both backward and forward compatible (i.e., by ignoring
 #  unknown directives). In addition parsers are available for many languages.
@@ -12,12 +12,12 @@
 #  The example scene description should largely speak for itself. By now
 #  it should be clear that the #-character can be used to insert comments.
 
-Eye: [200,200,1000]  
+Eye: [200,200,1000]
 
 Shadows: true
 MaxRecursionDepth: 2
 SuperSampling:
-  factor: 4 
+  factor: 4
 
 Lights:
 - position: [-200,600,1500]
@@ -59,7 +59,7 @@ Objects:
   #radius: 50
   angle: 90
   material:
-    texture: aardkaart.png
+    texture: bluegrid.png
     ka: 0.2
     kd: 0.8
     ks: 0
