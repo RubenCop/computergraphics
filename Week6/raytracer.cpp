@@ -161,9 +161,10 @@ bool Raytracer::readScene(const std::string& inputFilename)
     cout << "Number of triangles: " << model->numtriangles << endl;
     for (unsigned int triangle = 0; triangle < model->numtriangles; triangle++)
     {
+        cout << "test " <<  model->triangles->vindices << endl;
         Object *obj = NULL;
-        Triple a = new Triple(model->triangles->vindices[0][0],model->triangles->vindices[0][1],model->triangles->vindices[0][2])
-        obj = new Triangle(a,a,a)
+        //Triple a = new Triple(model->triangles->vindices[0][0],model->triangles->vindices[0][1],model->triangles->vindices[0][2])
+        //obj = new Triangle(a,a,a)
         scene->addObject(obj);
     }
 
