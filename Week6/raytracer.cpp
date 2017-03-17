@@ -157,12 +157,38 @@ bool Raytracer::readScene(const std::string& inputFilename)
     // Initialize a new scene
     scene = new Scene();
 
-    GLMmodel *model = glmReadOBJ("cube.obj");
+    GLMmodel *model = glmReadOBJ("sphere.obj");
+    glmUnitize(model);
     cout << "Number of triangles: " << model->numtriangles << endl;
-    for (unsigned int triangle = 0; triangle < model->numtriangles; triangle++)
+    for (unsigned int i = 0; i < model->numtriangles; i++)
     {
-        cout << "test " <<  model->triangles->vindices << endl;
+        //cout << "test " <<  model->triangles->vindices[triangle] << endl;
         Object *obj = NULL;
+
+        Triple a = Triple (model->vertices[3 * model->triangles[i].vindices[0]] + 200,
+            model->vertices[3 * model->triangles[i].vindices[0]] + 200,
+            model->vertices[3 * model->triangles[i].vindices[0]] + 995);
+
+        Triple b = Triple (model->vertices[3 * model->triangles[i].vindices[1]] + 200,
+            model->vertices[3 * model->triangles[i].vindices[1]] + 200,
+            model->vertices[3 * model->triangles[i].vindices[1]] + 995);
+
+        Triple c = Triple (model->vertices[3 * model->triangles[i].vindices[2]+0] + 200,
+            model->vertices[3 * model->triangles[i].vindices[2]] + 200,
+            model->vertices[3 * model->triangles[i].vindices[2]] + 995);
+
+        obj = new Triangle(a,b,c);
+        Material *m = new Material();
+        m->ka = 0.2;
+        m->kd = 0.8;
+        m->ks = 0;
+        m->n = 1;
+
+        m->color = Color(1.0,0.1,0.2);
+
+        obj->material = m;
+
+
         //Triple a = new Triple(model->triangles->vindices[0][0],model->triangles->vindices[0][1],model->triangles->vindices[0][2])
         //obj = new Triangle(a,a,a)
         scene->addObject(obj);
