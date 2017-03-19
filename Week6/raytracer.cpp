@@ -158,7 +158,7 @@ bool Raytracer::readScene(const std::string& inputFilename)
     scene = new Scene();
 
     if (false){
-        GLMmodel *model = glmReadOBJ("sphere.obj");
+        GLMmodel *model = glmReadOBJ("donut.obj");
         glmUnitize(model);
         cout << "Number of triangles: " << model->numtriangles << endl;
         for (unsigned int i = 0; i < model->numtriangles; i++)
@@ -168,15 +168,15 @@ bool Raytracer::readScene(const std::string& inputFilename)
 
             Triple a = Triple (model->vertices[3 * model->triangles[i].vindices[0]] + 200,
                 model->vertices[3 * model->triangles[i].vindices[0]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[0]] + 995);
+                model->vertices[3 * model->triangles[i].vindices[0]] + 0);
 
             Triple b = Triple (model->vertices[3 * model->triangles[i].vindices[1]] + 200,
                 model->vertices[3 * model->triangles[i].vindices[1]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[1]] + 995);
+                model->vertices[3 * model->triangles[i].vindices[1]] + 0);
 
             Triple c = Triple (model->vertices[3 * model->triangles[i].vindices[2]+0] + 200,
                 model->vertices[3 * model->triangles[i].vindices[2]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[2]] + 995);
+                model->vertices[3 * model->triangles[i].vindices[2]] + 0);
 
             obj = new Triangle(a,b,c);
             Material *m = new Material();
