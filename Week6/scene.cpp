@@ -21,7 +21,6 @@
 #include <cmath>
 
 #define EPSILON 0.01
-#define PI 3.1415926535898
 
 bool Scene::traceShad(const Ray &ray)
 {
@@ -68,44 +67,13 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 
 	Vector rot = N;
 
-
+	//If this object has a texture, use that for colour. If not, use the material.
     if (material->texture == NULL)
 	{
 		matCol = material->color;
 	}
 	else {
-//
-		double c1 = obj->axis.x;
-		double c2 = obj->axis.y;
-		double c3 = obj->axis.z;
-
-		//cout << "Voor: " << rot.x << " " << rot.y << " " <<rot.z << endl;
-
-		Vector rot2;
-		//rot2.x = rot.x * cos(obj->angle) + (1-cos(obj->angle)) * (c1*c1*rot.x + c1*c2*rot.y + c1*c3*rot.z) + (c2*rot.z - c3*rot.y) * sin(obj->angle);
-		//rot2.y = rot.y * cos(obj->angle) + (1-cos(obj->angle)) * (c2*c1*rot.x + c2*c2*rot.y + c2*c3*rot.z) + (c3*rot.x - c1*rot.z) * sin(obj->angle);
-		//rot2.z = rot.z * cos(obj->angle) + (1-cos(obj->angle)) * (c3*c1*rot.x + c3*c2*rot.y + c3*c3*rot.z) + (c1*rot.y - c2*rot.x) * sin(obj->angle);
-
-
-		//cout << "Na: " << rot.x << " " << rot.y << " " <<rot.z << endl;
-
-		//float u = 0.5 + (atan2(rot.y, rot.x) / 2*PI);
-		//cout << "rot2.z: " << rot2.z << endl;
-		//float v = 1 - (acos(rot.z)/PI);
-		//u = (u+(2*PI))/(4*PI); // Normalize u between 0 and 1
-
-
-
-		double u = atan2(N.y, N.x) - (obj->angle * PI / 180);
-		if (u < 0)
-			u += 2 * PI;
-		u /= 2 * PI;
-
-		double v = acos(N.z) / PI;
-
-
-
-		matCol = material->texture->colorAt(u,v);
+		matCol = obj->getTexture(N);
 	}
 
     Vector L;
