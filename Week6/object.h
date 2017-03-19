@@ -36,7 +36,9 @@ public:
 
     virtual Hit intersect(const Ray &ray) = 0;
 
-    virtual Color getTexture(Vector Normal);
+    Color getTexture(Vector Normal){
+        return Color(0.0,0.0,0.0);
+    }
 };
 
 #endif /* end of include guard: OBJECT_H_AXKLE0OF */

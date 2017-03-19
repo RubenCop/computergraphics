@@ -74,6 +74,52 @@ Object* Raytracer::parseObject(const YAML::Node& node)
     std::string objectType;
     node["type"] >> objectType;
 
+    if (objectType == "model"){
+        cout << "hoi" << endl;
+        std::string fileName;
+        node["file"] >> fileName;
+
+        Triple pos;
+        node["position"] >> pos;
+
+        GLMmodel *model = glmReadOBJ(const_cast<char*>(fileName.c_str())); //
+        //glmUnitize(model);
+        cout << "Number of triangles: " << model->numtriangles << endl;
+
+        for (unsigned int i = 0; i < model->numtriangles; i++)
+        {
+            //cout << "test " <<  model->triangles->vindices[triangle] << endl;
+            Object *obj = NULL;
+
+            Triple a = Triple (model->vertices[3 * model->triangles[i].vindices[0]] + pos.x,
+                model->vertices[3 * model->triangles[i].vindices[0]] + pos.y,
+                model->vertices[3 * model->triangles[i].vindices[0]] + pos.z);
+
+            Triple b = Triple (model->vertices[3 * model->triangles[i].vindices[1]] + pos.x,
+                model->vertices[3 * model->triangles[i].vindices[1]] + pos.y,
+                model->vertices[3 * model->triangles[i].vindices[1]] + pos.z);
+
+            Triple c = Triple (model->vertices[3 * model->triangles[i].vindices[2]+0] + pos.x,
+                model->vertices[3 * model->triangles[i].vindices[2]] + pos.y,
+                model->vertices[3 * model->triangles[i].vindices[2]] + pos.z);
+
+            obj = new Triangle(a,b,c);
+            Material *m = new Material();
+            m->ka = 0.2;
+            m->kd = 0.8;
+            m->ks = 0;
+            m->n = 1;
+
+            m->color = Color(1.0,1.0,1.0);
+
+            obj->material = m;
+
+            //Triple a = new Triple(model->triangles->vindices[0][0],model->triangles->vindices[0][1],model->triangles->vindices[0][2])
+            //obj = new Triangle(a,a,a)
+            scene->addObject(obj);
+        }
+    }
+
     if (objectType == "sphere") {
         Point pos;
         node["position"] >> pos;
@@ -89,8 +135,6 @@ Object* Raytracer::parseObject(const YAML::Node& node)
 		} else {
 			node["radius"] >> r;
 		}
-
-
 
 		Sphere *sphere = new Sphere(pos,r);
 		sphere->axis = axis;
@@ -157,45 +201,6 @@ bool Raytracer::readScene(const std::string& inputFilename)
     // Initialize a new scene
     scene = new Scene();
 
-    if (false){
-        GLMmodel *model = glmReadOBJ("donut.obj");
-        glmUnitize(model);
-        cout << "Number of triangles: " << model->numtriangles << endl;
-        for (unsigned int i = 0; i < model->numtriangles; i++)
-        {
-            //cout << "test " <<  model->triangles->vindices[triangle] << endl;
-            Object *obj = NULL;
-
-            Triple a = Triple (model->vertices[3 * model->triangles[i].vindices[0]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[0]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[0]] + 0);
-
-            Triple b = Triple (model->vertices[3 * model->triangles[i].vindices[1]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[1]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[1]] + 0);
-
-            Triple c = Triple (model->vertices[3 * model->triangles[i].vindices[2]+0] + 200,
-                model->vertices[3 * model->triangles[i].vindices[2]] + 200,
-                model->vertices[3 * model->triangles[i].vindices[2]] + 0);
-
-            obj = new Triangle(a,b,c);
-            Material *m = new Material();
-            m->ka = 0.2;
-            m->kd = 0.8;
-            m->ks = 0;
-            m->n = 1;
-
-            m->color = Color(1.0,0.1,0.2);
-
-            obj->material = m;
-
-
-            //Triple a = new Triple(model->triangles->vindices[0][0],model->triangles->vindices[0][1],model->triangles->vindices[0][2])
-            //obj = new Triangle(a,a,a)
-            scene->addObject(obj);
-        }
-    }
-
     // Open file stream for reading and have the YAML module parse it
     std::ifstream fin(inputFilename.c_str());
     if (!fin) {
@@ -227,10 +232,6 @@ bool Raytracer::readScene(const std::string& inputFilename)
 				if (camera.FindValue("viewSize")){
 					camera["viewSize"][0] >> scene->h;
                     camera["viewSize"][1] >> scene->w;
- 					//camera["viewSize"] >> viewSize;
-					//cout << viewSize;
-					//camera["viewSize"] >> scene->image;
-
 				}
 			}
 
@@ -265,10 +266,6 @@ bool Raytracer::readScene(const std::string& inputFilename)
 				gooch["alpha"] >> scene->alpha;
 				gooch["beta"] >> scene->beta;
 			}
-
-
-
-			cout << scene->Shadows << endl;
 
             // Read and parse the scene objects
             const YAML::Node& sceneObjects = doc["Objects"];

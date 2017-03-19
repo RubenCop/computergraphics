@@ -47,18 +47,12 @@ Color Sphere::getTexture(Vector N){
     double c2 = this->axis.y;
     double c3 = this->axis.z;
 
-    //cout << "Voor: " << rot.x << " " << rot.y << " " <<rot.z << endl;
+    double angle = this->angle * PI / 180;
 
-    Vector rot = N + (r*this->axis).normalized();
+    //Rodrigues' rotation formula
+    Vector rot = N * cos(angle) + this->axis.cross(N) * sin(angle) + this->axis * (this->axis * N) * (1 - cos(angle));
 
-    cout << "rot: " << rot << endl;
-    //rot2.x = rot.x * cos(obj->angle) + (1-cos(obj->angle)) * (c1*c1*rot.x + c1*c2*rot.y + c1*c3*rot.z) + (c2*rot.z - c3*rot.y) * sin(obj->angle);
-    //rot2.y = rot.y * cos(obj->angle) + (1-cos(obj->angle)) * (c2*c1*rot.x + c2*c2*rot.y + c2*c3*rot.z) + (c3*rot.x - c1*rot.z) * sin(obj->angle);
-    //rot2.z = rot.z * cos(obj->angle) + (1-cos(obj->angle)) * (c3*c1*rot.x + c3*c2*rot.y + c3*c3*rot.z) + (c1*rot.y - c2*rot.x) * sin(obj->angle);
-
-    //cout << "radius0*radius1.normal = " << (r*this->axis).normalized() << endl;
-
-    double u = atan2(rot.y, rot.x) - (this->angle * PI / 180);
+    double u = atan2(rot.y, rot.x);
     if (u < 0)
         u += 2 * PI;
     u /= 2 * PI;

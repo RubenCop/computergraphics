@@ -11,6 +11,7 @@ Hit Triangle::intersect(const Ray &ray)
 	//Ray-triangle intersection using the Möller-Trumbore intersection algorithm:
 	//https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 
+	//cout << "ik ben een driehoek" << endl;
 
 	//GIVEN : ray.D, ray.O, normal, d, a,b,c
 	Vector e1, e2, P, Q, T;
@@ -57,6 +58,7 @@ Hit Triangle::intersect(const Ray &ray)
 		{
 			N = N * -1;
 		}
+		cout << "auw" << endl;
 		return Hit(t,N.normalized());
 	}
 

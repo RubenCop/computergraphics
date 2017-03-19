@@ -213,7 +213,7 @@ void Scene::render(Image &img)
     M = M.normalized();
 
     for (int y = 0; y < h; y++) {
-		cout << "Progress: " << y/4 << endl;
+		//cout << "Progress: " << y/4 << endl;
         for (int x = 0; x < w; x++) {
 			Color totalCol(0.0,0.0,0.0);
 			//super sampling
