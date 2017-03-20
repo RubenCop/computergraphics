@@ -20,6 +20,7 @@
 #include <algorithm>
 #include <cmath>
 
+#define PI 3.1415926535898
 #define EPSILON 0.01
 
 bool Scene::traceShad(const Ray &ray)
@@ -73,7 +74,25 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 		matCol = material->color;
 	}
 	else {
-		matCol = obj->getTexture(N);
+		double angle = obj->angle * PI / 180;
+		obj->axis = obj->axis.normalized();
+		//cout << "axis normalised: " << obj->axis << endl;
+
+		//Rodrigues' rotation formula
+		Vector rot = N * cos(angle) + obj->axis.cross(N) * sin(angle) + obj->axis * (obj->axis.dot(N)) * (1 - cos(angle));
+
+		double u = atan2(rot.y, rot.x);
+		if (u < 0)
+			u += 2 * PI;
+		u /= 2 * PI;
+
+		double v = acos(rot.z) / PI;
+
+		cout << "U: " << u << " v: " << v << endl;
+
+		//cout << "fajadsjkfadsjklfjksdajkfasdfjkldasfasd" << endl;
+
+		matCol =  material->texture->colorAt(u,v);;
 	}
 
     Vector L;

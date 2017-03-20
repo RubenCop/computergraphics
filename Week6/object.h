@@ -30,14 +30,13 @@ public:
 	int angle;
 	Triple axis;
 
-
-
     virtual ~Object() { }
 
     virtual Hit intersect(const Ray &ray) = 0;
 
     Color getTexture(Vector Normal){
-        return Color(0.0,0.0,0.0);
+        //cout << "sdafewrewiorusfausdfdsf" << endl;
+        return Color(1.0,1.0,1.0);
     }
 };
 

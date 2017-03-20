@@ -13,15 +13,10 @@
 #  it should be clear that the #-character can be used to insert comments.
 
 Camera:
-    eye: [200,200,1000]
-    center: [200,200,0]
+    eye: [0,0,400]
+    center: [0,0,0]
     up: [0,1,0]
     viewSize: [400,400]
-
-Shadows: true
-MaxRecursionDepth: 2
-SuperSampling:
-  factor: 1
 
 Lights:
 - position: [-200,600,1500]
@@ -30,15 +25,6 @@ Lights:
   color: [0.8,0.8,0.4]
 
 Objects:
-- type: sphere
-  position: [90,320,100]
-  radius: 50
-  material: # blue
-    color: [0.0,0.0,1.0]
-    ka: 0.2
-    kd: 0.7
-    ks: 0.5
-    n: 64
 - type: model
-  position: [200,200,995]
-  file: gary.obj
+  position: [0,0,0]
+  file: sphere.obj

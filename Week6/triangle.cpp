@@ -31,6 +31,7 @@ Hit Triangle::intersect(const Ray &ray)
 		return Hit::NO_HIT();
 
 	//Test if intersection is within bounds of the triangle
+	cout << "2" << endl;
 	inv_det = 1/det;
 	T = ray.O - a;
 	u = T.dot(P) * inv_det;
@@ -38,6 +39,7 @@ Hit Triangle::intersect(const Ray &ray)
 		return Hit::NO_HIT();
 
 	//Test if intersection is within bounds of the triangle
+	cout << "3" << endl;
 	Q = T.cross(e1);
 	v = ray.D.dot(Q) * inv_det;
 	if(v < 0 || u + v > 1)
@@ -47,6 +49,7 @@ Hit Triangle::intersect(const Ray &ray)
 	t = e2.dot(Q) * inv_det;
 
 	//In case of a hit, calculate normal and return distance + normal
+	cout << "4" << endl;
 	if (t > EPSILON)
 	{
 		Vector N;
@@ -61,6 +64,7 @@ Hit Triangle::intersect(const Ray &ray)
 		cout << "auw" << endl;
 		return Hit(t,N.normalized());
 	}
+	cout << "5" << endl;
 
 	return Hit::NO_HIT();
 

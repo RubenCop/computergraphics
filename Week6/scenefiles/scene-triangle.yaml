@@ -32,25 +32,3 @@ Objects:
     kd: 0.3
     ks: 0.5
     n: 8
-- type: triangle
-  a: [90,90,90]
-  b: [90,90,180]
-  c: [90,180,90]
-  d: 50
-  material:
-    color: [0.0,1.0,0.0]
-    ka: 0.2
-    kd: 0.3
-    ks: 0.5
-    n: 8
-- type: triangle
-  a: [90,90,90]
-  b: [90,180,90]
-  c: [180,90,90]
-  d: 50
-  material:
-    color: [0.0,1.0,0.0]
-    ka: 0.2
-    kd: 0.3
-    ks: 0.5
-    n: 8

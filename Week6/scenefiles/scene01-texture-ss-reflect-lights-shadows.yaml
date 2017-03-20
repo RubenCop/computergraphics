@@ -59,7 +59,7 @@ Objects:
   #radius: 50
   angle: 90
   material:
-    texture: bluegrid.png
+    texture: aardkaart.png
     ka: 0.2
     kd: 0.8
     ks: 0
@@ -82,6 +82,3 @@ Objects:
     kd: 0.8
     ks: 0
     n: 1
-- type: model
-  position: [200,200,995]
-  file: cube.obj

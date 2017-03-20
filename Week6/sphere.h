@@ -12,7 +12,7 @@ public:
 
     virtual Hit intersect(const Ray &ray);
 
-    virtual Color getTexture(Vector Normal);
+    Color getTexture(Vector Normal);
 
     const Point position;
     const double r;

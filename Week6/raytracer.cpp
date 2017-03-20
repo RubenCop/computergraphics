@@ -83,31 +83,53 @@ Object* Raytracer::parseObject(const YAML::Node& node)
         node["position"] >> pos;
 
         GLMmodel *model = glmReadOBJ(const_cast<char*>(fileName.c_str())); //
-        //glmUnitize(model);
+        glmUnitize(model);
         cout << "Number of triangles: " << model->numtriangles << endl;
+
+        Object *obj = NULL;
+        Triple a = Triple (1,0,1);
+        Triple b = Triple(-1,0,-1);
+        Triple c = Triple(1,1,1);
+
+        Material *m = new Material();
+        m->ka = 0.2;
+        m->kd = 0.8;
+        m->ks = 0.1;
+        m->n = 1;
+
+        m->color = Color(1.0,1.0,1.0);
+
+        obj->material = m;
+
+        obj = new Triangle(a,b,c);
+        scene->addObject(obj);
+
 
         for (unsigned int i = 0; i < model->numtriangles; i++)
         {
             //cout << "test " <<  model->triangles->vindices[triangle] << endl;
             Object *obj = NULL;
 
-            Triple a = Triple (model->vertices[3 * model->triangles[i].vindices[0]] + pos.x,
-                model->vertices[3 * model->triangles[i].vindices[0]] + pos.y,
-                model->vertices[3 * model->triangles[i].vindices[0]] + pos.z);
+            Triple a = Triple (model->vertices[3 * model->triangles[i].vindices[0]] + 0,
+                model->vertices[3 * model->triangles[i].vindices[0]] + 0,
+                model->vertices[3 * model->triangles[i].vindices[0]] + 0);
 
-            Triple b = Triple (model->vertices[3 * model->triangles[i].vindices[1]] + pos.x,
-                model->vertices[3 * model->triangles[i].vindices[1]] + pos.y,
-                model->vertices[3 * model->triangles[i].vindices[1]] + pos.z);
+            Triple b = Triple (model->vertices[3 * model->triangles[i].vindices[1]] + 0,
+                model->vertices[3 * model->triangles[i].vindices[1]] + 0,
+                model->vertices[3 * model->triangles[i].vindices[1]] + 0);
 
-            Triple c = Triple (model->vertices[3 * model->triangles[i].vindices[2]+0] + pos.x,
-                model->vertices[3 * model->triangles[i].vindices[2]] + pos.y,
-                model->vertices[3 * model->triangles[i].vindices[2]] + pos.z);
+            Triple c = Triple (model->vertices[3 * model->triangles[i].vindices[2]+0] + 0,
+                model->vertices[3 * model->triangles[i].vindices[2]] + 0,
+                model->vertices[3 * model->triangles[i].vindices[2]] + 0);
+
+            cout << "a "<< a << " b "<< b << " c " << c << endl;
 
             obj = new Triangle(a,b,c);
+            //cout << "a: " << a  << endl;
             Material *m = new Material();
             m->ka = 0.2;
             m->kd = 0.8;
-            m->ks = 0;
+            m->ks = 0.1;
             m->n = 1;
 
             m->color = Color(1.0,1.0,1.0);

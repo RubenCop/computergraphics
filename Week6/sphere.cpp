@@ -2,7 +2,6 @@
 #include <iostream>
 #include <math.h>
 
-#define PI 3.1415926535898
 /************************** Sphere **********************************/
 
 Hit Sphere::intersect(const Ray &ray)
@@ -37,27 +36,4 @@ Hit Sphere::intersect(const Ray &ray)
     Vector N = ((ray.O + (ray.D * t)) - position).normalized();
 
     return Hit(t,N);
-}
-
-Color Sphere::getTexture(Vector N){
-
-    Material *m = this->material;
-
-    double c1 = this->axis.x;
-    double c2 = this->axis.y;
-    double c3 = this->axis.z;
-
-    double angle = this->angle * PI / 180;
-
-    //Rodrigues' rotation formula
-    Vector rot = N * cos(angle) + this->axis.cross(N) * sin(angle) + this->axis * (this->axis * N) * (1 - cos(angle));
-
-    double u = atan2(rot.y, rot.x);
-    if (u < 0)
-        u += 2 * PI;
-    u /= 2 * PI;
-
-    double v = acos(rot.z) / PI;
-
-    return m->texture->colorAt(u,v);
 }
