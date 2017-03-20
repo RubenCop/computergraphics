@@ -1,12 +1,31 @@
-Raytracer 2 assignment for Computer Graphics
+Raytracer 3 assignment for Computer Graphics
 
 By
 	Ruben Cop (s2703122)
 	Jan Willem de Wit (s2616602)
 
-For the shadows, we have added a new function "traceShad" that is called with a new ray from the hit to each lightsource. It returns true if there should be a shadow, false if not. If there should be a shadow, diffuse and specular are not calculated.
+We have implemented the reading of a texture by adding an Image variable to the
+material. This is a null pointer by default, and will be changed to an image
+that is specified in the yams file. By checking if this pointer is null, we also
+check if there is a texture at all, or if the normal colour calculation should
+be used.
 
-For the reflection, we recursively call trace again. It has an argument, which is the number of reflections read from the yaml file. In the recursive call, we use a new ray from hit to the reflect vector, with a small value added to hit to prevent the ray from hitting the hit points. We multiply the result from this recursive call with the specular component from the material colour.
+We implemented the rotation of the texture using Rodrigues’ Rotation Formula
+(https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula). An example of a
+rotated earth can be found in the screenshots.
 
-We apply supersampling in the render function by creating two loops for the amount of sampling we need, which is read from the yaml file. We offset the pixel based on the amount of supersampling, and take an average for all the samples of the current pixel. 
+We have implemented Gooch shading, with specular calculation but not shadows or
+reflections. An example can be found in the screenshots.
 
+The objects that can be rendered by our raytracer are the following:
+- Sphere
+- Triangle
+- Plane
+- Cylinder
+- Quad
+
+We use the provided glm file to read obj files. We have adapted the yaml parsing
+part of the program such that obj files can be defined in the yaml file. This
+can be done by providing a filename, a position and a material. An example of
+this can be found in the file "scenefiles/gary.yaml". The provided screenshot
+shows Gary rendered from an obj file.

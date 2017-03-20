@@ -85,12 +85,7 @@ Color Scene::trace(const Ray &ray, int reflectCount)
 		if (u < 0)
 			u += 2 * PI;
 		u /= 2 * PI;
-
 		double v = acos(rot.z) / PI;
-
-		cout << "U: " << u << " v: " << v << endl;
-
-		//cout << "fajadsjkfadsjklfjksdajkfasdfjkldasfasd" << endl;
 
 		matCol =  material->texture->colorAt(u,v);;
 	}

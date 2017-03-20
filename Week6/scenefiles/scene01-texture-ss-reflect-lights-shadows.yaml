@@ -55,9 +55,9 @@ Objects:
     n: 32
 - type: sphere
   position: [140,220,400]
-  radius: [50,[0,1,0.7]]
+  radius: [50,[0,0.5,1]]
   #radius: 50
-  angle: 90
+  angle: 300
   material:
     texture: aardkaart.png
     ka: 0.2
