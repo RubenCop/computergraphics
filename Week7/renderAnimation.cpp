@@ -38,6 +38,7 @@ void MainView::renderAnimation()
     // Patrick
     renderObject(QVector3D(0,0,0),lightpos,QVector3D(0,2,0),QVector3D(0,0,0));
     // Patrick
+    /*
     renderObject(QVector3D(1,0,0),lightpos,QVector3D(0,-2.7,0),QVector3D(0,0,0));
     // Patrick
     renderObject(QVector3D(2,0,0),lightpos,QVector3D(0,-1.1,0),QVector3D(0,0,0));
@@ -53,7 +54,7 @@ void MainView::renderAnimation()
     renderObject(QVector3D(7,0,0),lightpos,QVector3D(0,-1.8,0),QVector3D(0,0,0));
     // Patrick
     renderObject(QVector3D(8,0,0),lightpos,QVector3D(0,-2.5,0),QVector3D(0,0,0));
-
+    */
 
 
 }

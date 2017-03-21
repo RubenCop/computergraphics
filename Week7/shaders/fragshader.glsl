@@ -54,6 +54,26 @@ void main()
     //fColor = vec4(color, 1.0);
 
     //texture instead of texture2D, otherwise it will not work on system
-    fColor = texture(texUniform, vertexTexCoords);
+
+
+
+    const vec3 lightColor = vec3(1,1,1);
+
+    vec3 norm = normalize(normal);
+
+    vec3 lightDir = normalize(lightPosOut - FragPos);
+    vec3 R = -reflect(lightDir, norm);
+
+    float comAmbient = 0.2;
+    float comDiffuse = max(dot(norm, lightDir), 0.0) * 0.7;
+    float comSpecular = pow(max(dot(R, vec3(0, 0, 1)), 0), 256) * 0.9;
+
+    vec3 finalColor =
+            comAmbient * texture(texUniform, vertexTexCoords).rgb +
+            comDiffuse * texture(texUniform, vertexTexCoords).rgb * lightColor +
+            comSpecular * lightColor;
+
+
+    fColor = vec4(finalColor,1.0);
 
 }
