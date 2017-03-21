@@ -41,6 +41,7 @@ MainView::~MainView() {
     glDeleteVertexArrays(1,&vao);
     glDeleteVertexArrays(1,&texCoords);
 
+
     glDeleteTextures(1,&texPointer);
 
     debugLogger->stopLogging();
@@ -103,7 +104,33 @@ void MainView::createBuffers() {
     glVertexAttribPointer(3,2,GL_FLOAT,GL_FALSE,0,0);
     glEnableVertexAttribArray(3);
 
+    glGenTextures(1, &texPtr);
+    glGenTextures(1, &normPtr);
+    glGenTextures(1, &zPtr);
+
+    glBindTexture(GL_TEXTURE_2D, texPtr);
+    glBindTexture(GL_TEXTURE_2D, normPtr);
+    glBindTexture(GL_TEXTURE_2D, zPtr);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,NULL);
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    glGenFramebuffers(1,&fboPtr);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPtr);
+
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texPtr);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normPtr);
+
+
     glBindVertexArray(0);
+
+    glBindFramebuffer(0,0);
+
 
 }
 
@@ -157,6 +184,8 @@ void MainView::updateBuffers() {
     // Change the data inside buffers (if you want)
     // make sure to change GL_STATIC_DRAW to GL_DYNAMIC_DRAW
     // in the call to glBufferData for better performance
+
+
 }
 
 
@@ -267,6 +296,7 @@ void MainView::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     mainShaderProg->bind();
     updateUniforms();
+    updateBuffers();
     //renderRaytracerScene();
 
     //call animation

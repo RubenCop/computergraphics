@@ -105,6 +105,13 @@ private:
     GLuint normalInt;
 
     GLuint texPointer;
+
+    //OpenGL3
+    GLuint texPtr;
+    GLuint normPtr;
+    GLuint zPtr;
+    GLuint fboPtr;
+
     GLint texUniform;
 
 

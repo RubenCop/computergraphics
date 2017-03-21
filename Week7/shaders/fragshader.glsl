@@ -66,7 +66,7 @@ void main()
 
     float comAmbient = 0.2;
     float comDiffuse = max(dot(norm, lightDir), 0.0) * 0.7;
-    float comSpecular = pow(max(dot(R, vec3(0, 0, 1)), 0), 4096) * 0.99999;
+    float comSpecular = pow(max(dot(R, vec3(0, 0, 1)), 0), 1) * 0.9;
 
     vec3 finalColor =
             comAmbient * texture(texUniform, vertexTexCoords).rgb +
