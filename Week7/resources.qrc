@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shaders/fragshader.glsl</file>
+        <file>shaders/vertshader.glsl</file>
+        <file>models/cube.obj</file>
+        <file>models/flat_surface.obj</file>
+        <file>textures/cat_diff.png</file>
+        <file>textures/cat_norm.png</file>
+        <file>textures/cat_spec.png</file>
+        <file>textures/rug_logo.png</file>
+        <file>models/cat.obj</file>
+        <file>models/sphere.obj</file>
+        <file>models/spongebob.obj</file>
+        <file>models/patrick.obj</file>
+        <file>textures/patrick_d.png</file>
+        <file>textures/gary.png</file>
+        <file>models/gary.obj</file>
+        <file>textures/shrivelbob.png</file>
+        <file>models/spongebob2.obj</file>
+        <file>models/sponge.obj</file>
+    </qresource>
+</RCC>
