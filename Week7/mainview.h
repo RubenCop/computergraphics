@@ -112,6 +112,8 @@ private:
     GLuint zPtr;
     GLuint fboPtr;
 
+    GLint defaultFramebuffer;
+
     GLint texUniform;
 
 

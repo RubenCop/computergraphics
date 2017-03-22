@@ -123,8 +123,11 @@ void MainView::createBuffers() {
     glGenFramebuffers(1,&fboPtr);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPtr);
 
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texPtr);
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normPtr);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texPtr,0);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normPtr,0);
+
+    GLenum  drawBuffers [2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+    glDrawBuffers (2, drawBuffers);
 
 
     glBindVertexArray(0);
@@ -302,12 +305,17 @@ void MainView::paintGL() {
     //call animation
     animate();
 
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING,&defaultFramebuffer);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPtr);
+
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texPointer);
     glUniform1i(texUniform,0);
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFramebuffer);
 
 
     mainShaderProg->release();
