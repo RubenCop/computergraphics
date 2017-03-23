@@ -18,5 +18,6 @@
         <file>textures/shrivelbob.png</file>
         <file>models/spongebob2.obj</file>
         <file>models/sponge.obj</file>
+        <file>shaders/finalshader.glsl</file>
     </qresource>
 </RCC>

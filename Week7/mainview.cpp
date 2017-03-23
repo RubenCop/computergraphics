@@ -58,7 +58,8 @@ void MainView::createShaderPrograms() {
     // Qt wrapper (way cleaner than using pure OpenGL)
     mainShaderProg = new QOpenGLShaderProgram();
     mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/vertshader.glsl");
-    mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
+    //mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
+    mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/finalshader.glsl");
     mainShaderProg->link();
 
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
@@ -244,9 +245,9 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/patrick.obj", NULL);
+    loadModel(":/models/cat.obj", NULL);
     glGenTextures(1,&texPointer);
-    loadTexture(":/textures/patrick_d.png",texPointer);
+    loadTexture(":/textures/cat_diff.png",texPointer);
 
     //timer start
     timer.start(30);

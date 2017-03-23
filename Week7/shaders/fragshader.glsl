@@ -15,7 +15,7 @@ uniform sampler2D texUniform;
 
 // Specify the output of the fragment shader
 // Usually a vec4 describing a color (Red, Green, Blue, Alpha/Transparency)
-layout (location = 0) out vec3 fColor;
+layout (location = 0) out vec4 fColor;
 layout (location = 1) out vec3 norm;
 
 

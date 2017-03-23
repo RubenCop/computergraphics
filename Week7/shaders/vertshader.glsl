@@ -28,6 +28,7 @@ out vec2 vertexTexCoords;
 out vec3 normal;
 out vec3 FragPos;
 out vec3 lightPosOut;
+out vec2 uv;
 
 void main()
 {
@@ -39,4 +40,5 @@ void main()
     gl_Position = projection * view * model * vec4(vertCoordinates_in, 1.0);
     normal = normalMatrix * vertColor_in;
     vertexTexCoords = textureCoords_in;
+    uv = vertexTexCoords;
 }
