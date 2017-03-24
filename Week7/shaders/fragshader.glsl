@@ -55,7 +55,8 @@ void main()
             comSpecular * lightColor;
 
 
-    fColor = vec4(finalColor,1.0);
+    //fColor = vec4(finalColor,1.0);
+    //fColor = texture(texUniform, vertexTexCoords).rgb;
 
     norm = (norm + 1) / 2;
 

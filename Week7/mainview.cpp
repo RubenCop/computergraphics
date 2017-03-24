@@ -59,7 +59,7 @@ void MainView::createShaderPrograms() {
     mainShaderProg = new QOpenGLShaderProgram();
     mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/vertshader.glsl");
     //mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
-    mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/finalshader.glsl");
+    mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/newshader.glsl");
     mainShaderProg->link();
 
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
@@ -110,11 +110,12 @@ void MainView::createBuffers() {
     glGenTextures(1, &zPtr);
 
     glBindTexture(GL_TEXTURE_2D, texPtr);
-    glBindTexture(GL_TEXTURE_2D, normPtr);
-    glBindTexture(GL_TEXTURE_2D, zPtr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
 
+    glBindTexture(GL_TEXTURE_2D, normPtr);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+
+    glBindTexture(GL_TEXTURE_2D, zPtr);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,NULL);
 
 
@@ -126,9 +127,12 @@ void MainView::createBuffers() {
 
     glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texPtr,0);
     glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normPtr,0);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, zPtr, 0);
 
-    GLenum  drawBuffers [2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
-    glDrawBuffers (2, drawBuffers);
+    GLenum  drawBuffers[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
+    glDrawBuffers(2, drawBuffers);
+
+
 
 
     glBindVertexArray(0);
@@ -245,9 +249,9 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/cat.obj", NULL);
+    loadModel(":/models/patrick.obj", NULL);
     glGenTextures(1,&texPointer);
-    loadTexture(":/textures/cat_diff.png",texPointer);
+    loadTexture(":/textures/patrick_d.png",texPointer);
 
     //timer start
     timer.start(30);
