@@ -249,9 +249,9 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/patrick.obj", NULL);
+    loadModel(":/models/discopatrick.obj", NULL);
     glGenTextures(1,&texPointer);
-    loadTexture(":/textures/patrick_d.png",texPointer);
+    loadTexture(":/textures/discopatrick.png",texPointer);
 
     //timer start
     timer.start(30);
@@ -318,7 +318,7 @@ void MainView::paintGL() {
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texPointer);
-    glUniform1i(texUniform,0);
+    glUniform1i(zPtr,1);
 
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFramebuffer);
 

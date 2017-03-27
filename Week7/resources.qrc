@@ -19,5 +19,9 @@
         <file>models/spongebob2.obj</file>
         <file>models/sponge.obj</file>
         <file>shaders/newshader.glsl</file>
+        <file>models/patrick3.obj</file>
+        <file>textures/patrick3.png</file>
+        <file>models/discopatrick.obj</file>
+        <file>textures/discopatrick.png</file>
     </qresource>
 </RCC>
