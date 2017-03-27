@@ -152,7 +152,7 @@ void MainView::mouseReleaseEvent(QMouseEvent *ev)
 // Triggered when clicking scrolling with the scroll wheel on the mouse
 void MainView::wheelEvent(QWheelEvent *ev)
 {
-    const int scaleSensitivity = 10000;
+    const int scaleSensitivity = 1000;
     // Implement something
     qDebug() << "Mouse wheel:" << ev->delta();
     newScale += (float)ev->delta()/scaleSensitivity;
