@@ -91,6 +91,7 @@ private:
 
     // Shader programs, GLint for uniforms/buffer objects, other variables
     QOpenGLShaderProgram *mainShaderProg;
+    QOpenGLShaderProgram *newShaderProg;
 
     QTimer timer; // timer used for animation
 

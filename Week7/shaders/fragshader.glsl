@@ -56,7 +56,7 @@ void main()
 
 
     //fColor = vec4(finalColor,1.0);
-    //fColor = texture(texUniform, vertexTexCoords).rgb;
+    fColor = vec4(texture(texUniform, vertexTexCoords).rgb, 1.0);
 
     norm = (norm + 1) / 2;
 
