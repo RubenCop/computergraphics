@@ -8,6 +8,7 @@ in vec2 uv;
 
 layout (location = 0) out  vec4  fColor;
 
+
 void  main()
 {
     fColor = vec4(texture(diffuse , uv).rgb , 1);

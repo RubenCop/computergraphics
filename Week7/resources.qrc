@@ -18,11 +18,7 @@
         <file>textures/shrivelbob.png</file>
         <file>models/spongebob2.obj</file>
         <file>models/sponge.obj</file>
-        <file>models/patrick3.obj</file>
-        <file>textures/patrick3.png</file>
-        <file>models/discopatrick.obj</file>
-        <file>textures/discopatrick.png</file>
-        <file>shaders/fragshader2.glsl</file>
         <file>shaders/vertshader2.glsl</file>
+        <file>shaders/fragshader2.glsl</file>
     </qresource>
 </RCC>

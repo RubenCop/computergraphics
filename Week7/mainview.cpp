@@ -72,9 +72,9 @@ void MainView::createShaderPrograms() {
     ULprojection = glGetUniformLocation(mainShaderProg->programId(), "projection");
     ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
-    texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
-    normUniform = glGetUniformLocation(mainShaderProg->programId(), "normalVector");
-    zUniform = glGetUniformLocation(mainShaderProg->programId(), "zBufferVector");
+    texUniform = glGetUniformLocation(newShaderProg->programId(), "textureVector");
+    normUniform = glGetUniformLocation(newShaderProg->programId(), "normalVector");
+    zUniform = glGetUniformLocation(newShaderProg->programId(), "zBufferVector");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -119,23 +119,22 @@ void MainView::createBuffers() {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texPtr,0);
 
     glBindTexture(GL_TEXTURE_2D, normPtr);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normPtr,0);
 
     glBindTexture(GL_TEXTURE_2D, zPtr);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, zPtr, 0);
 
     glGenFramebuffers(1,&fboPtr);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPtr);
-
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texPtr,0);
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normPtr,0);
-    glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, zPtr, 0);
 
     GLenum  drawBuffers[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
     glDrawBuffers(2, drawBuffers);
@@ -152,6 +151,7 @@ void MainView::loadModel(QString filename, GLuint bufferObject) {
     currentModel = new Model(filename);
     numTris = currentModel->getNumTriangles();
     normals = currentModel->getNormals();
+    //normalVector = normals;
     // TODO: implement loading of model into Buffer Objects
     vertices = currentModel->getVertices();
     //textureCoords = currentModel->getTextureCoords()
@@ -314,8 +314,6 @@ void MainView::paintGL() {
     //call animation
     animate();
 
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING,&defaultFramebuffer);
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPtr);
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES,0,numVertices);
@@ -324,10 +322,20 @@ void MainView::paintGL() {
     glBindTexture(GL_TEXTURE_2D, texPointer);
     glUniform1i(zPtr,3);
 
+    mainShaderProg->release();
+
+    newShaderProg->bind();
+
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING,&defaultFramebuffer);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboPtr);
+
+
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFramebuffer);
 
 
-    mainShaderProg->release();
+    newShaderProg->release();
+
+
 }
 
 void MainView::animate() {
