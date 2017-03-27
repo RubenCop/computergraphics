@@ -58,9 +58,13 @@ void MainView::createShaderPrograms() {
     // Qt wrapper (way cleaner than using pure OpenGL)
     mainShaderProg = new QOpenGLShaderProgram();
     mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shaders/vertshader.glsl");
-    //mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
-    mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/newshader.glsl");
+    mainShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader.glsl");
     mainShaderProg->link();
+
+    newShaderProg = new QOpenGLShaderProgram();
+    newShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/vertshader2.glsl");
+    newShaderProg->addShaderFromSourceFile(QOpenGLShader::Fragment, ":/shaders/fragshader2.glsl");
+    newShaderProg->link();
 
     ULmodel = glGetUniformLocation(mainShaderProg->programId(), "model");
 
@@ -318,7 +322,7 @@ void MainView::paintGL() {
     glBindVertexArray(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texPointer);
-    glUniform1i(zPtr,1);
+    glUniform1i(zPtr,3);
 
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, defaultFramebuffer);
 

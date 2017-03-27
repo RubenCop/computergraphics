@@ -32,4 +32,6 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
-    shaders/brotshader.glsl
+    shaders/brotshader.glsl \
+    shaders/fragshader2.glsl \
+    shaders/vertshader2.glsl
