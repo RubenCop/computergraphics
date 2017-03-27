@@ -1,7 +1,14 @@
-uniform sampler2D qt_Texture0;
-varying vec4 qt_TexCoord0;
+#version  330  core
 
-void main(void)
+uniform  sampler2D  diffuse;
+uniform  sampler2D  normals;
+uniform  sampler2D  depth;
+
+in vec2 uv;
+
+layout (location = 0) out  vec4  fColor;
+
+void  main()
 {
-    gl_FragColor = texture2D(qt_Texture0, qt_TexCoord0.st);
+    fColor = vec4(texture(diffuse , uv).rgb , 1);
 }
