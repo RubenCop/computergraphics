@@ -69,6 +69,8 @@ void MainView::createShaderPrograms() {
     ULnormal = glGetUniformLocation(mainShaderProg->programId(), "normalMatrix");
 
     texUniform = glGetUniformLocation(mainShaderProg->programId(), "textureVector");
+    normUniform = glGetUniformLocation(mainShaderProg->programId(), "normalVector");
+    zUniform = glGetUniformLocation(mainShaderProg->programId(), "zBufferVector");
     /* Add your other shaders below */
 
     /* End of custom shaders */
@@ -111,14 +113,16 @@ void MainView::createBuffers() {
 
     glBindTexture(GL_TEXTURE_2D, texPtr);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     glBindTexture(GL_TEXTURE_2D, normPtr);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     glBindTexture(GL_TEXTURE_2D, zPtr);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight,0,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,NULL);
-
-
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -132,11 +136,7 @@ void MainView::createBuffers() {
     GLenum  drawBuffers[2] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1};
     glDrawBuffers(2, drawBuffers);
 
-
-
-
     glBindVertexArray(0);
-
     glBindFramebuffer(0,0);
 
 
@@ -249,9 +249,9 @@ void MainView::initializeGL() {
 
     createBuffers();
 
-    loadModel(":/models/patrick.obj", NULL);
+    loadModel(":/models/cat.obj", NULL);
     glGenTextures(1,&texPointer);
-    loadTexture(":/textures/patrick_d.png",texPointer);
+    loadTexture(":/textures/cat_diff.png",texPointer);
 
     //timer start
     timer.start(30);

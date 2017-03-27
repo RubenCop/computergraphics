@@ -114,7 +114,7 @@ private:
 
     GLint defaultFramebuffer;
 
-    GLint texUniform;
+    GLint texUniform, normUniform, zUniform;
 
 
     QVector<QVector2D> textureCoords;
@@ -129,7 +129,7 @@ private:
     QVector3D matColor, lightPos;
     QVector4D intensities;
 
-    QVector<quint8> textureVector;
+    QVector<quint8> textureVector, normalVector, zBufferVector;
 
     GLint ULmodel, ULview, ULprojection, ULnormal;
     GLint ULintensities, ULmatCol, ULlightPos;
